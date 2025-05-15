@@ -2,11 +2,11 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextfield extends StatelessWidget {
-  const CustomTextfield({
+class CustomEditingTextfield extends StatelessWidget {
+  const CustomEditingTextfield({
     super.key,
     required this.controller,
-     this.labelText,
+    this.hinttext,
     this.textInputType,
     this.validator,
     this.suffixIcon,
@@ -15,7 +15,7 @@ class CustomTextfield extends StatelessWidget {
   });
 
   final TextEditingController controller;
-  final String? labelText;
+  final String? hinttext;
   final TextInputType? textInputType;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
@@ -24,7 +24,7 @@ class CustomTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: Appcolors.ksecondrycolor,
+      cursorColor: Appcolors.kgreyColor,
       validator: validator,
       controller: controller,
       obscureText: obscureText ?? false,
@@ -42,25 +42,25 @@ class CustomTextfield extends StatelessWidget {
           suffixIcon: suffixIcon,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
-          hintText: labelText,
+          hintText: hinttext,
           hintStyle: const TextStyle(
-              color: Appcolors.ksecondrycolor,
+              color: Appcolors.kgreyColor,
               fontSize: 11,
               fontWeight: FontWeight.w300),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadiusStyles.kradius10(),
+              borderRadius: BorderRadiusStyles.kradius5(),
               borderSide:
-                  const BorderSide(color: Appcolors.ksecondrycolor, width: .5)),
+                  const BorderSide(color: Appcolors.kgreyColor, width: .5)),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadiusStyles.kradius10(),
+              borderRadius: BorderRadiusStyles.kradius5(),
               borderSide:
-                  const BorderSide(color: Appcolors.ksecondrycolor, width: .5)),
+                  const BorderSide(color: Appcolors.kgreyColor, width: .5)),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadiusStyles.kradius10(),
+              borderRadius: BorderRadiusStyles.kradius5(),
               borderSide:
                   const BorderSide(color: Appcolors.kredColor, width: .5)),
           focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadiusStyles.kradius10(),
+              borderRadius: BorderRadiusStyles.kradius5(),
               borderSide: BorderSide(color: Appcolors.kredColor, width: .5))),
     );
   }

@@ -41,10 +41,10 @@
 // }
 import 'package:e_naam/presentation/blocs/bloc/bottom_navigation_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/widgets/custom_navbar.dart';
-import 'package:e_naam/presentation/screens/otp_verificationpage/otp_verificationpage.dart';
+
 import 'package:e_naam/presentation/screens/screen_historypage/screen_historypage.dart';
 import 'package:e_naam/presentation/screens/screen_homepage/screen_homepage.dart';
-import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
+
 import 'package:e_naam/presentation/screens/screen_profileppage/screen_profilepage.dart';
 import 'package:e_naam/presentation/screens/screen_redeem/screen_redeem.dart';
 import 'package:e_naam/presentation/screens/screen_scanpage/screen_scanpage.dart';
@@ -60,12 +60,12 @@ class ScreenMainPage extends StatefulWidget {
 
 class _ScreenMainPageState extends State<ScreenMainPage> {
   final List<Widget> _pages = [
-    // ScreenHomepage(),
-    OtpVerificationPage(),
-    ScreenHistoryPage(),
-    ScreenScanpage(),
-    ScreenRedeemPage(),
-    ScreenProfilePage()
+    const ScreenHomepage(),
+   // OtpVerificationPage(),
+    const ScreenHistoryPage(),
+    const ScreenScanpage(),
+    const ScreenRedeemPage(),
+    const ScreenProfilePage()
   ];
 
   @override

@@ -6,7 +6,7 @@ class Appcolors {
 
   // static const kprimarycolor = Color.fromARGB(255, 197, 13, 56);
   // static const kprimarycolor = Color.fromARGB(255, 209, 108, 65);
-  static const kprimarycolor =  Color(0xFF1F2532);
+  static const kprimarycolor =   Color.fromARGB(255, 32, 27, 56);
 
   // static const ksecondrycolor = Color.fromARGB(255, 255, 192, 205);
   static const ksecondrycolor =  Color(0xFFD4A76A);

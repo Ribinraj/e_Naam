@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -199,7 +201,12 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: _isButtonEnabled ? () {} : null,
+                      onPressed: _isButtonEnabled
+                          ? () {
+                              CustomNavigation.pushWithTransition(
+                                  context, const ScreenMainPage());
+                            }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Appcolors.kgreenColor,
                         foregroundColor: Colors.white,

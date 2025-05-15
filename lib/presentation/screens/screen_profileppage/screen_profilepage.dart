@@ -1,6 +1,8 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
 
 class ScreenProfilePage extends StatelessWidget {
@@ -95,21 +97,26 @@ class ScreenProfilePage extends StatelessWidget {
                       text: '+91 9946802969', weight: FontWeight.w400),
                   const SizedBox(height: 20),
                   // Edit Profile Button
-                  Container(
-                    width: 300,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.edit, size: 18),
-                        const SizedBox(width: 10),
-                        TextStyles.body(
-                            text: 'Edit Profile', weight: FontWeight.w500)
-                      ],
+                  GestureDetector(
+                    onTap: () {
+                      CustomNavigation.pushWithTransition(context,ScreenEditProfilepage());
+                    },
+                    child: Container(
+                      width: 300,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.edit, size: 18),
+                          const SizedBox(width: 10),
+                          TextStyles.body(
+                              text: 'Edit Profile', weight: FontWeight.w500)
+                        ],
+                      ),
                     ),
                   ),
                 ],

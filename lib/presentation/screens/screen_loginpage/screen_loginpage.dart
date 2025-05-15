@@ -2,6 +2,7 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
+import 'package:e_naam/presentation/screens/otp_verificationpage/otp_verificationpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:e_naam/widgets/custom_textfield.dart';
@@ -65,7 +66,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                   CustomSqureButton(
                     ontap: () {
                       CustomNavigation.pushWithTransition(
-                          context, ScreenMainPage());
+                          context, OtpVerificationPage());
                     },
                     text: 'Continue',
                     color: Appcolors.kgreenColor,
