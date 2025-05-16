@@ -63,7 +63,7 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
     const ScreenHomepage(),
    // OtpVerificationPage(),
     const ScreenHistoryPage(),
-    const ScreenScanpage(),
+    const AdvancedQRScanner(),
     const ScreenRedeemPage(),
     const ScreenProfilePage()
   ];

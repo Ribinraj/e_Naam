@@ -1,5 +1,6 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/core/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class ScreenHomepage extends StatefulWidget {
@@ -21,21 +22,51 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(15),
-                      color: Appcolors.kprimarycolor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ResponsiveSizedBox.height50,
-                          TextStyles.subheadline(
-                              text: 'Hello,\nRibin',
-                              color: Appcolors.kwhiteColor),
-                          ResponsiveSizedBox.height30,
-                          _buildPointsValueSection(),
-                          ResponsiveSizedBox.height(5),
-                        ],
-                      )),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                          decoration: const BoxDecoration(
+                              color: Appcolors.kprimarycolor,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8))),
+                          padding: const EdgeInsets.only(
+                              top: 15, left: 15, right: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ResponsiveSizedBox.height50,
+                              TextStyles.subheadline(
+                                  text: 'Hello,\nRibin',
+                                  color: Appcolors.kwhiteColor),
+                              ResponsiveSizedBox.height30,
+                              _buildPointsValueSection(),
+                            ],
+                          )),
+                      Positioned(
+                          bottom: -23,
+                          left: ResponsiveUtils.screenWidth / 2.4,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Appcolors.kwhiteColor),
+                            padding: EdgeInsets.all(2),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.bar_chart,
+                                color: Appcolors.ksecondrycolor,
+                                size: 26,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -126,9 +157,10 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
   Widget _buildPointsValueSection() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 48, 48, 70),
-        borderRadius: BorderRadius.circular(16),
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 48, 48, 70),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Row(
         children: [
@@ -138,31 +170,13 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
             title: 'Points',
             value: '0',
           ),
-          Container(
-            height: 40,
-            width: 1,
-            color: Colors.grey.withOpacity(0.3),
-          ),
+          Spacer(),
           _buildPointsValueItem(
             icon: Icons.account_balance_wallet,
             iconColor: Colors.amber,
             title: 'Value',
             value: '₹ 0',
           ),
-          const Spacer(),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.bar_chart,
-              color: Appcolors.ksecondrycolor,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
         ],
       ),
     );

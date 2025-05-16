@@ -270,7 +270,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 60,
+                  height: 53,
                   color: Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -296,7 +296,7 @@ class CustomBottomNavBar extends StatelessWidget {
                         3,
                         state.currentPageIndex,
                         SolarIconsOutline.cardReceive,
-                        'Vouchers',
+                        'Redeem',
                       ),
                       _buildNavItem(
                         context,
@@ -314,7 +314,7 @@ class CustomBottomNavBar extends StatelessWidget {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 20,
+                bottom: 17,
                 child: Center(
                   child: FloatingActionButton(
                     shape: CircleBorder(),
