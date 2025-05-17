@@ -1,3 +1,4 @@
+import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/blocs/bloc/bottom_navigation_bloc.dart';
 
@@ -22,10 +23,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: ScreenLoginpage(),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+            scaffoldBackgroundColor: Appcolors.kwhiteColor),
+        home: const ScreenLoginpage(),
       ),
     );
   }

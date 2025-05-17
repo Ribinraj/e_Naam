@@ -48,7 +48,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                           bottom: -23,
                           left: ResponsiveUtils.screenWidth / 2.4,
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Appcolors.kwhiteColor),
                             padding: EdgeInsets.all(2),

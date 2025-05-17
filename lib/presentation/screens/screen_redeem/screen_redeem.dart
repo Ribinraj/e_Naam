@@ -1,5 +1,10 @@
 import 'package:e_naam/core/colors.dart';
+import 'package:e_naam/core/constants.dart';
+
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/screen_productdetailpage/product_detailpage.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
+import 'package:e_naam/widgets/custom_networkimage.dart';
 
 import 'package:flutter/material.dart';
 
@@ -15,40 +20,313 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(clipBehavior: Clip.none, children: [
-              Container(
-                child: Text(
-                  textAlign: TextAlign.center,
-                  'Product List',
-                  style: TextStyle(
-                      color: Appcolors.kwhiteColor,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
+        body: SingleChildScrollView(
+            child: Column(children: [
+      Stack(clipBehavior: Clip.none, children: [
+        Container(
+          color: Appcolors.kprimarycolor,
+          height: ResponsiveUtils.hp(25),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          child: const Text(
+            textAlign: TextAlign.center,
+            'Product List',
+            style: TextStyle(
+                color: Appcolors.kwhiteColor,
+                fontSize: 22,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Positioned(
+            top: ResponsiveUtils.hp(15),
+            left: ResponsiveUtils.screenWidth / 18,
+            child: Container(
+              width: ResponsiveUtils.wp(90),
+              height: ResponsiveUtils.hp(18),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color.fromARGB(255, 62, 60, 99),
+                    Color.fromARGB(255, 66, 74, 120),
+                    Color.fromARGB(255, 113, 151, 220),
+                  ],
                 ),
-                color: Appcolors.kprimarycolor,
-                height: ResponsiveUtils.hp(25),
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
               ),
-              Positioned(
-                  top: ResponsiveUtils.hp(15),
-                  left: ResponsiveUtils.screenWidth / 13,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Appcolors.ksecondrycolor,
+              child: CustomPaint(
+                painter: PointsCardPainter(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Your Points',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.85),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                    height: ResponsiveUtils.hp(23),
-                    width: ResponsiveUtils.wp(85),
-                  ))
-            ]),
+                    const SizedBox(height: 12),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.emoji_events,
+                          color: Colors.amber,
+                          size: 60,
+                        ),
+                        SizedBox(width: 12),
+                        Text(
+                          '56',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ))
+      ]),
+      SizedBox(
+        height: ResponsiveUtils.hp(6),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Select by Category',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Appcolors.kblackColor,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'See all',
+                    style: TextStyle(
+                      color: Appcolors.kprimarycolor,
+                      fontSize: ResponsiveUtils.wp(3.5),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+                height: ResponsiveUtils.hp(5),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  //padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            color: Appcolors.ksecondrycolor.withOpacity(.4),
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: ResponsiveUtils.wp(8),
+                                height: ResponsiveUtils.wp(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: const ImageWithFallback(
+                                    imageUrl:
+                                        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Mobile phone',
+                              style: TextStyle(
+                                fontSize: ResponsiveUtils.wp(3),
+                                color: Appcolors.kprimarycolor,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )),
+            ResponsiveSizedBox.height10,
+            const Text(
+              'Products',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Appcolors.kblackColor,
+              ),
+            ),
+            ResponsiveSizedBox.height10,
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 6,
+                mainAxisSpacing: 6,
+                childAspectRatio:
+                    0.75, // Control aspect ratio instead of fixed height
+              ),
+              itemCount: 10,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border:
+                          Border.all(width: .3, color: Appcolors.kprimarycolor),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: InkWell(
+                    onTap: () {
+                      CustomNavigation.pushWithTransition(
+                          context, const ProductDetailpage());
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(ResponsiveUtils.wp(2)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Hero(
+                                tag: '1',
+                                child: ImageWithFallback(
+                                  imageUrl:
+                                      'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: ResponsiveUtils.hp(1)),
+                          // Product name with flexible height
+                          Expanded(
+                            child: Text(
+                              'Product Name',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Appcolors.kblackColor,
+                                fontSize: ResponsiveUtils.wp(3.5),
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // SizedBox(height: ResponsiveUtils.hp(0.5)),
+
+                          Text(
+                            '₹ 300',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Appcolors.kprimarycolor,
+                              fontSize: ResponsiveUtils.wp(3.8),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )
           ],
         ),
       ),
-    );
+    ])));
   }
+}
+
+class PointsCardPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Paint for decorative elements
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.1)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+
+    // Ensure all drawing stays within the canvas boundaries
+
+    // Draw curved lines in top-right corner
+    Path path1 = Path();
+    path1.moveTo(size.width * 0.7, 0);
+    path1.quadraticBezierTo(
+        size.width * 0.85, size.height * 0.25, size.width, size.height * 0.2);
+    canvas.drawPath(path1, paint);
+
+    Path path2 = Path();
+    path2.moveTo(size.width * 0.75, 0);
+    path2.quadraticBezierTo(
+        size.width * 0.9, size.height * 0.3, size.width, size.height * 0.35);
+    canvas.drawPath(path2, paint);
+
+    // Draw circles as accents
+    canvas.drawCircle(
+      Offset(size.width * 0.1, size.height * 0.8),
+      size.width * 0.05,
+      Paint()
+        ..color = Colors.white.withOpacity(0.08)
+        ..style = PaintingStyle.fill,
+    );
+
+    canvas.drawCircle(
+      Offset(size.width * 0.85, size.height * 0.3),
+      size.width * 0.08,
+      Paint()
+        ..color = Colors.white.withOpacity(0.08)
+        ..style = PaintingStyle.fill,
+    );
+
+    // Draw some diagonal lines in bottom-left
+    for (int i = 0; i < 3; i++) {
+      double startY = size.height * (0.5 + (i * 0.1));
+      double endX = size.width * (0.15 + (i * 0.1));
+
+      canvas.drawLine(
+        Offset(0, startY),
+        Offset(endX, size.height),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
