@@ -1,6 +1,7 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/screen_redeem/screen_redeem.dart';
 import 'package:flutter/material.dart';
 
 class ScreenHomepage extends StatefulWidget {
@@ -159,6 +160,15 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 48, 48, 70),
+        // gradient: LinearGradient(
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        //   colors: [
+        //     Color.fromARGB(255, 55, 53, 81),
+        //     Color.fromARGB(255, 65, 71, 104),
+        //     Color.fromARGB(255, 51, 62, 82),
+        //   ],
+        // ),
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),

@@ -2,8 +2,10 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/Screen_orderslist/screen_orderslistpage.dart';
 import 'package:e_naam/presentation/screens/screen_productdetailpage/product_detailpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
+
 import 'package:e_naam/widgets/custom_networkimage.dart';
 
 import 'package:flutter/material.dart';
@@ -57,37 +59,63 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
               ),
               child: CustomPaint(
                 painter: PointsCardPainter(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      'Your Points',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.85),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.emoji_events,
-                          color: Colors.amber,
-                          size: 60,
-                        ),
-                        SizedBox(width: 12),
                         Text(
-                          '56',
+                          'Your Points',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
+                            color: Colors.white.withOpacity(0.85),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
                           ),
+                        ),
+                        const SizedBox(height: 12),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.emoji_events,
+                              color: Colors.amber,
+                              size: 60,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              '56',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                    ResponsiveSizedBox.height5,
+                    GestureDetector(
+                      onTap: () {
+                        CustomNavigation.pushWithTransition(
+                            context, OrdersListScreen());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                width: .5, color: Appcolors.kwhiteColor)),
+                        child: TextStyles.caption(
+                            text: 'Your\nOrders',
+                            weight: FontWeight.bold,
+                            color: const Color.fromARGB(255, 255, 226, 137)),
+                      ),
+                    ),
+                    // ResponsiveSizedBox.width10
                   ],
                 ),
               ),
@@ -208,8 +236,14 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                       borderRadius: BorderRadius.circular(10)),
                   child: InkWell(
                     onTap: () {
-                      CustomNavigation.pushWithTransition(
-                          context, const ProductDetailpage());
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 600),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  const ProductDetailpage(),
+                        ),
+                      );
                     },
                     child: Padding(
                       padding: EdgeInsets.all(ResponsiveUtils.wp(2)),

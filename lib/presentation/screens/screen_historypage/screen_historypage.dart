@@ -42,7 +42,8 @@ class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
                   ),
                   SizedBox(height: 6),
                   Divider(
-                    color: Colors.pink,
+                    //color: Colors.pink,
+                    color: Appcolors.ksecondrycolor,
                     thickness: 3,
                     endIndent: 130,
                   ),

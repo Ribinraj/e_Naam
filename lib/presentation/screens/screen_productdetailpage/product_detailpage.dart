@@ -53,7 +53,7 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                   ),
                 ],
               ),
-              Spacer()
+              const Spacer()
             ],
           ),
         ),
@@ -68,12 +68,15 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                     color: Appcolors.kwhiteColor,
                     border:
                         Border.all(width: 1, color: Appcolors.kprimarycolor)),
-                child: const ImageWithFallback(
-                  imageUrl:
-                      'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.contain,
+                child: const Hero(
+                  tag:'1' ,
+                  child: ImageWithFallback(
+                    imageUrl:
+                        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
                 )))
       ]),
       SizedBox(
