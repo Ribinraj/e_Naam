@@ -1,7 +1,7 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
-import 'package:e_naam/presentation/screens/screen_redeem/screen_redeem.dart';
+
 import 'package:flutter/material.dart';
 
 class ScreenHomepage extends StatefulWidget {

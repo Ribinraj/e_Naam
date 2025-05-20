@@ -2,6 +2,8 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/Redeem_confirmation/redeem_confirmationpage.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 
 import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
@@ -69,7 +71,7 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                     border:
                         Border.all(width: 1, color: Appcolors.kprimarycolor)),
                 child: const Hero(
-                  tag:'1' ,
+                  tag: '1',
                   child: ImageWithFallback(
                     imageUrl:
                         'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
@@ -92,7 +94,7 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                 weight: FontWeight.bold,
                 color: Appcolors.kgreyColor),
             ResponsiveSizedBox.height5,
-            TextStyles.headline(text: '₹ 2399', weight: FontWeight.bold),
+            TextStyles.headline(text: '2399 pts', weight: FontWeight.bold),
             ResponsiveSizedBox.height5,
             TextStyles.body(
                 text: 'Description',
@@ -108,7 +110,12 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
             ),
             ResponsiveSizedBox.height30,
             CustomSqureButton(
-                ontap: () {}, text: 'Buy Now', color: Appcolors.kgreenColor)
+                ontap: () {
+                  CustomNavigation.pushWithTransition(
+                      context, OrderConfirmationPage());
+                },
+                text: 'Redeem',
+                color: Appcolors.kgreenColor)
           ],
         ),
       ),

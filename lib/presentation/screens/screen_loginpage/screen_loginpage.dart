@@ -3,6 +3,7 @@ import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 import 'package:e_naam/presentation/screens/otp_verificationpage/otp_verificationpage.dart';
+import 'package:e_naam/presentation/screens/screen_registerpage/screen_registerpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:e_naam/widgets/custom_textfield.dart';
@@ -73,6 +74,19 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                   )
                 ],
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    CustomNavigation.pushWithTransition(
+                        context, ScreenRegisterPage());
+                  },
+                  child: TextStyles.caption(
+                      text: 'Register', color: Appcolors.kgreenColor),
+                ),
+              ],
             )
           ],
         ),

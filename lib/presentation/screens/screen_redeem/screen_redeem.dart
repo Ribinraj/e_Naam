@@ -3,6 +3,7 @@ import 'package:e_naam/core/constants.dart';
 
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/screens/Screen_orderslist/screen_orderslistpage.dart';
+import 'package:e_naam/presentation/screens/screen_categorypage/screen_categorypage.dart';
 import 'package:e_naam/presentation/screens/screen_productdetailpage/product_detailpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 
@@ -141,7 +142,10 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    CustomNavigation.pushWithTransition(
+                        context, CategoryPage());
+                  },
                   child: Text(
                     'See all',
                     style: TextStyle(
@@ -286,7 +290,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                           // SizedBox(height: ResponsiveUtils.hp(0.5)),
 
                           Text(
-                            '₹ 300',
+                            '300 pts',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Appcolors.kprimarycolor,
