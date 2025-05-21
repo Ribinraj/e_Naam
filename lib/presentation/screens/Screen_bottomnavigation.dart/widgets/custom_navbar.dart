@@ -369,14 +369,14 @@ class CustomBottomNavBar extends StatelessWidget {
           Icon(
             icon,
             color: isSelected ? activeColor : inactiveColor,
-            size: 17,
+            size: 18,
           ),
           const SizedBox(height: 3),
           Text(
             label,
             style: TextStyle(
               color: isSelected ? activeColor : inactiveColor,
-              fontSize: 8,
+              fontSize: 9,
             ),
           ),
         ],

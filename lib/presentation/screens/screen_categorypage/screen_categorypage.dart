@@ -1,5 +1,7 @@
 import 'package:e_naam/core/colors.dart';
+import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,62 +19,75 @@ class CategoryPage extends StatelessWidget {
       },
       {
         'name': 'Laptops',
-        'imageUrl': 'https://example.com/laptop.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
       },
       {
         'name': 'Headphones',
-        'imageUrl': 'https://example.com/headphones.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
       },
       {
         'name': 'Smart Watches',
-        'imageUrl': 'https://example.com/smartwatch.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
       },
       {
         'name': 'Cameras',
-        'imageUrl': 'https://example.com/camera.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
       },
       {
         'name': 'Tablets',
-        'imageUrl': 'https://example.com/tablet.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
       },
       {
         'name': 'Gaming',
-        'imageUrl': 'https://example.com/gaming.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
       },
       {
         'name': 'Speakers',
-        'imageUrl': 'https://example.com/speaker.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
       },
       {
         'name': 'Accessories',
-        'imageUrl': 'https://example.com/accessories.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
       },
       {
         'name': 'Smart Home',
-        'imageUrl': 'https://example.com/smarthome.jpg',
+        'imageUrl':
+            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
       },
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Categories'),
-        centerTitle: true,
-        backgroundColor: Appcolors.kprimarycolor,
-        elevation: 0,
-      ),
+      backgroundColor: const Color.fromARGB(255, 250, 247, 243),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header section
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(10),
             color: Appcolors.kprimarycolor,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                ResponsiveSizedBox.height30,
                 Row(
                   children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+                    IconButton(
+                        onPressed: () {
+                          CustomNavigation.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Appcolors.kwhiteColor,
+                        )),
+                    ResponsiveSizedBox.width20,
                     Text(
                       'Explore Categories',
                       style: TextStyle(
@@ -91,6 +106,7 @@ class CategoryPage extends StatelessWidget {
                     color: Colors.white.withOpacity(0.8),
                   ),
                 ),
+                ResponsiveSizedBox.height30
               ],
             ),
           ),
@@ -144,29 +160,24 @@ class CategoryCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               flex: 3,
-              child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                child: ImageWithFallback(
-                  imageUrl: imageUrl,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(12)),
+                  child: ImageWithFallback(
+                    imageUrl: imageUrl,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -176,7 +187,7 @@ class CategoryCard extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color: Appcolors.ksecondrycolor.withOpacity(0.2),
+                  color: Appcolors.kprimarycolor,
                   borderRadius:
                       const BorderRadius.vertical(bottom: Radius.circular(12)),
                 ),
@@ -186,7 +197,7 @@ class CategoryCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: ResponsiveUtils.wp(3.5),
                       fontWeight: FontWeight.w500,
-                      color: Appcolors.kprimarycolor,
+                      color: Appcolors.ksecondrycolor,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

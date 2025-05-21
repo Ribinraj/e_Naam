@@ -70,25 +70,25 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                           'Your Points',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.85),
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        // ResponsiveSizedBox.height10,
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.emoji_events,
                               color: Colors.amber,
-                              size: 60,
+                              size: 30,
                             ),
                             SizedBox(width: 12),
                             Text(
                               '56',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 40,
+                                fontSize: 30,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -100,18 +100,18 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                     GestureDetector(
                       onTap: () {
                         CustomNavigation.pushWithTransition(
-                            context, OrdersListScreen());
+                            context, const OrdersListScreen());
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 10),
+                            horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(
-                                width: .5, color: Appcolors.kwhiteColor)),
+                                width: .5, color: Appcolors.ksecondrycolor)),
                         child: TextStyles.caption(
-                            text: 'Your\nOrders',
+                            text: 'Redemptions',
                             weight: FontWeight.bold,
                             color: const Color.fromARGB(255, 255, 226, 137)),
                       ),
@@ -123,7 +123,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
             ))
       ]),
       SizedBox(
-        height: ResponsiveUtils.hp(6),
+        height: ResponsiveUtils.hp(7),
       ),
       Padding(
         padding: const EdgeInsets.all(10),
@@ -144,14 +144,31 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                 TextButton(
                   onPressed: () {
                     CustomNavigation.pushWithTransition(
-                        context, CategoryPage());
+                        context, const CategoryPage());
                   },
-                  child: Text(
-                    'See all',
-                    style: TextStyle(
-                      color: Appcolors.kprimarycolor,
-                      fontSize: ResponsiveUtils.wp(3.5),
-                    ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'VIEW ALL',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 67, 67, 67),
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                          size: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

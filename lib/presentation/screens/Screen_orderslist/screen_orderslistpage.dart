@@ -31,6 +31,7 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/screen_orderdetailspage/screen_orderdetailpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
 
@@ -142,7 +143,7 @@ class OrderCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              // Handle tap event
+              CustomNavigation.pushWithTransition(context,ScreenOerdeDetailPage());
             },
             child: Padding(
               padding: const EdgeInsets.all(12),

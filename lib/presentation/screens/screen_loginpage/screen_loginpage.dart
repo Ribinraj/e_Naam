@@ -1,7 +1,7 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
-import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
+
 import 'package:e_naam/presentation/screens/otp_verificationpage/otp_verificationpage.dart';
 import 'package:e_naam/presentation/screens/screen_registerpage/screen_registerpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
