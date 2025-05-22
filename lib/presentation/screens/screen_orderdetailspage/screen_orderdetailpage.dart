@@ -1,8 +1,10 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/screens/screen_orderdetailspage/widgets/orderstatus_tracker.dart';
 
 import 'package:e_naam/widgets/custom_networkimage.dart';
+import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:flutter/material.dart';
 
 class ScreenOerdeDetailPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class ScreenOerdeDetailPage extends StatefulWidget {
 }
 
 class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
+  String _orderStatus = "confirmed";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,36 +67,62 @@ class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
                     color: Appcolors.kwhiteColor,
                     border:
                         Border.all(width: 1, color: Appcolors.kprimarycolor)),
-                child: const Hero(
-                  tag: '1',
-                  child: ImageWithFallback(
-                    imageUrl:
-                        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.contain,
-                  ),
+                child: ImageWithFallback(
+                  imageUrl:
+                      'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.contain,
                 )))
       ]),
       SizedBox(
         height: ResponsiveUtils.hp(10),
       ),
       Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextStyles.medium(
-                text: 'Mobile Phone',
-                weight: FontWeight.bold,
-                color: Appcolors.kgreyColor),
-            ResponsiveSizedBox.height5,
-            TextStyles.subheadline(text: '2399 pts', weight: FontWeight.bold),
+            Text(
+              'Vivo 14 pro',
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Appcolors.kblackColor,
+                  fontSize: ResponsiveUtils.wp(4)),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+            ),
             ResponsiveSizedBox.height10,
-            TextStyles.medium(
-                text: 'Shipping Adress', color: Appcolors.kgreyColor),
             TextStyles.body(
-                text: 'OOttupurath house,\nAmarambalam south po\nMalappuram Dt')
+                text: '4500 pts',
+                weight: FontWeight.bold,
+                color: Appcolors.kprimarycolor),
+            ResponsiveSizedBox.height20,
+            OrderStatusTracker(currentStatus: _orderStatus),
+            ResponsiveSizedBox.height20,
+            TextStyles.caption(
+              text: 'Shipping details',
+            ),
+            // ResponsiveSizedBox.height5,
+            Divider(
+              thickness: .5,
+              color: Appcolors.kgreyColor,
+            ),
+            TextStyles.body(text: 'Ribinraj op'),
+            TextStyles.medium(
+              text:
+                  'Oottupurath house,\n Amarambalam South PO ,\n Malappuram dt, Kerala',
+              color: Appcolors.kblackColor,
+            ),
+
+            ResponsiveSizedBox.height50,
+            CustomSqureButton(
+                ontap: () {
+                  Navigator.pop(context);
+                },
+                color: Appcolors.kgreenColor,
+                text: 'Back')
           ],
         ),
       ),

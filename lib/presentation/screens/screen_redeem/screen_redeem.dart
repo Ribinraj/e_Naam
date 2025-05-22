@@ -64,6 +64,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -94,6 +95,11 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                             ),
                           ],
                         ),
+                        ResponsiveSizedBox.height5,
+                        TextStyles.caption(
+                          text: 'Your holding points 3000',
+                          color: const Color.fromARGB(255, 255, 226, 137),
+                        )
                       ],
                     ),
                     ResponsiveSizedBox.height5,

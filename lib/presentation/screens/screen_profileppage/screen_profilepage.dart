@@ -164,7 +164,7 @@
 //   }
 // }
 
-import 'package:e_naam/core/colors.dart';
+
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
@@ -349,36 +349,7 @@ class ScreenProfilePage extends StatelessWidget {
 
   // Helper method to build menu tiles
   // ignore: unused_element
-  Widget _buildMenuTile({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 20,
-              color: Appcolors.kgreenColor,
-            ),
-            const SizedBox(width: 16),
-            TextStyles.body(
-              text: title,
-            ),
-            const Spacer(),
-            Icon(
-              Icons.chevron_right,
-              color: Colors.grey.shade400,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   // Helper method to build information tiles
   Widget _buildInfoTile({
@@ -426,69 +397,4 @@ class ScreenProfilePage extends StatelessWidget {
     );
   }
 }
-            // // Section title - INAAM
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //   child: Align(
-            //     alignment: Alignment.centerLeft,
-            //     child: Text(
-            //       'e_Naam',
-            //       style: TextStyle(
-            //         fontSize: 16,
-            //         fontWeight: FontWeight.w500,
-            //         color: Colors.grey.shade700,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
-            // // Menu items
-            // _buildMenuTile(
-            //   icon: Icons.star_border_outlined,
-            //   title: 'About e_Naam',
-            //   onTap: () {},
-            // ),
-            // const Divider(height: 1),
-
-            // _buildMenuTile(
-            //   icon: Icons.shopping_bag_outlined,
-            //   title: 'Privacy Policy',
-            //   onTap: () {},
-            // ),
-            // const Divider(height: 1),
-
-            // // App section title
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //   child: Align(
-            //     alignment: Alignment.centerLeft,
-            //     child: Text(
-            //       'App',
-            //       style: TextStyle(
-            //         fontSize: 16,
-            //         fontWeight: FontWeight.w500,
-            //         color: Colors.grey.shade700,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
-            // _buildMenuTile(
-            //   icon: Icons.question_answer_outlined,
-            //   title: 'FAQs',
-            //   onTap: () {},
-            // ),
-            // const Divider(height: 1),
-
-            // _buildMenuTile(
-            //   icon: Icons.mail_outline,
-            //   title: 'Contact Us',
-            //   onTap: () {},
-            // ),
-            // const Divider(height: 1),
-
-            // _buildMenuTile(
-            //   icon: Icons.rate_review_outlined,
-            //   title: 'App Feedback',
-            //   onTap: () {},
-            // ),
+          

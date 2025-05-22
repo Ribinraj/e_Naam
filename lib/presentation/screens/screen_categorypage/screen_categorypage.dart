@@ -116,10 +116,10 @@ class CategoryPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.9,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: .8,
                 ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
@@ -127,7 +127,7 @@ class CategoryPage extends StatelessWidget {
                     name: categories[index]['name'] ?? '',
                     imageUrl: categories[index]['imageUrl'] ?? '',
                     onTap: () {
-                      // Handle category tap
+                 
                       print('Tapped on ${categories[index]['name']}');
                     },
                   );
@@ -189,7 +189,7 @@ class CategoryCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Appcolors.kprimarycolor,
                   borderRadius:
-                      const BorderRadius.vertical(bottom: Radius.circular(12)),
+                      const BorderRadius.vertical(bottom: Radius.circular(5)),
                 ),
                 child: Center(
                   child: Text(

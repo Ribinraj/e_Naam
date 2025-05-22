@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/widgets/customdrawer.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,10 +17,12 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const CustomDrawer(),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -30,14 +33,29 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                               bottomLeft: Radius.circular(8),
                               bottomRight: Radius.circular(8))),
                       padding:
-                          const EdgeInsets.only(top: 15, left: 15, right: 15),
+                          const EdgeInsets.only(top: 20, left: 15, right: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ResponsiveSizedBox.height50,
-                          TextStyles.subheadline(
-                              text: 'Hello Ribin',
-                              color: Appcolors.kwhiteColor),
+                          Row(
+                            children: [
+                              TextStyles.subheadline(
+                                  text: 'Hello Ribin',
+                                  color: Appcolors.kwhiteColor),
+                              const Spacer(),
+                              Builder(builder: (context) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      Scaffold.of(context).openEndDrawer();
+                                    },
+                                    child: const Icon(
+                                      Icons.menu,
+                                      color: Appcolors.kwhiteColor,
+                                    ));
+                              }),
+                            ],
+                          ),
                           ResponsiveSizedBox.height30,
                           _buildPointsValueSection(),
                         ],
@@ -161,6 +179,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ResponsiveSizedBox.height10,
                 Row(
                   children: [
                     ShaderMask(
@@ -191,7 +210,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                     ),
                   ],
                 ),
-                ResponsiveSizedBox.height10,
+                ResponsiveSizedBox.height20,
                 TextStyles.medium(
                   text: 'Redeem your points now!',
                   color: Appcolors.kwhiteColor,
