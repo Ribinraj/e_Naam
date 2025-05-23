@@ -1,4 +1,6 @@
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/presentation/screens/Screen_thankyoupage/screen_thankyoupage.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:e_naam/core/colors.dart';
@@ -89,17 +91,27 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                     onPressed: isLoading
                         ? null
                         : () {
+                            CustomNavigation.pushWithTransition(
+                                context,
+                                ThankYouPage(
+                                  productName: 'Mobile Phone',
+                                  amount: '3466',
+                                ));
                             // Trigger validation in the form widget directly
-                            final isValid = ValidatedAddressFormWidgetKey
-                                .currentState!
-                                .validate();
-                            if (isValid) {
-                              // Form is valid, proceed with order submission
-                              final addressData = ValidatedAddressFormWidgetKey
-                                  .currentState!
-                                  .getAddressData();
-                              _handleAddressSubmit(addressData);
-                            }
+                            // final isValid = ValidatedAddressFormWidgetKey
+                            //     .currentState!
+                            //     .validate();
+                            // if (isValid) {
+                            //   CustomNavigation.pushWithTransition(
+                            //       context, ThankYouPage(
+                            //         productName: 'Mobile Phone',amount: 3466,
+                            //       ));
+                            //   // // Form is valid, proceed with order submission
+                            //   // final addressData = ValidatedAddressFormWidgetKey
+                            //   //     .currentState!
+                            //   //     .getAddressData();
+                            //   // _handleAddressSubmit(addressData);
+                            // }
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Appcolors.kprimarycolor,

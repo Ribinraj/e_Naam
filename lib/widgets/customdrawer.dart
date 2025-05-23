@@ -35,7 +35,7 @@ class CustomDrawer extends StatelessWidget {
             ],
           ),
         ),
-  
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Align(
@@ -102,10 +102,17 @@ class CustomDrawer extends StatelessWidget {
           onTap: () {},
         ),
         const Divider(),
+        _buildMenuTile(
+          icon: Icons.logout,
+          iconcolor: Appcolors.kredColor,
+          title: 'Logout',
+          onTap: () {},
+        ),
+        const Divider(),
         Column(
           children: [
             SizedBox(
-              height: ResponsiveUtils.hp(12),
+              height: ResponsiveUtils.hp(5),
             ),
             TextStyles.caption(text: 'Designed & Developed by'),
             Row(
@@ -122,11 +129,11 @@ class CustomDrawer extends StatelessWidget {
     ));
   }
 
-  Widget _buildMenuTile({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildMenuTile(
+      {required IconData icon,
+      required String title,
+      required VoidCallback onTap,
+      Color? iconcolor = Appcolors.kgreenColor}) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -136,7 +143,7 @@ class CustomDrawer extends StatelessWidget {
             Icon(
               icon,
               size: 20,
-              color: Appcolors.kgreenColor,
+              color: iconcolor,
             ),
             const SizedBox(width: 16),
             TextStyles.body(

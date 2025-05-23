@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/customdrawer.dart';
 
 import 'package:flutter/material.dart';
@@ -72,70 +74,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                         ResponsiveSizedBox.height20,
                         // Stores & Contacts Section
                         _buildStoresContactsSection(),
-                        ResponsiveSizedBox.height10,
-                        TextStyles.body(
-                            text: 'If you require help please contact us.',
-                            weight: FontWeight.bold),
-                        ResponsiveSizedBox.height10,
-                        TextStyles.caption(
-                            text:
-                                'Our service hours are 9:00 am to 10:00 pm. If you send us am email or a physical document we will respond within 2-3 business days.',
-                            color: Appcolors.kblackColor),
                         ResponsiveSizedBox.height20,
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 231, 231, 231),
-                                  shape: BoxShape.circle),
-                              child: const Icon(
-                                Icons.phone,
-                                size: 18,
-                                color: Appcolors.kgreenColor,
-                              ),
-                            ),
-                            ResponsiveSizedBox.width10,
-                            TextStyles.medium(text: '9946802969'),
-                          ],
-                        ),
-                        ResponsiveSizedBox.height20,
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 231, 231, 231),
-                                  shape: BoxShape.circle),
-                              child: const Icon(
-                                Icons.mail_outline,
-                                size: 18,
-                                color: Appcolors.kgreenColor,
-                              ),
-                            ),
-                            ResponsiveSizedBox.width10,
-                            TextStyles.medium(text: 'ribinrajop@gmail.com'),
-                          ],
-                        ),
-                        ResponsiveSizedBox.height20,
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 231, 231, 231),
-                                  shape: BoxShape.circle),
-                              child: const Icon(
-                                Icons.location_on,
-                                size: 18,
-                                color: Appcolors.kgreenColor,
-                              ),
-                            ),
-                            ResponsiveSizedBox.width10,
-                            TextStyles.medium(text: 'mysuru,karnatak,670089'),
-                          ],
-                        ),
-                        ResponsiveSizedBox.height(15)
                       ],
                     ),
                   )
@@ -219,18 +158,24 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
               ],
             ),
             const Spacer(),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: .5,
+            InkWell(
+              onTap: () {
+                navigateToMainPage(context, 3);
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: .5,
+                      color: Appcolors.ksecondrycolor,
+                    ),
+                    borderRadius: BorderRadius.circular(5)),
+                child: TextStyles.medium(
+                    text: 'Redeem Now',
                     color: Appcolors.ksecondrycolor,
-                  ),
-                  borderRadius: BorderRadius.circular(5)),
-              child: TextStyles.medium(
-                  text: 'Redeem Now',
-                  color: Appcolors.ksecondrycolor,
-                  weight: FontWeight.bold),
+                    weight: FontWeight.bold),
+              ),
             )
           ],
         ),
@@ -346,7 +291,8 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: TextStyles.caption(text: 'dfhsudhfshfi'),
+                child: TextStyles.medium(
+                    text: 'Plumping tools', color: Appcolors.ksecondrycolor),
               )
             ],
           ),
@@ -373,14 +319,14 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
           child: Stack(
             children: [
               Container(
-                height: 150,
+                height: ResponsiveUtils.hp(27),
                 width: double.infinity,
                 color: Appcolors.kprimarycolor,
                 padding: const EdgeInsets.all(20),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'STORES & CONTACT',
                       style: TextStyle(
                         color: Colors.white,
@@ -388,29 +334,70 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 6),
-                    Divider(
-                      color: Colors.pink,
+                    const SizedBox(height: 6),
+                    const Divider(
+                      color: Appcolors.ksecondrycolor,
                       thickness: 3,
                       endIndent: 130,
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 8,
-                left: 20,
-                child: Row(
-                  children: [
-                    const Icon(Icons.calendar_today,
-                        size: 14, color: Colors.grey),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Until 31 May, 2027',
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                        fontSize: 12,
-                      ),
+                    ResponsiveSizedBox.height20,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 231, 231, 231),
+                              shape: BoxShape.circle),
+                          child: const Icon(
+                            Icons.phone,
+                            size: 12,
+                            color: Appcolors.kgreenColor,
+                          ),
+                        ),
+                        ResponsiveSizedBox.width10,
+                        TextStyles.medium(
+                            text: '9946802969', color: Appcolors.kwhiteColor),
+                      ],
+                    ),
+                    ResponsiveSizedBox.height20,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 231, 231, 231),
+                              shape: BoxShape.circle),
+                          child: const Icon(
+                            Icons.mail_outline,
+                            size: 12,
+                            color: Appcolors.kgreenColor,
+                          ),
+                        ),
+                        ResponsiveSizedBox.width10,
+                        TextStyles.medium(
+                            text: 'ribinrajop@gmail.com',
+                            color: Appcolors.kwhiteColor),
+                      ],
+                    ),
+                    ResponsiveSizedBox.height20,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 231, 231, 231),
+                              shape: BoxShape.circle),
+                          child: const Icon(
+                            Icons.location_on,
+                            size: 12,
+                            color: Appcolors.kgreenColor,
+                          ),
+                        ),
+                        ResponsiveSizedBox.width10,
+                        TextStyles.medium(
+                            text: 'mysuru,karnatak,670089',
+                            color: Appcolors.kwhiteColor),
+                      ],
                     ),
                   ],
                 ),
@@ -427,22 +414,22 @@ class PointsBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Create a paint for drawing circles
-    final Paint circlePaint = Paint()
-      ..color = Colors.white.withOpacity(0.05)
-      ..style = PaintingStyle.fill;
+    // final Paint circlePaint = Paint()
+    //   ..color = Colors.white.withOpacity(0.05)
+    //   ..style = PaintingStyle.fill;
 
     // Draw decorative circles
-    canvas.drawCircle(
-      Offset(size.width * 0.1, size.height * 0.8),
-      size.width * 0.15,
-      circlePaint,
-    );
+    // canvas.drawCircle(
+    //   Offset(size.width * 0.1, size.height * 0.8),
+    //   size.width * 0.15,
+    //   circlePaint,
+    // );
 
-    canvas.drawCircle(
-      Offset(size.width * 0.85, size.height * 0.2),
-      size.width * 0.1,
-      circlePaint,
-    );
+    // canvas.drawCircle(
+    //   Offset(size.width * 0.85, size.height * 0.2),
+    //   size.width * 0.1,
+    //   circlePaint,
+    // );
 
     // Draw dotted pattern
     final Paint dotPaint = Paint()
