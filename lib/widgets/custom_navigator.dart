@@ -1,4 +1,4 @@
-import 'package:e_naam/presentation/blocs/bloc/bottom_navigation_bloc.dart';
+import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

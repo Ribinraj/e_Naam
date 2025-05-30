@@ -9,7 +9,6 @@ import 'package:e_naam/presentation/screens/otp_verificationpage/otp_verificatio
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
 
-
 import 'package:flutter/material.dart';
 
 class ScreenRegisterPage extends StatefulWidget {
@@ -21,7 +20,7 @@ class ScreenRegisterPage extends StatefulWidget {
 
 class _ScreenHistoryPageState extends State<ScreenRegisterPage> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController adressController = TextEditingController();
+  final TextEditingController mobilenumberController = TextEditingController();
   String? selectedUserType;
   @override
   Widget build(BuildContext context) {
@@ -66,15 +65,14 @@ class _ScreenHistoryPageState extends State<ScreenRegisterPage> {
                   ),
                   ResponsiveSizedBox.height10,
                   CustomEditingTextfield(
-                      controller: adressController,
-                      hinttext: 'Enter full name'),
+                      controller: nameController, hinttext: 'Enter full name'),
                   ResponsiveSizedBox.height20,
                   TextStyles.medium(
                     text: 'Enter your adress',
                   ),
                   ResponsiveSizedBox.height10,
                   CustomEditingTextfield(
-                      controller: adressController,
+                      controller: mobilenumberController,
                       hinttext: 'Enter mobilenumber'),
                   ResponsiveSizedBox.height20,
                   TextStyles.medium(
@@ -88,6 +86,7 @@ class _ScreenHistoryPageState extends State<ScreenRegisterPage> {
                     onChanged: (value) {
                       setState(() {
                         selectedUserType = value;
+                        debugPrint(selectedUserType);
                       });
                     },
                     validator: (value) =>

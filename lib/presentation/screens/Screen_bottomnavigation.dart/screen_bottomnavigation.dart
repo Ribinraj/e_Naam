@@ -39,7 +39,7 @@
 //     );
 //   }
 // }
-import 'package:e_naam/presentation/blocs/bloc/bottom_navigation_bloc.dart';
+import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/widgets/custom_navbar.dart';
 
 import 'package:e_naam/presentation/screens/screen_historypage/screen_historypage.dart';

@@ -247,7 +247,7 @@
 // }
 
 import 'package:e_naam/core/colors.dart';
-import 'package:e_naam/presentation/blocs/bloc/bottom_navigation_bloc.dart';
+import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solar_icons/solar_icons.dart';
