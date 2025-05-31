@@ -1,13 +1,20 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/data/update_profilemodel.dart';
+import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
 import 'package:e_naam/presentation/screens/edit_profile/widgets/custom_dropdownbutton.dart';
 import 'package:e_naam/presentation/screens/edit_profile/widgets/edit_textfield.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
+import 'package:e_naam/widgets/loading_button.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ScreenEditProfilepage extends StatefulWidget {
-  const ScreenEditProfilepage({super.key});
+  final UpdateProfilemodel profile;
+  const ScreenEditProfilepage({super.key, required this.profile});
 
   @override
   State<ScreenEditProfilepage> createState() => _ScreenEditProfilepageState();
@@ -23,6 +30,19 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
   final TextEditingController adressController = TextEditingController();
   final TextEditingController gstController = TextEditingController();
   String? selectedUserType;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fullnameController.text = widget.profile.userFullName ?? '';
+    // selectedUserType = widget.profile.userOccupation ?? '';
+    upiAdressController.text = widget.profile.userUPIAddress ?? '';
+    pancardnumberController.text = widget.profile.panCardID ?? '';
+    adharcardnumberController.text = widget.profile.adharCardID ?? '';
+    adressController.text = widget.profile.address ?? '';
+    gstController.text = widget.profile.gst ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,13 +67,6 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
               hinttext: 'Full Name',
             ),
             ResponsiveSizedBox.height20,
-            TextStyles.caption(text: 'Mobilenumber'),
-            ResponsiveSizedBox.height10,
-            CustomEditingTextfield(
-              controller: mobilenumberController,
-              hinttext: 'Mobilenmber',
-            ),
-            ResponsiveSizedBox.height50,
             TextStyles.caption(text: 'User Occupation'),
             ResponsiveSizedBox.height10,
             CustomDropdownField(
@@ -68,7 +81,7 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
               validator: (value) =>
                   value == null ? 'Please select a user type' : null,
             ),
-            ResponsiveSizedBox.height20,
+            ResponsiveSizedBox.height50,
             TextStyles.caption(text: 'UPI adress'),
             ResponsiveSizedBox.height10,
             CustomEditingTextfield(
@@ -104,8 +117,44 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
               hinttext: 'GST number',
             ),
             ResponsiveSizedBox.height50,
-            CustomSqureButton(
-                ontap: () {}, text: 'Update', color: Appcolors.kgreenColor)
+            BlocConsumer<UpdateProfileBloc, UpdateProfileState>(
+              listener: (context, state) {
+                if (state is UpdateProfileSuccessState) {
+                  navigateToMainPage(context, 4);
+                } else if (state is UpdateProfileErrorState) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(state.message),
+                  ));
+                }
+              },
+              builder: (context, state) {
+                if (state is UpdateProfileLoadingState) {
+                  return const CustomSqureLoadingButton(
+                      loading: SpinKitCircle(
+                        size: 15,
+                        color: Appcolors.kgreenColor,
+                      ),
+                      color: Appcolors.kwhiteColor);
+                }
+                return CustomSqureButton(
+                    ontap: () {
+                      context.read<UpdateProfileBloc>().add(
+                          UpdateProfileButtonclickEvent(
+                              profile: UpdateProfilemodel(
+                                  userFullName: fullnameController.text,
+                                  userOccupation: selectedUserType,
+                                  userUPIAddress: upiAdressController.text,
+                                  panCardID: pancardnumberController.text,
+                                  adharCardID: adharcardnumberController.text,
+                                  address: adressController.text,
+                                  gst: gstController.text,
+                                  pushToken: '423743240324')));
+                    },
+                    text: 'Update',
+                    color: Appcolors.kgreenColor);
+              },
+            ),
+            ResponsiveSizedBox.height20
           ],
         ),
       ),

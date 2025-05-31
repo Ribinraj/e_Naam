@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
@@ -85,18 +87,25 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                     BlocConsumer<SendOtpBloc, SendOtpState>(
                       listener: (context, state) {
                         if (state is SendOtpSuccessState) {
+                          log('usertype${state.customerType}');
                           if (state.customerType == 'NEW') {
                             CustomNavigation.pushReplaceWithTransition(
-                                context, ScreenRegisterPage());
+                                context,
+                                ScreenRegisterPage(
+                                    customerId: state.userId,
+                                    mobileNumber: numberController.text));
                           } else {
                             CustomNavigation.pushReplaceWithTransition(
-                                context, OtpVerificationPage());
+                                context,
+                                OtpVerificationPage(
+                                    customerId: state.userId,
+                                    mobileNumber: numberController.text));
                           }
                         } else if (state is SendOtpErrorState) {
-                          SnackBar(
-                              content: Center(
-                            child: Text(state.message),
-                          ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(state.message),
+                              ));
                         }
                       },
                       builder: (context, state) {
@@ -115,6 +124,11 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                               context.read<SendOtpBloc>().add(
                                   SendOtpButtonClickEvent(
                                       mobileNumber: numberController.text));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Please fill all fields')),
+                              );
                             }
                           },
                           text: 'Continue',
@@ -125,19 +139,6 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                   ],
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     InkWell(
-              //       onTap: () {
-              //         CustomNavigation.pushWithTransition(
-              //             context, ScreenRegisterPage());
-              //       },
-              //       child: TextStyles.caption(
-              //           text: 'Register', color: Appcolors.kgreenColor),
-              //     ),
-              //   ],
-              // )
             ],
           ),
         ),

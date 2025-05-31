@@ -10,7 +10,7 @@ part 'verify_otp_state.dart';
 
 class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
   final Loginrepo repository;
-  VerifyOtpBloc(this.repository) : super(VerifyOtpInitial()) {
+  VerifyOtpBloc({required this.repository}) : super(VerifyOtpInitial()) {
     on<VerifyOtpEvent>((event, emit) {
       // TODO: implement event handler
     });

@@ -2,10 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/customdrawer.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ScreenHomepage extends StatefulWidget {
   const ScreenHomepage({super.key});
@@ -16,6 +20,13 @@ class ScreenHomepage extends StatefulWidget {
 
 class _ScreenHomepageState extends State<ScreenHomepage> {
   bool? isNew;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<FetchBannersBloc>().add(FetchBannersInitialEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,38 +195,66 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
   }
 
   Widget _buildFlyerOffersSection() {
-    // Sample data for carousel items
-    final List<Map<String, dynamic>> offerItems = List.generate(
-      10,
-      (index) => {
-        'image':
-            "https://c8.alamy.com/comp/F6NBD8/various-type-of-plumbing-tools-against-white-background-F6NBD8.jpg",
-        'expiryText': index % 2 == 0 ? "Expires Today" : "Expires in 3 days",
-        'isNew': index % 3 == 0,
-      },
-    );
+    // // Sample data for carousel items
+    // final List<Map<String, dynamic>> offerItems = List.generate(
+    //   10,
+    //   (index) => {
+    //     'image':
+    //         "https://c8.alamy.com/comp/F6NBD8/various-type-of-plumbing-tools-against-white-background-F6NBD8.jpg",
+    //     'expiryText': index % 2 == 0 ? "Expires Today" : "Expires in 3 days",
+    //     'isNew': index % 3 == 0,
+    //   },
+    // );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CarouselSlider.builder(
-          itemCount: offerItems.length,
-          options: CarouselOptions(
-            height: 190,
-            viewportFraction: 1.0,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 3),
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: false,
-            scrollDirection: Axis.horizontal,
-          ),
-          itemBuilder: (context, index, realIndex) {
-            return _buildOfferCard(
-              image: offerItems[index]['image'],
-              expiryText: offerItems[index]['expiryText'],
-              isNew: offerItems[index]['isNew'],
-            );
+        BlocBuilder<FetchBannersBloc, FetchBannersState>(
+          builder: (context, state) {
+            if (state is FetchBannersLoadingState) {
+              return Shimmer.fromColors(
+                baseColor: Appcolors.kprimarycolor.withOpacity(.2),
+                highlightColor: const Color.fromARGB(255, 255, 248, 244),
+                period: const Duration(seconds: 3),
+                enabled: true,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Appcolors.ksecondrycolor,
+                  ),
+                  height: ResponsiveUtils.hp(23),
+                  width: double.infinity,
+                ),
+              );
+            }
+            if (state is FetchBannersSuccessState) {
+              return CarouselSlider.builder(
+                itemCount: state.banners.length,
+                options: CarouselOptions(
+                  height: 190,
+                  viewportFraction: 1.0,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: false,
+                  scrollDirection: Axis.horizontal,
+                ),
+                itemBuilder: (context, index, realIndex) {
+                  return _buildOfferCard(
+                    image: state.banners[index].bannerAddress,
+                    // expiryText: offerItems[index]['expiryText'],
+                    // isNew: offerItems[index]['isNew'],
+                  );
+                },
+              );
+            } else if (state is FetchBannersErrorState) {
+              return Center(
+                child: Text(state.message),
+              );
+            } else {
+              return SizedBox.shrink();
+            }
           },
         ),
       ],
@@ -224,8 +263,8 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
 
   Widget _buildOfferCard({
     required String image,
-    required String expiryText,
-    required bool isNew,
+    // required String expiryText,
+    // required bool isNew,
   }) {
     // Get screen width to make the card full width
     return Builder(
@@ -266,27 +305,27 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                       ),
                     ),
                   ),
-                  if (isNew)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'NEW',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  // if (isNew)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'NEW',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
               Padding(

@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 class CustomSqureButton extends StatelessWidget {
   const CustomSqureButton({
     super.key,
-    required this.ontap,
+     this.ontap,
     required this.text,
     required this.color,
   });
-  final void Function() ontap;
+  final void Function()? ontap;
   final String text;
   final Color color;
   @override

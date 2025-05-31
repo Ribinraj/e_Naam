@@ -1,16 +1,27 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/data/verify_otpmodel.dart';
+import 'package:e_naam/presentation/blocs/resend_otp/resend_otp_bloc.dart';
+import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
+import 'package:e_naam/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpVerificationPage extends StatefulWidget {
-  const OtpVerificationPage({super.key});
+  final String customerId;
+
+  final String mobileNumber;
+  const OtpVerificationPage(
+      {super.key, required this.customerId, required this.mobileNumber});
 
   @override
   State<OtpVerificationPage> createState() => _OtpVerificationPageState();
@@ -31,13 +42,27 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
   @override
   void dispose() {
-    _otpController.dispose();
+    // Cancel timer first
     _timer?.cancel();
+    _timer = null;
+
+    // Safe disposal of controller
+    try {
+      _otpController.dispose();
+    } catch (e) {
+      // Controller already disposed, ignore
+    }
+
     super.dispose();
   }
 
   void _startResendTimer() {
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       setState(() {
         if (_resendTimer > 0) {
           _resendTimer--;
@@ -49,67 +74,35 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
   }
 
   void _resetResendTimer() {
+    if (!mounted) return;
     setState(() {
       _resendTimer = 30;
     });
     _startResendTimer();
   }
 
-  // void _verifyOtp() {
-  //   setState(() {
-  //     _isVerifying = true;
-  //   });
+  void _resendOtp() {
+    if (!mounted) return;
 
-  //   // Simulate verification process
-  //   Future.delayed(const Duration(seconds: 2), () {
-  //     if (_currentOtp.length == 6) {
-  //       // For demo purpose, any 6-digit code is considered valid
-  //       _showSuccessDialog();
-  //     } else {
-  //       _showErrorDialog();
-  //     }
+    // Clear OTP field safely
+    if (_otpController.hasListeners) {
+      _otpController.clear();
+    }
 
-  //     setState(() {
-  //       _isVerifying = false;
-  //     });
-  //   });
-  // }
+    setState(() {
+      _currentOtp = '';
+      _isButtonEnabled = false;
+    });
 
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text('Success'),
-        content: const Text('OTP verification successful!'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigate to the next screen or perform required action
-            },
-            child: const Text('Continue'),
-          ),
-        ],
-      ),
-    );
+    // Reset and restart the timer
+    _resetResendTimer();
+
+    // Call resend OTP API
+    context
+        .read<ResendOtpBloc>()
+        .add(ResendOtpClickEvent(userId: widget.customerId));
   }
 
-  void _showErrorDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: const Text('Invalid OTP. Please try again.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +145,8 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   ),
                   ResponsiveSizedBox.height10,
                   TextStyles.body(
-                      text: 'We have sent a verification code to 9946802969',
+                      text:
+                          'We have sent a verification code to ${widget.mobileNumber}',
                       weight: FontWeight.w500),
                   ResponsiveSizedBox.height20,
                   PinCodeTextField(
@@ -184,12 +178,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                     ],
-                    onCompleted: (v) {
+                    onCompleted: (value) {
+                      if (!mounted) return;
                       setState(() {
                         _isButtonEnabled = true;
+                        _currentOtp = value;
                       });
                     },
                     onChanged: (value) {
+                      if (!mounted) return;
                       setState(() {
                         _currentOtp = value;
                         _isButtonEnabled = value.length == 6;
@@ -200,27 +197,58 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   SizedBox(
                     width: double.infinity,
                     height: 50,
-                    child: ElevatedButton(
-                      onPressed: _isButtonEnabled
-                          ? () {
-                              CustomNavigation.pushWithTransition(
-                                  context, const ScreenMainPage());
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Appcolors.kgreenColor,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
-                        'Verify',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                    child: BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
+                      listener: (context, state) {
+                        if (state is VerifyOtpSuccessState) {
+                          log('success');
+                          CustomNavigation.pushReplaceWithTransition(
+                              context, ScreenMainPage());
+                        } else if (state is VerifyOtpErrorState) {
+                          SnackBar(content: Text(state.message));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is VerifyOtpLoadingState) {
+                          return CustomSqureLoadingButton(
+                              loading: SpinKitCircle(
+                                size: 15,
+                                color: Appcolors.kgreenColor,
+                              ),
+                              color: Appcolors.kwhiteColor);
+                        }
+                        return ElevatedButton(
+                          onPressed: _isButtonEnabled
+                              ? () {
+                                  if (_currentOtp.length == 6) {
+                                    context.read<VerifyOtpBloc>().add(
+                                        VerifyOtpButtonclickEvent(
+                                            user: VerifyOtpmodel(
+                                                userId: widget.customerId,
+                                                userLoginOTP: _currentOtp,
+                                                pushToken: 'djoofefw0')));
+                                  } else {
+                                    SnackBar(
+                                      content: Text('Please enter valid OTP'),
+                                    );
+                                  }
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Appcolors.kgreenColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: const Text(
+                            'Verify',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -234,31 +262,32 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                           color: Colors.grey.shade700,
                         ),
                       ),
-                      TextButton(
-                        onPressed: _resendTimer == 0
-                            ? () {
-                                // Resend OTP logic would go here
-                                _resetResendTimer();
+                      BlocConsumer<ResendOtpBloc, ResendOtpState>(
+                        listener: (context, state) {
+                          if (state is ResendOtpSuccessState) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('OTP has been resent!'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-                            : null,
-                        child: Text(
-                          _resendTimer > 0
-                              ? 'Resend in $_resendTimer seconds'
-                              : 'Resend',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: _resendTimer > 0
-                                ? Colors.grey.shade500
-                                : Colors.blue.shade700,
-                          ),
-                        ),
+                                SnackBar(
+                                    content: Text("OTP sent successfully")),
+                              );
+                          } else if (state is ResendOtpErrorState) {
+                            SnackBar(content: Text(state.message));
+                          }
+                        },
+                        builder: (context, state) {
+                          return TextButton(
+                            onPressed:
+                                _resendTimer == 0 ? () => _resendOtp() : null,
+                            child: TextStyles.body(
+                              text: _resendTimer > 0
+                                  ? 'Resend in $_resendTimer seconds'
+                                  : 'Resend',
+                              weight: FontWeight.w600,
+                              color: _resendTimer > 0
+                                  ? Colors.grey.shade500
+                                  : Appcolors.kredColor,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),

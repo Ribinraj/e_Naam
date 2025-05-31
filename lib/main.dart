@@ -1,8 +1,17 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/domain/repositories/loginrepo.dart';
+import 'package:e_naam/domain/repositories/productrepo.dart';
+import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
+import 'package:e_naam/presentation/blocs/qr_code_bloc/qr_code_bloc.dart';
+
+import 'package:e_naam/presentation/blocs/resend_otp/resend_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
+import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
+import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
+import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ResponsiveUtils().init(context);
     final loginrepo = Loginrepo();
+    final productrepo = Productrepo();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -27,6 +37,24 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SendOtpBloc(repository: loginrepo),
+        ),
+        BlocProvider(
+          create: (context) => VerifyOtpBloc(repository: loginrepo),
+        ),
+        BlocProvider(
+          create: (context) => ResendOtpBloc(repository: loginrepo),
+        ),
+        BlocProvider(
+          create: (context) => FetchBannersBloc(repository: productrepo),
+        ),
+           BlocProvider(
+          create: (context) => FetchProfileBloc(repository:loginrepo),
+        ),
+            BlocProvider(
+          create: (context) => UpdateProfileBloc(repository:loginrepo),
+        ),
+               BlocProvider(
+          create: (context) =>QrCodeBloc(repository:loginrepo),
         ),
       ],
       child: MaterialApp(
@@ -36,7 +64,8 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
             scaffoldBackgroundColor: Appcolors.kwhiteColor),
-        home: const ScreenLoginpage(),
+       // home: ScreenLoginpage(),
+        home: ScreenMainPage(),
       ),
     );
   }
