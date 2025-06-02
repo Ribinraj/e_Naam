@@ -228,9 +228,11 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 3),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
-                              'R',
+                              user.userFullName.isNotEmpty
+                                  ? user.userFullName[0]
+                                  : "E",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
@@ -247,7 +249,8 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                         const SizedBox(height: 5),
                         // Phone Number
                         TextStyles.body(
-                            text: user.userMobileNumber, weight: FontWeight.w400),
+                            text: user.userMobileNumber,
+                            weight: FontWeight.w400),
                         const SizedBox(height: 5),
                         // Occupation
                         TextStyles.body(
@@ -259,7 +262,17 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                         GestureDetector(
                           onTap: () {
                             CustomNavigation.pushWithTransition(
-                                context,  ScreenEditProfilepage(profile:UpdateProfilemodel(userFullName: user.userFullName,userOccupation: user.userOccupation,userUPIAddress: '6575',panCardID: user.panCardID,adharCardID: user.adharCardID,address: user.address,gst: user.gst),));
+                                context,
+                                ScreenEditProfilepage(
+                                  profile: UpdateProfilemodel(
+                                      userFullName: user.userFullName,
+                                      userOccupation: user.userOccupation,
+                                      userUPIAddress: '6575',
+                                      panCardID: user.panCardID,
+                                      adharCardID: user.adharCardID,
+                                      address: user.address,
+                                      gst: user.gst),
+                                ));
                           },
                           child: Container(
                             width: 300,
@@ -309,8 +322,7 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                                 _buildInfoTile(
                                   icon: Icons.home_outlined,
                                   title: 'Address',
-                                  value:
-                                      user.address,
+                                  value: user.address,
                                 ),
                                 _buildInfoTile(
                                   icon: Icons.fingerprint_outlined,
@@ -320,7 +332,7 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                                 _buildInfoTile(
                                   icon: Icons.credit_card_outlined,
                                   title: 'PAN Card',
-                                  value:user.panCardID,
+                                  value: user.panCardID,
                                 ),
                               ],
                             ),

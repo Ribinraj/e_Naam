@@ -1,6 +1,7 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/data/productmodel.dart';
 import 'package:e_naam/presentation/screens/Redeem_confirmation/redeem_confirmationpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_networkimage.dart';
@@ -8,14 +9,15 @@ import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailpage extends StatefulWidget {
-  const ProductDetailpage({super.key});
+  final ProductModel product;
+  const ProductDetailpage({super.key, required this.product});
 
   @override
   State<ProductDetailpage> createState() => _ScreenHistoryPageState();
 }
 
 class _ScreenHistoryPageState extends State<ProductDetailpage> {
-  final TextEditingController pointController = TextEditingController();
+  //final TextEditingController pointController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +82,10 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                               color: Appcolors.kprimarycolor,
                             ),
                           ),
-                          child: const Hero(
-                            tag: '1',
+                          child: Hero(
+                            tag: widget.product.productId,
                             child: ImageWithFallback(
-                              imageUrl:
-                                  'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
+                              imageUrl: widget.product.productPicture,
                               width: double.infinity,
                               height: double.infinity,
                               fit: BoxFit.contain,
@@ -101,13 +102,13 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextStyles.body(
-                          text: 'Mobile Phone',
+                          text: widget.product.productName,
                           weight: FontWeight.bold,
                           color: Appcolors.kgreyColor,
                         ),
                         ResponsiveSizedBox.height5,
                         TextStyles.headline(
-                          text: '2399 pts',
+                          text: '${widget.product.redeemPoints} pts',
                           weight: FontWeight.bold,
                         ),
                         ResponsiveSizedBox.height5,
@@ -118,7 +119,7 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
                         ),
                         ResponsiveSizedBox.height5,
                         Text(
-                          'Product details encompass all the specific information about a product, including its name, size, color, materials, features, and price. This information helps customers understand the product and make informed purchasing decisions. Product details can be found on packaging, product inserts Product details encompass all the specific information about a product, including its name, size, color, materials, features, and price. This information helps customers understand the product and make informed purchasing decisions. Product details can be found on pa',
+                          widget.product.description,
                           style: TextStyle(
                             color: Appcolors.kblackColor,
                             fontSize: ResponsiveUtils.wp(3),
@@ -140,7 +141,7 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
             child: CustomSqureButton(
               ontap: () {
                 CustomNavigation.pushWithTransition(
-                    context, OrderConfirmationPage());
+                    context, OrderConfirmationPage(product: widget.product,));
               },
               text: 'Redeem',
               color: Appcolors.kgreenColor,

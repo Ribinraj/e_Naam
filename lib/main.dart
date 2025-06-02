@@ -2,10 +2,13 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/domain/repositories/loginrepo.dart';
 import 'package:e_naam/domain/repositories/productrepo.dart';
+import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
 import 'package:e_naam/presentation/blocs/qr_code_bloc/qr_code_bloc.dart';
+import 'package:e_naam/presentation/blocs/redeem_request_bloc/redeem_request_bloc.dart';
 
 import 'package:e_naam/presentation/blocs/resend_otp/resend_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
@@ -14,6 +17,7 @@ import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
+import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,6 +60,15 @@ class MyApp extends StatelessWidget {
                BlocProvider(
           create: (context) =>QrCodeBloc(repository:loginrepo),
         ),
+                BlocProvider(
+          create: (context) =>FetchCategoriesBloc(repository:productrepo),
+        ),
+               BlocProvider(
+          create: (context) =>FetchProductBloc(repository:productrepo),
+        ),
+                  BlocProvider(
+          create: (context) =>RedeemRequestBloc(repository:productrepo),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -65,7 +78,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             scaffoldBackgroundColor: Appcolors.kwhiteColor),
        // home: ScreenLoginpage(),
-        home: ScreenMainPage(),
+        home: SplashScreen(),
       ),
     );
   }

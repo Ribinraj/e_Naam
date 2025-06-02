@@ -7,5 +7,7 @@ class Endpoints {
   static const fetchprofile = 'login/profile';
   static const updateprofile = 'login/updateprofile';
   static const qrcodescanner = 'login/scancode';
-  
+  static const categories = 'masters/categories';
+  static const products = 'masters/products';
+  static const redeemrequest = 'login/redeemrequest';
 }
