@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015913903438",
+    "project_id": "enaam-a4037",
+    "storage_bucket": "enaam-a4037.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015913903438:android:40686945f15b1608c01a1f",
+        "android_client_info": {
+          "package_name": "com.crisant.enaam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB41_stsUeyMZshvatvfjOXYSxjH7YTzic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
