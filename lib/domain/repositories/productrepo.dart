@@ -10,7 +10,6 @@ import 'package:e_naam/data/redeem_requestmodel.dart';
 import 'package:e_naam/widgets/custom_sharedpreferences.dart';
 import 'package:flutter/material.dart';
 
-
 class ApiResponse<T> {
   final T? data;
   final String message;
@@ -76,7 +75,7 @@ class Productrepo {
 /////////////---------------fetchcategory-------------/////////////////
   Future<ApiResponse<List<CategoryModel>>> fetchcategories() async {
     try {
-       final token = await getUserToken();
+      final token = await getUserToken();
       Response response = await dio.get(
         Endpoints.categories,
         options: Options(headers: {'Authorization': token}),
@@ -113,17 +112,16 @@ class Productrepo {
       );
     }
   }
+
   //////////-------------fetchproduct-----------------------//////////////////////
   Future<ApiResponse<List<ProductModel>>> fetchproducts(
       {required String categoryId}) async {
-
     try {
       final token = await getUserToken();
       log(Endpoints.products);
       Response response = await dio.get(
         Endpoints.products,
-
-         data: {'categoryId': categoryId},
+        data: {'categoryId': categoryId},
         queryParameters: {'categoryId': categoryId},
         options: Options(headers: {'Authorization': token}),
       );
@@ -165,17 +163,19 @@ class Productrepo {
       );
     }
   }
+
   //////////-------------RedeemRequest-----------------///////////////////
-    Future<ApiResponse> redeemrequest(
+  Future<ApiResponse> redeemrequest(
       {required RedeemRequestModel redeemdata}) async {
     try {
       final token = await getUserToken();
 
       Response response = await dio.post(Endpoints.redeemrequest,
-          options: Options(headers: {'Authorization': token}), data: redeemdata);
+          options: Options(headers: {'Authorization': token}),
+          data: redeemdata);
 
       final responseData = response.data;
-
+      log('response${responseData['status']}');
       if (!responseData["error"] && responseData["status"] == 200) {
         return ApiResponse(
           data: null,
@@ -211,6 +211,7 @@ class Productrepo {
       );
     }
   }
+
   void dispose() {
     dio.close();
   }

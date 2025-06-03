@@ -515,12 +515,17 @@ import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/data/productmodel.dart';
 import 'package:e_naam/data/redeem_requestmodel.dart';
 import 'package:e_naam/presentation/blocs/redeem_request_bloc/redeem_request_bloc.dart';
+import 'package:e_naam/presentation/screens/Redeem_confirmation/widgets/orderfailed_alertbox.dart';
+import 'package:e_naam/presentation/screens/Screen_thankyoupage/screen_thankyoupage.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 
 import 'package:e_naam/widgets/custom_squrebutton.dart';
+import 'package:e_naam/widgets/loading_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:e_naam/core/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class OrderConfirmationPage extends StatefulWidget {
   final ProductModel product;
@@ -532,14 +537,14 @@ class OrderConfirmationPage extends StatefulWidget {
 
 class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // Controllers for form fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController postalCodeController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  
+
   String? selectedState;
   bool isStateDropdownOpen = false;
   final LayerLink _layerLink = LayerLink();
@@ -705,7 +710,7 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Name Field
                 TextFormField(
                   controller: nameController,
@@ -713,13 +718,17 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   style: const TextStyle(fontSize: 14, color: Colors.black),
                   decoration: InputDecoration(
                     hintText: "Recipient's name",
-                    hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    hintStyle:
+                        TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: 2),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: 2),
                     ),
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: .4),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: .4),
                     ),
                     errorBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1),
@@ -736,7 +745,7 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   },
                 ),
                 const SizedBox(height: 15),
-                
+
                 // Address Field
                 TextFormField(
                   controller: addressController,
@@ -744,13 +753,17 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   style: const TextStyle(fontSize: 14, color: Colors.black),
                   decoration: InputDecoration(
                     hintText: "Address",
-                    hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    hintStyle:
+                        TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: 2),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: 2),
                     ),
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: .4),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: .4),
                     ),
                     errorBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1),
@@ -767,7 +780,7 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   },
                 ),
                 const SizedBox(height: 15),
-                
+
                 // City Field
                 TextFormField(
                   controller: cityController,
@@ -775,13 +788,17 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   style: const TextStyle(fontSize: 14, color: Colors.black),
                   decoration: InputDecoration(
                     hintText: "City",
-                    hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    hintStyle:
+                        TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: 2),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: 2),
                     ),
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: .4),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: .4),
                     ),
                     errorBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1),
@@ -798,7 +815,7 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   },
                 ),
                 const SizedBox(height: 15),
-                
+
                 // State Dropdown
                 CompositedTransformTarget(
                   link: _layerLink,
@@ -819,7 +836,8 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                               onTap: _toggleDropdown,
                               child: Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 8),
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom: BorderSide(
@@ -828,12 +846,16 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                                           : isStateDropdownOpen
                                               ? Appcolors.kprimarycolor
                                               : Appcolors.kprimarycolor,
-                                      width: isStateDropdownOpen || state.hasError ? 2 : .4,
+                                      width:
+                                          isStateDropdownOpen || state.hasError
+                                              ? 2
+                                              : .4,
                                     ),
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       selectedState ?? "Select State",
@@ -848,7 +870,9 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                                       isStateDropdownOpen
                                           ? Icons.arrow_drop_up
                                           : Icons.arrow_drop_down,
-                                      color: state.hasError ? Colors.red : Appcolors.kprimarycolor,
+                                      color: state.hasError
+                                          ? Colors.red
+                                          : Appcolors.kprimarycolor,
                                     ),
                                   ],
                                 ),
@@ -859,7 +883,8 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                                 padding: const EdgeInsets.only(left: 8, top: 4),
                                 child: Text(
                                   state.errorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
                           ],
@@ -869,7 +894,7 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                
+
                 // Postal Code Field
                 TextFormField(
                   controller: postalCodeController,
@@ -878,13 +903,17 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Postal code",
-                    hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    hintStyle:
+                        TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: 2),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: 2),
                     ),
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: .4),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: .4),
                     ),
                     errorBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1),
@@ -904,7 +933,7 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   },
                 ),
                 const SizedBox(height: 15),
-                
+
                 // Phone Field
                 TextFormField(
                   controller: phoneController,
@@ -913,13 +942,17 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: "Phone number",
-                    hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    hintStyle:
+                        TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: 2),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: 2),
                     ),
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Appcolors.kprimarycolor, width: .4),
+                      borderSide:
+                          BorderSide(color: Appcolors.kprimarycolor, width: .4),
                     ),
                     errorBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1),
@@ -938,29 +971,53 @@ class _OrderConfirmationPageState extends State<OrderConfirmationPage> {
                     return null;
                   },
                 ),
-                
+
                 ResponsiveSizedBox.height50,
-                
+
                 // Redeem Button
                 SizedBox(
                   width: double.infinity,
-                  child: CustomSqureButton(
-                    color: Appcolors.kgreenColor,
-                    text: 'Redeem Now',
-                    ontap: () {
-                      if (_formKey.currentState!.validate()) {
-                        // Form is valid, proceed with order submission
-                        context.read<RedeemRequestBloc>().add(
-                            RedeeRequestButtonClickEvent(
-                                request: RedeemRequestModel(
-                                    productId: widget.product.productId,
-                                    recipientName: nameController.text.trim(),
-                                    deliveryAddress: addressController.text.trim(),
-                                    deliveryCity: cityController.text.trim(),
-                                    deliveryState: selectedState!,
-                                    deliveryCountry: "India",
-                                    deliveryPinCode: postalCodeController.text.trim())));
+                  child: BlocConsumer<RedeemRequestBloc, RedeemRequestState>(
+                    listener: (context, state) {
+                      if (state is RedeemRequestSuccessState) {
+                        CustomNavigation.pushReplaceWithTransition(
+                            context, ThankYouPage());
+                      } else if (state is RedeemRequestErrorState) {
+                        showOrderFailedDialog(context, state.message);
                       }
+                    },
+                    builder: (context, state) {
+                      if (state is RedeemRequestLoadingState) {
+                           return const CustomSqureLoadingButton(
+                              loading: SpinKitCircle(
+                                size: 15,
+                                color: Appcolors.kgreenColor,
+                              ),
+                              color: Appcolors.kwhiteColor);
+                      }
+                      return CustomSqureButton(
+                        color: Appcolors.kgreenColor,
+                        text: 'Redeem Now',
+                        ontap: () {
+                          if (_formKey.currentState!.validate()) {
+                            // Form is valid, proceed with order submission
+                            context.read<RedeemRequestBloc>().add(
+                                RedeeRequestButtonClickEvent(
+                                    request: RedeemRequestModel(
+                                        productId: widget.product.productId,
+                                        recipientName:
+                                            nameController.text.trim(),
+                                        deliveryAddress:
+                                            addressController.text.trim(),
+                                        deliveryCity:
+                                            cityController.text.trim(),
+                                        deliveryState: selectedState!,
+                                        deliveryCountry: "India",
+                                        deliveryPinCode:
+                                            postalCodeController.text.trim())));
+                          }
+                        },
+                      );
                     },
                   ),
                 ),

@@ -2,13 +2,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/data/profile_model.dart';
+import 'package:e_naam/data/update_profilemodel.dart';
 import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
+import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/customdrawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 class ScreenHomepage extends StatefulWidget {
@@ -19,14 +23,193 @@ class ScreenHomepage extends StatefulWidget {
 }
 
 class _ScreenHomepageState extends State<ScreenHomepage> {
-  bool? isNew;
+   bool? isNew;
+  bool _isAlertShown = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     context.read<FetchBannersBloc>().add(FetchBannersInitialEvent());
+    context.read<FetchProfileBloc>().add(FetchProfileInitialEvent());
   }
-
+  void _showProfileIncompleteAlert({required ProfileModel profile}) {
+    if (!_isAlertShown) {
+      _isAlertShown = true;
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevents dismissing by tapping outside
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false, // Prevents back button dismissal
+            child:AlertDialog(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+  ),
+  elevation: 10,
+  backgroundColor: Colors.white,
+  contentPadding: EdgeInsets.zero,
+  content: Container(
+    padding: const EdgeInsets.all(24),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.blue.shade50,
+          Colors.white,
+          Colors.orange.shade50,
+        ],
+      ),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Icon Section
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Colors.orange.shade400,
+                Colors.deepOrange.shade500,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.orange.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.person_outline_rounded,
+            size: 40,
+            color: Colors.white,
+          ),
+        ),
+        
+        const SizedBox(height: 20),
+        
+        // Title
+        Text(
+          'Profile Incomplete',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey.shade800,
+            letterSpacing: 0.5,
+          ),
+        ),
+        
+        const SizedBox(height: 12),
+        
+        // Content
+        Text(
+          'Your profile needs to be completed to unlock all features and continue using the app.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey.shade600,
+            height: 1.5,
+            letterSpacing: 0.2,
+          ),
+        ),
+        
+        const SizedBox(height: 30),
+        
+        // Button
+        Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue.shade600,
+                Colors.blue.shade700,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.3),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScreenEditProfilepage(
+                    profile: UpdateProfilemodel(
+                      userFullName: profile.userFullName,
+                      userOccupation: profile.userOccupation,
+                      userUPIAddress: 'dsdfs',
+                      panCardID: profile.panCardID,
+                      adharCardID: profile.adharCardID,
+                      address: profile.address,
+                      gst: profile.gst,
+                    ),
+                  ),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.edit_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Update Profile',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // Subtitle
+        Text(
+          'Complete your profile in just a few steps',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey.shade500,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    ),
+  ),
+)
+          );
+        },
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +236,26 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                           ResponsiveSizedBox.height50,
                           Row(
                             children: [
-                              TextStyles.subheadline(
-                                  text: 'Hello Ribin',
-                                  color: Appcolors.kwhiteColor),
+                              BlocConsumer<FetchProfileBloc, FetchProfileState>(
+                                listener: (context, state) {
+                                  if (state is FetchProfileSuccessState) {
+                                    if (state.profile.profileStatus== "Incomplete") {
+                                         WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        _showProfileIncompleteAlert(profile: state.profile);
+                                      });
+                                    }
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is FetchProfileSuccessState) {
+                                    return TextStyles.subheadline(
+                                        text: 'Hello ${state.profile.userFullName}',
+                                        color: Appcolors.kwhiteColor);
+                                  } else {
+                                    return SizedBox.shrink();
+                                  }
+                                },
+                              ),
                               const Spacer(),
                               Builder(builder: (context) {
                                 return GestureDetector(
