@@ -2,6 +2,7 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/domain/repositories/loginrepo.dart';
 import 'package:e_naam/domain/repositories/productrepo.dart';
+import 'package:e_naam/firebase_options.dart';
 import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
@@ -18,10 +19,15 @@ import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_
 
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
 import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 
