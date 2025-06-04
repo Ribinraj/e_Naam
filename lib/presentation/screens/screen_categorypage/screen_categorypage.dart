@@ -1,12 +1,28 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/main.dart';
+import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class CategoryPage extends StatelessWidget {
+class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
+
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<FetchCategoriesBloc>().add(FetchCategoriesInitialeEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,23 +130,44 @@ class CategoryPage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: .8,
-                ),
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return CategoryCard(
-                    name: categories[index]['name'] ?? '',
-                    imageUrl: categories[index]['imageUrl'] ?? '',
-                    onTap: () {
-                 
-                      print('Tapped on ${categories[index]['name']}');
-                    },
-                  );
+              child: BlocBuilder<FetchCategoriesBloc, FetchCategoriesState>(
+                builder: (context, state) {
+                  if (state is FetchCategoriesLoadingState) {
+                    return Center(
+                      child: SpinKitCircle(
+                        size: 50,
+                        color: Appcolors.ksecondrycolor,
+                      ),
+                    );
+                  }
+                  if (state is FetchCategoriesSuccessState) {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: .8,
+                      ),
+                      itemCount: state.categories.length,
+                      itemBuilder: (context, index) {
+                        final category = state.categories[index];
+                        return CategoryCard(
+                          name:category.categoryName,
+                          imageUrl: category.categoryImage,
+                          onTap: () {
+                            print('Tapped on ${categories[index]['name']}');
+                          },
+                        );
+                      },
+                    );
+                  } else if (state is FetchCategoriesErrorState) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
                 },
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/domain/controllers/push_notificationcontroller.dart';
 import 'package:e_naam/presentation/screens/screen_homepage/widgets/logout_dialog.dart';
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
@@ -117,11 +118,12 @@ class CustomDrawer extends StatelessWidget {
                 builder: (BuildContext context) {
                   return LogoutConfirmationDialog(onLogout: () async {
                     try {
+                            await PushNotifications.instance.deleteDeviceToken();
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
                       await preferences.clear();
                       Navigator.of(context).pushAndRemoveUntil(
-  MaterialPageRoute(builder: (context) => ScreenLoginpage()),
+  MaterialPageRoute(builder: (context) => const ScreenLoginpage()),
   (Route<dynamic> route) => false,
 );
                     } catch (e) {

@@ -41,6 +41,7 @@
 // }
 import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/widgets/custom_navbar.dart';
+import 'package:e_naam/presentation/screens/screen_connectivitypage/screen_connectivitypage.dart';
 
 import 'package:e_naam/presentation/screens/screen_historypage/screen_historypage.dart';
 import 'package:e_naam/presentation/screens/screen_homepage/screen_homepage.dart';
@@ -72,13 +73,15 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
       builder: (context, state) {
-        return Scaffold(
-          body: IndexedStack(
-            index: state.currentPageIndex,
-            children: _pages,
+        return ConnectivityAwareWidget(
+          child: Scaffold(
+            body: IndexedStack(
+              index: state.currentPageIndex,
+              children: _pages,
+            ),
+            extendBody: true,
+            bottomNavigationBar: const CustomBottomNavBar(),
           ),
-          extendBody: true,
-          bottomNavigationBar: const CustomBottomNavBar(),
         );
       },
     );

@@ -6,6 +6,7 @@ import 'package:e_naam/domain/controllers/push_notificationcontroller.dart';
 import 'package:e_naam/domain/repositories/loginrepo.dart';
 import 'package:e_naam/domain/repositories/productrepo.dart';
 import 'package:e_naam/firebase_options.dart';
+import 'package:e_naam/presentation/blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_notification/fetch_notification_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
@@ -14,9 +15,11 @@ import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bl
 import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
 import 'package:e_naam/presentation/blocs/qr_code_bloc/qr_code_bloc.dart';
 import 'package:e_naam/presentation/blocs/redeem_request_bloc/redeem_request_bloc.dart';
+import 'package:e_naam/presentation/blocs/redumption_requests/redumption_requests_bloc.dart';
 
 import 'package:e_naam/presentation/blocs/resend_otp/resend_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
+import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
 import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
 
@@ -96,6 +99,15 @@ class MyApp extends StatelessWidget {
         ),
                     BlocProvider(
           create: (context) =>FetchNotificationBloc(repository:productrepo),
+        ),
+                       BlocProvider(
+          create: (context) =>TransactionsBloc(repository:productrepo),
+        ),
+                         BlocProvider(
+          create: (context) =>RedumptionRequestsBloc(repository:productrepo),
+        ),
+                            BlocProvider(
+          create: (context) =>ConnectivityBloc(),
         ),
       ],
       child: MaterialApp(

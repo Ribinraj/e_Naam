@@ -7,6 +7,7 @@ import 'package:e_naam/data/category_model.dart';
 import 'package:e_naam/data/notification_model.dart';
 import 'package:e_naam/data/productmodel.dart';
 import 'package:e_naam/data/redeem_requestmodel.dart';
+import 'package:e_naam/data/redumptionrequests_model.dart';
 import 'package:e_naam/data/transactions_model.dart';
 
 import 'package:e_naam/widgets/custom_sharedpreferences.dart';
@@ -279,14 +280,14 @@ class Productrepo {
       // log(responseData);
       if (!responseData["error"] && responseData["status"] == 200) {
    
-        final List<dynamic> notificationlist = responseData['data'];
+        final List<dynamic> transactionlist = responseData['data'];
         //log(productlist.toString());
-        List<NotificationModel> notifications = notificationlist
-            .map((notification) => NotificationModel.fromJson(notification))
+        List<TransactionsModel> transactions = transactionlist
+            .map((notification) => TransactionsModel.fromJson(notification))
             .toList();
-      log(notifications.length.toString());
+  
         return ApiResponse(
-          data: notifications,
+          data: transactions,
           message: responseData['message'] ?? 'Success',
           error: false,
           status: responseData["status"],
@@ -312,30 +313,30 @@ class Productrepo {
     }
   }
   ////////////-----------fetchredeemrequests-----------////////////////////
-  Future<ApiResponse<List<NotificationModel>>> fetchredeemrequests(
+  Future<ApiResponse<List<RedumptionrequestsModel>>> fetchredeemrequests(
       ) async {
     try {
       final token = await getUserToken();
    
       Response response = await dio.get(
-        Endpoints.notifications,
+        Endpoints.redumptionRequests,
        
         options: Options(headers: {'Authorization': token}),
       );
-      log("Response received: ${response.statusCode}");
+   
       final responseData = response.data;
       log(responseData["status"].toString());
-      // log(responseData);
+  
       if (!responseData["error"] && responseData["status"] == 200) {
    
-        final List<dynamic> notificationlist = responseData['data'];
-        //log(productlist.toString());
-        List<NotificationModel> notifications = notificationlist
-            .map((notification) => NotificationModel.fromJson(notification))
+        final List<dynamic> redeemrequestlists = responseData['data'];
+     
+        List<RedumptionrequestsModel> redeemrequest = redeemrequestlists
+            .map((redeemrequest) => RedumptionrequestsModel.fromJson(redeemrequest))
             .toList();
-      log(notifications.length.toString());
+ 
         return ApiResponse(
-          data: notifications,
+          data: redeemrequest,
           message: responseData['message'] ?? 'Success',
           error: false,
           status: responseData["status"],
