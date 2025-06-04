@@ -4,6 +4,7 @@ import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 
 import 'package:e_naam/presentation/screens/Screen_orderslist/screen_orderslistpage.dart';
 import 'package:e_naam/presentation/screens/screen_categorypage/screen_categorypage.dart';
@@ -107,22 +108,30 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                             ),
                           ),
                           // ResponsiveSizedBox.height10,
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.emoji_events,
                                 color: Colors.amber,
                                 size: 30,
                               ),
-                              SizedBox(width: 12),
-                              Text(
-                                '56',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              const SizedBox(width: 12),
+                              BlocBuilder<FetchProfileBloc, FetchProfileState>(
+                                builder: (context, state) {
+                                  if (state is FetchProfileSuccessState) {
+                                    return Text(
+                                      state.profile.userPoints,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -231,10 +240,8 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                                 width: ResponsiveUtils.wp(30),
                                 height: ResponsiveUtils.wp(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(20)
-                                 
-                                ),
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(20)),
                               ),
                             );
                           },
@@ -262,7 +269,8 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                                           categoryId: category.categoryId));
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.all(4),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 4, horizontal: 8),
                                   decoration: BoxDecoration(
                                     // Change background color based on selection
                                     color: isSelected
@@ -290,7 +298,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                                           // Optional: Add shadow for selected state
                                           boxShadow: isSelected
                                               ? [
-                                                  BoxShadow(
+                                                  const BoxShadow(
                                                     color: Colors.black26,
                                                     blurRadius: 4,
                                                     offset: Offset(0, 2),
@@ -309,7 +317,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
+                                      ResponsiveSizedBox.width10,
                                       Text(
                                         category.categoryName,
                                         style: TextStyle(
@@ -337,7 +345,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                           child: Text(state.message),
                         );
                       } else {
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       }
                     },
                   )),
@@ -354,7 +362,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
               BlocBuilder<FetchProductBloc, FetchProductState>(
                 builder: (context, state) {
                   if (state is FetchProductLoadingState) {
-                    return GridloadingShimmerWidget();
+                    return const GridloadingShimmerWidget();
                   }
                   if (state is FethchProductSuccessState) {
                     return GridView.builder(
@@ -385,7 +393,9 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                                       const Duration(milliseconds: 600),
                                   pageBuilder: (context, animation,
                                           secondaryAnimation) =>
-                                       ProductDetailpage(product:state.products[index],),
+                                      ProductDetailpage(
+                                    product: state.products[index],
+                                  ),
                                 ),
                               );
                             },
@@ -449,7 +459,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                       child: Text(state.message),
                     );
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 },
               )

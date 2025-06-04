@@ -10,4 +10,7 @@ class Endpoints {
   static const categories = 'masters/categories';
   static const products = 'masters/products';
   static const redeemrequest = 'login/redeemrequest';
+  static const notifications = 'login/notifications';
+  static const transactions = 'login/transactions';
+  static const redumptionRequests = 'login/myrequests';
 }

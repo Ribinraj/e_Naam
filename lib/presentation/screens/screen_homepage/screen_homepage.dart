@@ -7,6 +7,7 @@ import 'package:e_naam/data/update_profilemodel.dart';
 import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
+import 'package:e_naam/presentation/screens/screen_notificationpage/notificationpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/customdrawer.dart';
 
@@ -23,7 +24,7 @@ class ScreenHomepage extends StatefulWidget {
 }
 
 class _ScreenHomepageState extends State<ScreenHomepage> {
-   bool? isNew;
+  bool? isNew;
   bool _isAlertShown = false;
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
     context.read<FetchBannersBloc>().add(FetchBannersInitialEvent());
     context.read<FetchProfileBloc>().add(FetchProfileInitialEvent());
   }
+
   void _showProfileIncompleteAlert({required ProfileModel profile}) {
     if (!_isAlertShown) {
       _isAlertShown = true;
@@ -40,176 +42,176 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
         barrierDismissible: false, // Prevents dismissing by tapping outside
         builder: (BuildContext context) {
           return WillPopScope(
-            onWillPop: () async => false, // Prevents back button dismissal
-            child:AlertDialog(
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(20),
-  ),
-  elevation: 10,
-  backgroundColor: Colors.white,
-  contentPadding: EdgeInsets.zero,
-  content: Container(
-    padding: const EdgeInsets.all(24),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Colors.blue.shade50,
-          Colors.white,
-          Colors.orange.shade50,
-        ],
-      ),
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Icon Section
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Colors.orange.shade400,
-                Colors.deepOrange.shade500,
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.orange.withOpacity(0.3),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: const Icon(
-            Icons.person_outline_rounded,
-            size: 40,
-            color: Colors.white,
-          ),
-        ),
-        
-        const SizedBox(height: 20),
-        
-        // Title
-        Text(
-          'Profile Incomplete',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade800,
-            letterSpacing: 0.5,
-          ),
-        ),
-        
-        const SizedBox(height: 12),
-        
-        // Content
-        Text(
-          'Your profile needs to be completed to unlock all features and continue using the app.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey.shade600,
-            height: 1.5,
-            letterSpacing: 0.2,
-          ),
-        ),
-        
-        const SizedBox(height: 30),
-        
-        // Button
-        Container(
-          width: double.infinity,
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade600,
-                Colors.blue.shade700,
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ScreenEditProfilepage(
-                    profile: UpdateProfilemodel(
-                      userFullName: profile.userFullName,
-                      userOccupation: profile.userOccupation,
-                      userUPIAddress: 'dsdfs',
-                      panCardID: profile.panCardID,
-                      adharCardID: profile.adharCardID,
-                      address: profile.address,
-                      gst: profile.gst,
+              onWillPop: () async => false, // Prevents back button dismissal
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 10,
+                backgroundColor: Colors.white,
+                contentPadding: EdgeInsets.zero,
+                content: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.blue.shade50,
+                        Colors.white,
+                        Colors.orange.shade50,
+                      ],
                     ),
                   ),
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.edit_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Update Profile',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Icon Section
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.orange.shade400,
+                              Colors.deepOrange.shade500,
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.orange.withOpacity(0.3),
+                              blurRadius: 20,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.person_outline_rounded,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Title
+                      Text(
+                        'Profile Incomplete',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade800,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // Content
+                      Text(
+                        'Your profile needs to be completed to unlock all features and continue using the app.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey.shade600,
+                          height: 1.5,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // Button
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.blue.shade600,
+                              Colors.blue.shade700,
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.3),
+                              blurRadius: 15,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScreenEditProfilepage(
+                                  profile: UpdateProfilemodel(
+                                    userFullName: profile.userFullName,
+                                    userOccupation: profile.userOccupation,
+                                    userUPIAddress: 'dsdfs',
+                                    panCardID: profile.panCardID,
+                                    adharCardID: profile.adharCardID,
+                                    address: profile.address,
+                                    gst: profile.gst,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.edit_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Update Profile',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // Subtitle
+                      Text(
+                        'Complete your profile in just a few steps',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade500,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-        
-        const SizedBox(height: 8),
-        
-        // Subtitle
-        Text(
-          'Complete your profile in just a few steps',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey.shade500,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
-    ),
-  ),
-)
-          );
+              ));
         },
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,9 +241,12 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                               BlocConsumer<FetchProfileBloc, FetchProfileState>(
                                 listener: (context, state) {
                                   if (state is FetchProfileSuccessState) {
-                                    if (state.profile.profileStatus== "Incomplete") {
-                                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                                        _showProfileIncompleteAlert(profile: state.profile);
+                                    if (state.profile.profileStatus ==
+                                        "Incomplete") {
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        _showProfileIncompleteAlert(
+                                            profile: state.profile);
                                       });
                                     }
                                   }
@@ -249,14 +254,27 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                                 builder: (context, state) {
                                   if (state is FetchProfileSuccessState) {
                                     return TextStyles.subheadline(
-                                        text: 'Hello ${state.profile.userFullName}',
+                                        text:
+                                            'Hello ${state.profile.userFullName}',
                                         color: Appcolors.kwhiteColor);
                                   } else {
-                                    return SizedBox.shrink();
+                                    return const SizedBox.shrink();
                                   }
                                 },
                               ),
                               const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  CustomNavigation.pushWithTransition(
+                                      context, NotificationPage());
+                                },
+                                child: const Icon(
+                                  Icons.notifications,
+                                  size: 25,
+                                  color: Appcolors.korangeColor,
+                                ),
+                              ),
+                              ResponsiveSizedBox.width5,
                               Builder(builder: (context) {
                                 return GestureDetector(
                                     onTap: () {
@@ -270,7 +288,16 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                             ],
                           ),
                           ResponsiveSizedBox.height30,
-                          _buildPointsValueSection(),
+                          BlocBuilder<FetchProfileBloc, FetchProfileState>(
+                            builder: (context, state) {
+                              if (state is FetchProfileSuccessState) {
+                                return _buildPointsValueSection(
+                                    state.profile.userPoints);
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
+                          ),
                         ],
                       )),
                   Padding(
@@ -298,7 +325,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
     );
   }
 
-  Widget _buildPointsValueSection() {
+  Widget _buildPointsValueSection(String points) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       decoration: BoxDecoration(
@@ -354,7 +381,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                         ],
                       ).createShader(bounds),
                       child: TextStyles.subheadline(
-                        text: '500 Points',
+                        text: '$points Points',
                         color: Colors.white,
                       ),
                     ),
@@ -377,15 +404,17 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 decoration: BoxDecoration(
-                    border: Border.all(
-                      width: .5,
-                      color: Appcolors.ksecondrycolor,
-                    ),
-                    borderRadius: BorderRadius.circular(5)),
-                child: TextStyles.medium(
-                    text: 'Redeem Now',
+                  border: Border.all(
+                    width: .5,
                     color: Appcolors.ksecondrycolor,
-                    weight: FontWeight.bold),
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: TextStyles.medium(
+                  text: 'Redeem Now',
+                  color: Appcolors.ksecondrycolor,
+                  weight: FontWeight.bold,
+                ),
               ),
             )
           ],
@@ -453,7 +482,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                 child: Text(state.message),
               );
             } else {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
           },
         ),

@@ -11,6 +11,7 @@ import 'package:e_naam/presentation/screens/edit_profile/widgets/custom_dropdown
 import 'package:e_naam/presentation/screens/edit_profile/widgets/edit_textfield.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
+import 'package:e_naam/widgets/custom_sharedpreferences.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:e_naam/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,8 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
         .add(ResendOtpClickEvent(userId: widget.customerId));
   }
 
-  void _handleRegistration() {
+  void _handleRegistration() async {
+    final pushtoken = await getPushToken();
     if (_isFormValid) {
       // Here you can add registration logic with OTP verification
       context.read<VerifyOtpBloc>().add(
@@ -137,7 +139,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                 userLoginOTP: _currentOtp,
                 userFullName: nameController.text,
                 userOccupation: selectedUserType,
-                pushToken: 'djoofefw0',
+                pushToken:pushtoken,
               ),
             ),
           );

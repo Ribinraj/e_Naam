@@ -9,6 +9,7 @@ import 'package:e_naam/presentation/blocs/resend_otp/resend_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
+import 'package:e_naam/widgets/custom_sharedpreferences.dart';
 import 'package:e_naam/widgets/loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -102,7 +103,6 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
         .read<ResendOtpBloc>()
         .add(ResendOtpClickEvent(userId: widget.customerId));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -218,14 +218,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                         }
                         return ElevatedButton(
                           onPressed: _isButtonEnabled
-                              ? () {
+                              ? () async {
+                                  final pushtoken = await getPushToken();
                                   if (_currentOtp.length == 6) {
                                     context.read<VerifyOtpBloc>().add(
                                         VerifyOtpButtonclickEvent(
                                             user: VerifyOtpmodel(
                                                 userId: widget.customerId,
                                                 userLoginOTP: _currentOtp,
-                                                pushToken: 'djoofefw0')));
+                                                pushToken: pushtoken)));
                                   } else {
                                     SnackBar(
                                       content: Text('Please enter valid OTP'),
@@ -265,10 +266,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                       BlocConsumer<ResendOtpBloc, ResendOtpState>(
                         listener: (context, state) {
                           if (state is ResendOtpSuccessState) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text("OTP sent successfully")),
-                              );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("OTP sent successfully")),
+                            );
                           } else if (state is ResendOtpErrorState) {
                             SnackBar(content: Text(state.message));
                           }
