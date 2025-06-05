@@ -118,30 +118,65 @@ Future<void> sendTokenToServer() async {
   }
 }
   // Delete device token on logout
-  Future<void> deleteDeviceToken() async {
-    try {
-      // Delete the token from Firebase
-      await _firebaseMessaging.deleteToken();
+  // Future<void> deleteDeviceToken() async {
+  //   try {
+  //     // Delete the token from Firebase
+  //     await _firebaseMessaging.deleteToken();
 
-      // Cancel all pending notifications
-      await _flutterLocalNotificationsPlugin.cancelAll();
+  //     // Cancel all pending notifications
+  //     await _flutterLocalNotificationsPlugin.cancelAll();
 
-      // Remove all notification channels (Android only)
-      final androidImplementation = _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
-      if (androidImplementation != null) {
-        await androidImplementation.deleteNotificationChannel(
-          _androidNotificationChannel.id,
-        );
+  //     // Remove all notification channels (Android only)
+  //     final androidImplementation = _flutterLocalNotificationsPlugin
+  //         .resolvePlatformSpecificImplementation<
+  //             AndroidFlutterLocalNotificationsPlugin>();
+  //     if (androidImplementation != null) {
+  //       await androidImplementation.deleteNotificationChannel(
+  //         _androidNotificationChannel.id,
+  //       );
+  //     }
+
+  //     debugPrint('Device token deleted successfully');
+  //   } catch (e) {
+  //     debugPrint('Error deleting device token: $e');
+  //     rethrow;
+  //   }
+  // }
+Future<void> deleteDeviceToken() async {
+  try {
+    // iOS-specific: Check for APNs token availability before attempting to delete
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      final apnsToken = await _firebaseMessaging.getAPNSToken();
+      if (apnsToken == null) {
+        debugPrint('APNs token not yet available; skipping deleteToken.');
+      } else {
+        await _firebaseMessaging.deleteToken();
+        debugPrint('iOS: FCM token deleted successfully.');
       }
-
-      debugPrint('Device token deleted successfully');
-    } catch (e) {
-      debugPrint('Error deleting device token: $e');
-      rethrow;
+    } else {
+      // Android doesn't need APNs token check
+      await _firebaseMessaging.deleteToken();
+      debugPrint('Android: FCM token deleted successfully.');
     }
+
+    // Cancel all pending local notifications
+    await _flutterLocalNotificationsPlugin.cancelAll();
+
+    // Android: Remove notification channel
+    final androidImplementation = _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    if (androidImplementation != null) {
+      await androidImplementation.deleteNotificationChannel(
+        _androidNotificationChannel.id,
+      );
+    }
+
+  } catch (e) {
+    debugPrint('Error deleting device token: $e');
+    // Don't rethrow — avoid crashing logout flow due to this non-critical error
   }
+}
 
   // Initialize local notifications
   Future<void> _initLocalNotifications() async {

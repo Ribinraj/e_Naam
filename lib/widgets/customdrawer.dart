@@ -141,6 +141,7 @@ class CustomDrawer extends StatelessWidget {
                   return LogoutConfirmationDialog(onLogout: () async {
                     try {
                       await PushNotifications.instance.deleteDeviceToken();
+
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
                       await preferences.clear();

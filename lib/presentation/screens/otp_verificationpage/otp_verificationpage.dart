@@ -277,7 +277,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Didn't receive the code? ",
+                        "Didn't receive OTP? ",
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey.shade700,

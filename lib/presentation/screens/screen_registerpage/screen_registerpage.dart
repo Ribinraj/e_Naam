@@ -304,7 +304,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Didn't receive the code? ",
+                        "Didn't receive OTP? ",
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey.shade700,
@@ -352,7 +352,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                         // Navigate to main screen or show success message
                         CustomNavigation.pushReplaceWithTransition(
                           context,
-                          ScreenMainPage(),
+                          const ScreenMainPage(),
                         );
                       } else if (state is VerifyOtpErrorState) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -362,7 +362,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                     },
                     builder: (context, state) {
                       if (state is VerifyOtpLoadingState) {
-                        return SizedBox(
+                        return const SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: CustomSqureLoadingButton(
