@@ -51,10 +51,29 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       fit: BoxFit.contain,
                     ),
                     Center(
-                      child: TextStyles.headline(
-                        text:
-                            'Use e_Naam Points to earn  cashbacks and rewards',
-                        color: Appcolors.ksecondrycolor,
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(5),
+                        child: Center(
+                          child: Image.asset(
+                            'assets/images/logo white.png',
+                            height: ResponsiveUtils.hp(10),
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Text(
+                                  'YOUR LOGO',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF667eea),
+                                    letterSpacing: 2,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     )
                   ],
@@ -65,13 +84,15 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextStyles.subheadline(text: 'Get Started with e_Naam ...'),
+                    TextStyles.subheadline(
+                        text: 'Get Started with your account'),
                     ResponsiveSizedBox.height10,
                     TextStyles.medium(
                       text: 'Enter your mobile number',
                     ),
                     ResponsiveSizedBox.height20,
                     CustomTextfield(
+                        textInputType: TextInputType.number,
                         controller: numberController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -82,7 +103,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                           }
                           return null;
                         },
-                        labelText: 'Enter mobilenumber'),
+                        labelText: 'Mobile Number'),
                     ResponsiveSizedBox.height30,
                     BlocConsumer<SendOtpBloc, SendOtpState>(
                       listener: (context, state) {
@@ -102,10 +123,9 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                                     mobileNumber: numberController.text));
                           }
                         } else if (state is SendOtpErrorState) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(state.message),
-                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                          ));
                         }
                       },
                       builder: (context, state) {

@@ -13,4 +13,5 @@ class Endpoints {
   static const notifications = 'login/notifications';
   static const transactions = 'login/transactions';
   static const redumptionRequests = 'login/myrequests';
+  static const latestproducts = 'masters/latestproducts';
 }

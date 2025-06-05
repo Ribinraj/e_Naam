@@ -585,6 +585,7 @@
 ////////////////////////////////////
 import 'package:e_naam/core/appconstants.dart';
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
@@ -755,100 +756,73 @@ class _SplashScreenState extends State<SplashScreen>
                       const Spacer(flex: 2),
 
                       // Logo with advanced animations
-                      FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: SlideTransition(
-                          position: _slideAnimation,
-                          child: Transform.scale(
-                            scale: _pulseAnimation.value,
-                            child: Container(
-                              width: 220,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.white,
-                                    Colors.white.withOpacity(0.9),
-                                  ],
-                                ),
+                      SlideTransition(
+                        position: _slideAnimation,
+                        child: Transform.scale(
+                          scale: _pulseAnimation.value,
+                          child: Stack(
+                            children: [
+                              // Shimmer effect
+                              ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    blurRadius: 30,
-                                    offset: const Offset(0, 15),
-                                    spreadRadius: 5,
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.white.withOpacity(0.1),
-                                    blurRadius: 15,
-                                    offset: const Offset(0, -5),
-                                  ),
-                                ],
+                                child: AnimatedBuilder(
+                                  animation: _shimmerController,
+                                  builder: (context, child) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Colors.transparent,
+                                            Colors.white.withOpacity(0.3),
+                                            Colors.transparent,
+                                          ],
+                                          stops: [
+                                            (_shimmerAnimation.value - 1)
+                                                .clamp(0.0, 1.0),
+                                            _shimmerAnimation.value
+                                                .clamp(0.0, 1.0),
+                                            (_shimmerAnimation.value + 1)
+                                                .clamp(0.0, 1.0),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                              child: Stack(
-                                children: [
-                                  // Shimmer effect
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: AnimatedBuilder(
-                                      animation: _shimmerController,
-                                      builder: (context, child) {
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Colors.transparent,
-                                                Colors.white.withOpacity(0.3),
-                                                Colors.transparent,
-                                              ],
-                                              stops: [
-                                                (_shimmerAnimation.value - 1)
-                                                    .clamp(0.0, 1.0),
-                                                _shimmerAnimation.value
-                                                    .clamp(0.0, 1.0),
-                                                (_shimmerAnimation.value + 1)
-                                                    .clamp(0.0, 1.0),
-                                              ],
+
+                              // Logo content
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  color: Colors.transparent,
+                                  padding: const EdgeInsets.all(5),
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/images/logo white.png',
+                                      height: ResponsiveUtils.hp(10),
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const Center(
+                                          child: Text(
+                                            'YOUR LOGO',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF667eea),
+                                              letterSpacing: 2,
                                             ),
                                           ),
                                         );
                                       },
                                     ),
                                   ),
-
-                                  // Logo content
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Center(
-                                        child: Image.asset(
-                                          Appconstants.logo,
-                                          fit: BoxFit.contain,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return const Center(
-                                              child: Text(
-                                                'YOUR LOGO',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF667eea),
-                                                  letterSpacing: 2,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
@@ -861,7 +835,7 @@ class _SplashScreenState extends State<SplashScreen>
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 40),
                           child: const Text(
-                            "Your Rewards, One Tap Away!",
+                            "One platform. Infinite rewards",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 18,

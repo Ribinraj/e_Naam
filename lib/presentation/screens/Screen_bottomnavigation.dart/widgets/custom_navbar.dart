@@ -287,7 +287,7 @@ class CustomBottomNavBar extends StatelessWidget {
                         1,
                         state.currentPageIndex,
                         SolarIconsOutline.transferHorizontal,
-                        'History',
+                        'Transactions',
                       ),
                       // Empty space for center button
                       const SizedBox(width: 60),

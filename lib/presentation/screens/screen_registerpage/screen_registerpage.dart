@@ -174,9 +174,29 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                     fit: BoxFit.contain,
                   ),
                   Center(
-                    child: TextStyles.subheadline(
-                      text: 'Use e_Naam Points to earn\ncashbacks and rewards',
-                      color: Appcolors.ksecondrycolor,
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.all(5),
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/logo white.png',
+                          height: ResponsiveUtils.hp(10),
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Text(
+                                'YOUR LOGO',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF667eea),
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   )
                 ],

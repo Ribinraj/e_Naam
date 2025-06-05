@@ -1,7 +1,11 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/main.dart';
+import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ScreenHistoryPage extends StatefulWidget {
   const ScreenHistoryPage({super.key});
@@ -11,6 +15,13 @@ class ScreenHistoryPage extends StatefulWidget {
 }
 
 class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<TransactionsBloc>().add(FetchTransactionsInitialEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +44,7 @@ class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'POINTS HISTORY',
+                    'TRANSACTIONS',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -58,35 +69,63 @@ class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
                 color: Appcolors.kwhiteColor,
               ),
               height: ResponsiveUtils.hp(70),
-              child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: .5, color: Appcolors.ksecondrycolor))),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextStyles.body(
-                                color: Appcolors.kblackColor,
-                                text: 'Earned',
-                              ),
-                              ResponsiveSizedBox.height5,
-                              TextStyles.caption(text: '04/06/2025')
-                            ],
-                          ),
-                          const Spacer(),
-                          TextStyles.body(
-                              text: '+50', color: Appcolors.kgreenColor)
-                        ],
+              child: BlocBuilder<TransactionsBloc, TransactionsState>(
+                builder: (context, state) {
+                  if (state is FetchTransactionsLoadingState) {
+                    return Center(
+                      child: SpinKitCircle(
+                        size: 45,
+                        color: Appcolors.ksecondrycolor,
                       ),
                     );
-                  }),
+                  }
+                  if (state is FetchTransactionsSuccessState) {
+                    return ListView.builder(
+                        itemCount: state.transactions.length,
+                        itemBuilder: (context, index) {
+                          final transaction = state.transactions[index];
+                          return Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: .5,
+                                        color: Appcolors.ksecondrycolor))),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextStyles.body(
+                                      color:transaction.transactionType=="REDEEMED"?Appcolors.kredColor: Appcolors.kblackColor,
+                                      text: transaction.transactionType,
+                                    ),
+                                    ResponsiveSizedBox.height5,
+                                    TextStyles.caption(
+                                        text: transaction.transactionDateTime)
+                                  ],
+                                ),
+                                const Spacer(),
+                                TextStyles.body(
+                                  text:
+                                      '${transaction.transactionType == "EARNED" ? '+' : '-'}${transaction.points}',
+                                  color: transaction.transactionType == "EARNED"
+                                      ? Appcolors.kgreenColor
+                                      : Appcolors.kredColor,
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                  } else if (state is FetchtransactionsErrorState) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
             )
           ],
         ),

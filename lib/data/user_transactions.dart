@@ -1,4 +1,4 @@
-class TransactionsModel {
+class UserTransactionModel {
   final String userTransactionId;
   final String userId;
   final String transactionType;
@@ -9,7 +9,7 @@ class TransactionsModel {
   final DateTime createdAt;
   final String modifiedAt;
 
-  TransactionsModel({
+  UserTransactionModel({
     required this.userTransactionId,
     required this.userId,
     required this.transactionType,
@@ -21,8 +21,8 @@ class TransactionsModel {
     required this.modifiedAt,
   });
 
-  factory TransactionsModel.fromJson(Map<String, dynamic> json) {
-    return TransactionsModel(
+  factory UserTransactionModel.fromJson(Map<String, dynamic> json) {
+    return UserTransactionModel(
       userTransactionId: json['userTransactionId'],
       userId: json['userId'],
       transactionType: json['transactionType'],

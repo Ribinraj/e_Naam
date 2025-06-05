@@ -64,6 +64,7 @@ class Loginrepo {
 
   //////////------------verifyotp-----------/////////////////
   Future<ApiResponse> verifyotp({required VerifyOtpmodel user}) async {
+    log('pushtoken when login ${user.pushToken}');
     try {
       Response response = await dio.post(Endpoints.verifyotp, data: user);
       final responseData = response.data;
@@ -238,16 +239,18 @@ class Loginrepo {
       );
     }
   }
+
 ////////------------qrcodescanner-------/////////
-  Future<ApiResponse<Map<String, String>>> qrcodeScanner(
-      {required code}) async {
+  Future<ApiResponse> qrcodeScanner({required code}) async {
     try {
-       final token = await getUserToken();
-      Response response = await dio
-          .post(Endpoints.qrcodescanner, options: Options(headers: {'Authorization': token}), data: {"code": code});
+      final token = await getUserToken();
+      Response response = await dio.post(Endpoints.qrcodescanner,
+          options: Options(headers: {'Authorization': token}),
+          data: {"code": code});
       final responseData = response.data;
+      log('qrcode status 1 ${responseData["status"]}');
       if (!responseData["error"] && responseData["status"] == 200) {
-       
+        log('qrcode status 2 ${responseData["status"]}');
         return ApiResponse(
             data: null,
             message: responseData["message"] ?? 'Success',
@@ -267,6 +270,7 @@ class Loginrepo {
           message: 'Network or server error occured', error: true, status: 500);
     }
   }
+
   void dispose() {
     dio.close();
   }

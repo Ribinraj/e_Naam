@@ -5,10 +5,18 @@ import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/data/profile_model.dart';
 import 'package:e_naam/data/update_profilemodel.dart';
 import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_latest_products/fetch_latest_product_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
+import 'package:e_naam/presentation/screens/productlists/productslists.dart';
+import 'package:e_naam/presentation/screens/screen_categorypage/screen_categorypage.dart';
 import 'package:e_naam/presentation/screens/screen_notificationpage/notificationpage.dart';
+import 'package:e_naam/presentation/screens/screen_productdetailpage/product_detailpage.dart';
+import 'package:e_naam/presentation/screens/screen_redeem/widgets/grid_shimmer%20widget.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
+import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:e_naam/widgets/customdrawer.dart';
 
 import 'package:flutter/material.dart';
@@ -24,14 +32,18 @@ class ScreenHomepage extends StatefulWidget {
 }
 
 class _ScreenHomepageState extends State<ScreenHomepage> {
-  bool? isNew;
   bool _isAlertShown = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     context.read<FetchBannersBloc>().add(FetchBannersInitialEvent());
     context.read<FetchProfileBloc>().add(FetchProfileInitialEvent());
+    context.read<FetchCategoriesBloc>().add(FetchCategoriesInitialeEvent());
+    context
+        .read<FetchLatestProductBloc>()
+        .add(FetchLatestProductInitialEvent());
   }
 
   void _showProfileIncompleteAlert({required ProfileModel profile}) {
@@ -98,7 +110,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
 
                       // Title
                       Text(
-                        'Profile Incomplete',
+                        'Profile is incomplete',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -111,7 +123,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
 
                       // Content
                       Text(
-                        'Your profile needs to be completed to unlock all features and continue using the app.',
+                        'Please update your profile in order to gain the complete access to our reward system',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
@@ -152,7 +164,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                                   profile: UpdateProfilemodel(
                                     userFullName: profile.userFullName,
                                     userOccupation: profile.userOccupation,
-                                    userUPIAddress: 'dsdfs',
+                                    userUPIAddress: profile.userUPIAddress,
                                     panCardID: profile.panCardID,
                                     adharCardID: profile.adharCardID,
                                     address: profile.address,
@@ -179,7 +191,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                'Update Profile',
+                                'Update profile',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -189,18 +201,6 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                               ),
                             ],
                           ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 8),
-
-                      // Subtitle
-                      Text(
-                        'Complete your profile in just a few steps',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade500,
-                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ],
@@ -220,7 +220,6 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -290,6 +289,24 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                           ResponsiveSizedBox.height30,
                           BlocBuilder<FetchProfileBloc, FetchProfileState>(
                             builder: (context, state) {
+                              if (state is FetchProfileLoadingState) {
+                                return Shimmer.fromColors(
+                                  baseColor:
+                                      Appcolors.kprimarycolor.withOpacity(.2),
+                                  highlightColor:
+                                      const Color.fromARGB(255, 255, 248, 244),
+                                  period: const Duration(seconds: 3),
+                                  enabled: true,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Appcolors.ksecondrycolor,
+                                    ),
+                                    height: ResponsiveUtils.hp(15),
+                                    width: double.infinity,
+                                  ),
+                                );
+                              }
                               if (state is FetchProfileSuccessState) {
                                 return _buildPointsValueSection(
                                     state.profile.userPoints);
@@ -308,13 +325,330 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                       children: [
                         ResponsiveSizedBox.height20,
                         _buildFlyerOffersSection(),
+                        ResponsiveSizedBox.height10,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Redeem Categories",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Appcolors.kblackColor,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    CustomNavigation.pushWithTransition(
+                                        context, const CategoryPage());
+                                  },
+                                  child: Row(
+                                    children: [
+                                      const Text(
+                                        'VIEW ALL',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 67, 67, 67),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.green,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.arrow_forward,
+                                          color: Colors.white,
+                                          size: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                                height: ResponsiveUtils.hp(5),
+                                child: BlocBuilder<FetchCategoriesBloc,
+                                    FetchCategoriesState>(
+                                  builder: (context, state) {
+                                    if (state is FetchCategoriesLoadingState) {
+                                      return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        //padding: const EdgeInsets.symmetric(horizontal: 12),
+                                        itemCount: 5,
+                                        itemBuilder: (context, index) {
+                                          return Shimmer.fromColors(
+                                            baseColor: Appcolors.kprimarycolor
+                                                .withOpacity(.2),
+                                            highlightColor:
+                                                const Color.fromARGB(
+                                                    255, 255, 245, 245),
+                                            period: const Duration(seconds: 3),
+                                            enabled: true,
+                                            child: Container(
+                                              width: ResponsiveUtils.wp(30),
+                                              height: ResponsiveUtils.wp(8),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[100],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
+                                    if (state is FetchCategoriesSuccessState) {
+                                      return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        //padding: const EdgeInsets.symmetric(horizontal: 12),
+                                        itemCount: state.categories.length,
+                                        itemBuilder: (context, index) {
+                                          final category =
+                                              state.categories[index];
 
-                        ResponsiveSizedBox.height20,
-                        // Stores & Contacts Section
-                        _buildStoresContactsSection(),
-                        ResponsiveSizedBox.height20,
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                CustomNavigation
+                                                    .pushWithTransition(
+                                                        context,
+                                                        ProductslistsPage(
+                                                          categoryId: category
+                                                              .categoryId,
+                                                          categoryName: category
+                                                              .categoryName,
+                                                        ));
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4,
+                                                        horizontal: 8),
+                                                decoration: BoxDecoration(
+                                                  // Change background color based on selection
+                                                  color: Appcolors
+                                                      .ksecondrycolor
+                                                      .withOpacity(.4),
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width:
+                                                          ResponsiveUtils.wp(8),
+                                                      height:
+                                                          ResponsiveUtils.wp(8),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[100],
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        child:
+                                                            ImageWithFallback(
+                                                          imageUrl: category
+                                                              .categoryImage,
+                                                          width:
+                                                              double.infinity,
+                                                          height:
+                                                              double.infinity,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    ResponsiveSizedBox.width10,
+                                                    Text(
+                                                      category.categoryName,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              ResponsiveUtils
+                                                                  .wp(3),
+                                                          // Change text color based on selection
+                                                          color: Appcolors
+                                                              .kprimarycolor,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else if (state
+                                        is FetchCategoriesErrorState) {
+                                      return Center(
+                                        child: Text(state.message),
+                                      );
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                  },
+                                )),
+                            ResponsiveSizedBox.height20,
+                            const Text(
+                              'Latest Products',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Appcolors.kblackColor,
+                              ),
+                            ),
+                            ResponsiveSizedBox.height10,
+                            BlocBuilder<FetchLatestProductBloc,
+                                FetchLatestProductState>(
+                              builder: (context, state) {
+                                if (state is FetchLatestProductsLoadingState) {
+                                  return const GridloadingShimmerWidget();
+                                }
+                                if (state is FetchLatestProductSuccessState) {
+                                  return GridView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    padding: const EdgeInsets.all(8),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 6,
+                                      mainAxisSpacing: 6,
+                                      childAspectRatio:
+                                          0.7, // Control aspect ratio instead of fixed height
+                                    ),
+                                    itemCount: state.latestproducts.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            border: Border.all(
+                                                width: .3,
+                                                color: Appcolors.kprimarycolor),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              PageRouteBuilder(
+                                                transitionDuration:
+                                                    const Duration(
+                                                        milliseconds: 600),
+                                                pageBuilder: (context,
+                                                        animation,
+                                                        secondaryAnimation) =>
+                                                    ProductDetailpage(
+                                                  product: state
+                                                      .latestproducts[index],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.all(
+                                                ResponsiveUtils.wp(2)),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                    ),
+                                                    child: Hero(
+                                                      tag: state
+                                                          .latestproducts[index]
+                                                          .productId,
+                                                      child: ImageWithFallback(
+                                                        imageUrl: state
+                                                            .latestproducts[
+                                                                index]
+                                                            .productPicture,
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        ResponsiveUtils.hp(1)),
+                                                // Product name with flexible height
+                                                Expanded(
+                                                  child: Text(
+                                                    state.latestproducts[index]
+                                                        .productName,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color:
+                                                          Appcolors.kblackColor,
+                                                      fontSize:
+                                                          ResponsiveUtils.wp(3),
+                                                    ),
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                // SizedBox(height: ResponsiveUtils.hp(0.5)),
+
+                                                Text(
+                                                  '${state.latestproducts[index].redeemPoints} pts',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        Appcolors.kprimarycolor,
+                                                    fontSize:
+                                                        ResponsiveUtils.wp(3.8),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else if (state
+                                    is FetchLatestProductsErrorState) {
+                                  return Center(
+                                    child: Text('hompage${state.message}'),
+                                  );
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              },
+                            )
+                          ],
+                        ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: ResponsiveUtils.hp(10),
                   )
                 ],
               ),
@@ -389,7 +723,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                 ),
                 ResponsiveSizedBox.height20,
                 TextStyles.medium(
-                  text: 'Redeem your points now!',
+                  text: 'Your eNaam points',
                   color: Appcolors.kwhiteColor,
                 ),
                 ResponsiveSizedBox.height20
@@ -498,71 +832,26 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
     // Get screen width to make the card full width
     return Builder(
       builder: (BuildContext context) {
-        return Container(
-          width: MediaQuery.of(context).size.width -
-              32, // Full width minus padding
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          decoration: BoxDecoration(
+        return Padding(
+          padding: const EdgeInsets.all(.3),
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            color: const Color(0xFF2A2A3A),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(.3),
-                    child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.network(
-                        image,
-                        height: 150,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            height: 150,
-                            width: double.infinity,
-                            color: Colors.grey,
-                            child: const Center(
-                              child: Icon(Icons.error, color: Colors.white),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+            child: Image.network(
+              image,
+              height: 150,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 150,
+                  width: double.infinity,
+                  color: Colors.grey,
+                  child: const Center(
+                    child: Icon(Icons.error, color: Colors.white),
                   ),
-                  // if (isNew)
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Text(
-                        'NEW',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextStyles.medium(
-                    text: 'Plumping tools', color: Appcolors.ksecondrycolor),
-              )
-            ],
+                );
+              },
+            ),
           ),
         );
       },

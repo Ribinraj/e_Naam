@@ -1,4 +1,5 @@
 import 'package:e_naam/presentation/blocs/qr_code_bloc/qr_code_bloc.dart';
+import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -259,7 +260,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class AdvancedQRScanner extends StatefulWidget {
   /// Constructor for advanced QR scanner
   const AdvancedQRScanner({super.key});
@@ -311,6 +311,9 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
       body: BlocListener<QrCodeBloc, QrCodeState>(
         listener: (context, state) {
           if (state is QrCodeSuccessState) {
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //   content: Text(state.message),
+            // ));
             _showSuccessDialog(state.message);
           } else if (state is QrCodeErrorState) {
             _showErrorDialog(state.message);
@@ -337,8 +340,9 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
                   // Upload QR code using BLoC
                   if (scannedBarcode.displayValue != null) {
                     context.read<QrCodeBloc>().add(
-                      QrCodeuploadingEvent(code: scannedBarcode.displayValue!),
-                    );
+                          QrCodeuploadingEvent(
+                              code: scannedBarcode.displayValue!),
+                        );
                   }
                 }
               },
@@ -403,23 +407,27 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
                                   height: 16,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
                                   ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
                                   'Processing QR code...',
-                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
                                 ),
                               ],
                             );
                           }
                           return Text(
-                            barcode?.displayValue ?? 'Position QR code within frame',
+                            barcode?.displayValue ??
+                                'Position QR code within frame',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white, fontSize: 16),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
                           );
                         },
                       ),
@@ -507,12 +515,13 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('QR Code processed successfully!'),
+            const Text('QR Code redeemed successfully!'),
             const SizedBox(height: 8),
             if (barcode != null) ...[
-              Text('Type: ${barcode!.type.name}'),
-              const SizedBox(height: 8),
-              const Text('Value:', style: TextStyle(fontWeight: FontWeight.bold)),
+              // Text('Type: ${barcode!.type.name}'),
+              // const SizedBox(height: 8),
+              // const Text('Value:',
+              //     style: TextStyle(fontWeight: FontWeight.bold)),
               Container(
                 padding: const EdgeInsets.all(8),
                 width: double.infinity,
@@ -537,6 +546,7 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
               ),
               child: Text(
                 message,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.green.shade700),
               ),
             ),
@@ -545,8 +555,7 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
         actions: [
           TextButton.icon(
             onPressed: () {
-              Navigator.pop(context);
-              _resetScanner();
+              navigateToMainPage(context, 0);
               isDialogOpen = false;
             },
             icon: const Icon(Icons.close),

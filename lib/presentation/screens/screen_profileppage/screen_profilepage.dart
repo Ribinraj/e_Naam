@@ -201,7 +201,7 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
           if (state is FetchProfileLoadingState) {
             return Center(
               child: SpinKitCircle(
-                size: 35,
+                size: 50,
                 color: Appcolors.ksecondrycolor,
               ),
             );
@@ -267,7 +267,7 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                                   profile: UpdateProfilemodel(
                                       userFullName: user.userFullName,
                                       userOccupation: user.userOccupation,
-                                      userUPIAddress: '6575',
+                                      userUPIAddress: user.userUPIAddress,
                                       panCardID: user.panCardID,
                                       adharCardID: user.adharCardID,
                                       address: user.address,
@@ -374,7 +374,7 @@ class _ScreenProfilePageState extends State<ScreenProfilePage> {
                                 _buildInfoTile(
                                   icon: Icons.account_balance_wallet_outlined,
                                   title: 'UPI Address',
-                                  value: 'need update api',
+                                  value: user.userUPIAddress,
                                 ),
                                 ResponsiveSizedBox.height50
                               ],

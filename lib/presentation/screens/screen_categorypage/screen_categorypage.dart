@@ -3,6 +3,7 @@ import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/main.dart';
 import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
+import 'package:e_naam/presentation/screens/productlists/productslists.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:flutter/material.dart';
@@ -26,60 +27,6 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Sample category data - replace with your actual data
-    final List<Map<String, String>> categories = [
-      {
-        'name': 'Mobile Phones',
-        'imageUrl':
-            'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-      },
-      {
-        'name': 'Laptops',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Headphones',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Smart Watches',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Cameras',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Tablets',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Gaming',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Speakers',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.eVtLF7NyVlJO2nE6WTljbgHaFw&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Accessories',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
-      },
-      {
-        'name': 'Smart Home',
-        'imageUrl':
-            'https://tse4.mm.bing.net/th?id=OIP.MYeJ6rOR5Rrkg-JMz3J4rgHaHa&pid=Api&P=0&h=180',
-      },
-    ];
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 247, 243),
       body: Column(
@@ -105,7 +52,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         )),
                     ResponsiveSizedBox.width20,
                     Text(
-                      'Explore Categories',
+                      'Redeem Categories',
                       style: TextStyle(
                         fontSize: ResponsiveUtils.wp(6),
                         fontWeight: FontWeight.bold,
@@ -116,7 +63,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Find your favorite products in our curated categories',
+                  'Explore our categories to find products of your choice',
                   style: TextStyle(
                     fontSize: ResponsiveUtils.wp(3.5),
                     color: Colors.white.withOpacity(0.8),
@@ -133,7 +80,7 @@ class _CategoryPageState extends State<CategoryPage> {
               child: BlocBuilder<FetchCategoriesBloc, FetchCategoriesState>(
                 builder: (context, state) {
                   if (state is FetchCategoriesLoadingState) {
-                    return Center(
+                    return const Center(
                       child: SpinKitCircle(
                         size: 50,
                         color: Appcolors.ksecondrycolor,
@@ -142,6 +89,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   }
                   if (state is FetchCategoriesSuccessState) {
                     return GridView.builder(
+                      padding: EdgeInsets.all(0),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -153,10 +101,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       itemBuilder: (context, index) {
                         final category = state.categories[index];
                         return CategoryCard(
-                          name:category.categoryName,
+                          name: category.categoryName,
                           imageUrl: category.categoryImage,
                           onTap: () {
-                            print('Tapped on ${categories[index]['name']}');
+                            CustomNavigation.pushWithTransition(context, ProductslistsPage(categoryId: category.categoryId, categoryName: category.categoryName));
                           },
                         );
                       },

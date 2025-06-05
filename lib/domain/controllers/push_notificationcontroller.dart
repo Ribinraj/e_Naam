@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:e_naam/data/update_profilemodel.dart';
+import 'package:e_naam/domain/repositories/loginrepo.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -100,8 +102,8 @@ Future<void> _updateTokenIfLoggedIn(String token) async {
   
   if (isLoggedIn) {
     // Use your LoginRepo to update the token
-    // final loginRepo = LoginRepo();
-    // await loginRepo.updatetoken(token: token);
+    final loginRepo = Loginrepo();
+    await loginRepo.updateprofile(profile: UpdateProfilemodel(pushToken: token));
   }
 }
 

@@ -103,6 +103,7 @@ class ProfileModel {
   final String userMobileNumber;
   final String userFullName;
   final String userOccupation;
+  final String userUPIAddress;
   final String panCardID;
   final String adharCardID;
   final String address;
@@ -111,11 +112,12 @@ class ProfileModel {
   final String pushToken;
   final String profileStatus;
 
-  ProfileModel({
+  ProfileModel( {
     required this.userId,
     required this.userMobileNumber,
     required this.userFullName,
     required this.userOccupation,
+    required this.userUPIAddress,
     required this.panCardID,
     required this.adharCardID,
     required this.address,
@@ -131,6 +133,7 @@ class ProfileModel {
       userMobileNumber: json['userMobileNumber'] ?? "",
       userFullName: json['userFullName'] ?? "",
       userOccupation: json['userOccupation'] ?? "",
+      userUPIAddress:json['userUPIAddress'] ??"",
       panCardID: json['panCardID'] ?? "",
       adharCardID: json['adharCardID'] ?? "",
       address: json['address'] ?? "",
@@ -147,6 +150,7 @@ class ProfileModel {
       'userMobileNumber': userMobileNumber,
       'userFullName': userFullName,
       'userOccupation': userOccupation,
+      'userUPIAddress':userUPIAddress,
       'panCardID': panCardID,
       'adharCardID': adharCardID,
       'address': address,

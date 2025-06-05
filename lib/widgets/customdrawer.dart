@@ -29,8 +29,30 @@ class CustomDrawer extends StatelessWidget {
                 width: ResponsiveUtils.wp(30),
                 height: ResponsiveUtils.hp(15),
                 child: Center(
-                  child: TextStyles.subheadline(
-                      text: 'e_Naam', color: Appcolors.kwhiteColor),
+                  child: Container(
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.all(5),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/logo white.png',
+                        height: ResponsiveUtils.hp(10),
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Text(
+                              'YOUR LOGO',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF667eea),
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
                 // child: Image.asset(
                 //   Appconstants.logo,
@@ -118,14 +140,15 @@ class CustomDrawer extends StatelessWidget {
                 builder: (BuildContext context) {
                   return LogoutConfirmationDialog(onLogout: () async {
                     try {
-                            await PushNotifications.instance.deleteDeviceToken();
+                      await PushNotifications.instance.deleteDeviceToken();
                       SharedPreferences preferences =
                           await SharedPreferences.getInstance();
                       await preferences.clear();
                       Navigator.of(context).pushAndRemoveUntil(
-  MaterialPageRoute(builder: (context) => const ScreenLoginpage()),
-  (Route<dynamic> route) => false,
-);
+                        MaterialPageRoute(
+                            builder: (context) => const ScreenLoginpage()),
+                        (Route<dynamic> route) => false,
+                      );
                     } catch (e) {
                       debugPrint("Error during logout :$e");
                     }

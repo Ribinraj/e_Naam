@@ -11,7 +11,8 @@ class CustomEditingTextfield extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.obscureText,
-    this.readonly,
+    this.readonly, 
+    this.textcapitalisation,
   });
 
   final TextEditingController controller;
@@ -21,10 +22,13 @@ class CustomEditingTextfield extends StatelessWidget {
   final Widget? suffixIcon;
   final bool? obscureText;
   final bool? readonly;
+  final TextCapitalization? textcapitalisation;
+  
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Appcolors.kgreyColor,
+      textCapitalization: textcapitalisation ?? TextCapitalization.none, // Fixed: Use null-aware operator instead of !
       validator: validator,
       controller: controller,
       obscureText: obscureText ?? false,

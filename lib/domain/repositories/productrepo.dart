@@ -166,7 +166,56 @@ class Productrepo {
       );
     }
   }
-
+  //////////-------------fetchlatestproduct-----------------------//////////////////////
+  Future<ApiResponse<List<ProductModel>>> fetchlatestproducts(
+      ) async {
+    try {
+      final token = await getUserToken();
+      log(Endpoints.latestproducts);
+      Response response = await dio.get(
+        Endpoints.latestproducts,
+       
+        //queryParameters: {'categoryId': categoryId},
+        options: Options(headers: {'Authorization': token}),
+      );
+      log("Response received latestproduct: ${response.statusCode}");
+      final responseData = response.data;
+      log(responseData["status"].toString());
+      // log(responseData);
+      if (!responseData["error"] && responseData["status"] == 200) {
+    
+        final List<dynamic> productlist = responseData['data'];
+        //log(productlist.toString());
+        List<ProductModel> products = productlist
+            .map((product) => ProductModel.fromJson(product))
+            .toList();
+        // log(products.length.toString());
+        return ApiResponse(
+          data: products,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        log('erorrrrrrrrrrrrrrror');
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
   //////////-------------RedeemRequest-----------------///////////////////
   Future<ApiResponse> redeemrequest(
       {required RedeemRequestModel redeemdata}) async {
