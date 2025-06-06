@@ -85,12 +85,12 @@ class _NotificationPageState extends State<NotificationPage> {
         ),
         backgroundColor: Appcolors.kprimarycolor,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.more_vert, color: Colors.white),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       body: BlocBuilder<FetchNotificationBloc, FetchNotificationState>(
         builder: (context, state) {
