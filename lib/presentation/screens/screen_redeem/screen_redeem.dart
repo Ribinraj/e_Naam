@@ -237,6 +237,7 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                               period: const Duration(seconds: 3),
                               enabled: true,
                               child: Container(
+                                margin: EdgeInsets.only(right: 5),
                                 width: ResponsiveUtils.wp(26),
                                 height: ResponsiveUtils.wp(8),
                                 decoration: BoxDecoration(

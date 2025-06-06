@@ -406,6 +406,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                                             period: const Duration(seconds: 3),
                                             enabled: true,
                                             child: Container(
+                                              margin: EdgeInsets.only(right: 5),
                                               width: ResponsiveUtils.wp(30),
                                               height: ResponsiveUtils.wp(8),
                                               decoration: BoxDecoration(
@@ -908,113 +909,6 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
     );
   }
 
-  Widget _buildStoresContactsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Stores & Contacts',
-          style: TextStyle(
-            color: Appcolors.kblackColor,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        ResponsiveSizedBox.height10,
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Stack(
-            children: [
-              Container(
-                height: ResponsiveUtils.hp(27),
-                width: double.infinity,
-                color: Appcolors.kprimarycolor,
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'STORES & CONTACT',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    const Divider(
-                      color: Appcolors.ksecondrycolor,
-                      thickness: 3,
-                      endIndent: 130,
-                    ),
-                    ResponsiveSizedBox.height20,
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 231, 231, 231),
-                              shape: BoxShape.circle),
-                          child: const Icon(
-                            Icons.phone,
-                            size: 12,
-                            color: Appcolors.kgreenColor,
-                          ),
-                        ),
-                        ResponsiveSizedBox.width10,
-                        TextStyles.medium(
-                            text: '9946802969', color: Appcolors.kwhiteColor),
-                      ],
-                    ),
-                    ResponsiveSizedBox.height20,
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 231, 231, 231),
-                              shape: BoxShape.circle),
-                          child: const Icon(
-                            Icons.mail_outline,
-                            size: 12,
-                            color: Appcolors.kgreenColor,
-                          ),
-                        ),
-                        ResponsiveSizedBox.width10,
-                        TextStyles.medium(
-                            text: 'ribinrajop@gmail.com',
-                            color: Appcolors.kwhiteColor),
-                      ],
-                    ),
-                    ResponsiveSizedBox.height20,
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 231, 231, 231),
-                              shape: BoxShape.circle),
-                          child: const Icon(
-                            Icons.location_on,
-                            size: 12,
-                            color: Appcolors.kgreenColor,
-                          ),
-                        ),
-                        ResponsiveSizedBox.width10,
-                        TextStyles.medium(
-                            text: 'mysuru,karnatak,670089',
-                            color: Appcolors.kwhiteColor),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class PointsBackgroundPainter extends CustomPainter {
