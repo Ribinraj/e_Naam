@@ -211,7 +211,7 @@ class _NotificationPageState extends State<NotificationPage> {
           Icon(
             Icons.notifications_none,
             size: 80,
-            color: Colors.grey[300],
+            color: Appcolors.ksecondrycolor,
           ),
           const SizedBox(height: 16),
           Text(

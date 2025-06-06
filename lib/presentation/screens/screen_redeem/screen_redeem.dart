@@ -365,95 +365,118 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                     return const GridloadingShimmerWidget();
                   }
                   if (state is FethchProductSuccessState) {
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(8),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 6,
-                        mainAxisSpacing: 6,
-                        childAspectRatio:
-                            0.75, // Control aspect ratio instead of fixed height
-                      ),
-                      itemCount: state.products.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              border: Border.all(
-                                  width: .3, color: Appcolors.kprimarycolor),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                PageRouteBuilder(
-                                  transitionDuration:
-                                      const Duration(milliseconds: 600),
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      ProductDetailpage(
-                                    product: state.products[index],
+                    return state.products.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.category,
+                                  size: 80,
+                                  color: Appcolors.kprimarycolor,
+                                ),
+                                const SizedBox(height: 16),
+                                TextStyles.subheadline(
+                                  text: 'products not available',
+                                  color: Appcolors.kprimarycolor,
+                                ),
+                              ],
+                            ),
+                          )
+                        : GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(8),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 6,
+                              mainAxisSpacing: 6,
+                              childAspectRatio:
+                                  0.75, // Control aspect ratio instead of fixed height
+                            ),
+                            itemCount: state.products.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    border: Border.all(
+                                        width: .3,
+                                        color: Appcolors.kprimarycolor),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        transitionDuration:
+                                            const Duration(milliseconds: 600),
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            ProductDetailpage(
+                                          product: state.products[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.all(ResponsiveUtils.wp(2)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Hero(
+                                              tag: state
+                                                  .products[index].productId,
+                                              child: ImageWithFallback(
+                                                imageUrl: state.products[index]
+                                                    .productPicture,
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: ResponsiveUtils.hp(1)),
+                                        // Product name with flexible height
+                                        Expanded(
+                                          child: Text(
+                                            state.products[index].productName,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Appcolors.kblackColor,
+                                              fontSize: ResponsiveUtils.wp(3),
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        // SizedBox(height: ResponsiveUtils.hp(0.5)),
+
+                                        Text(
+                                          '${state.products[index].redeemPoints} pts',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Appcolors.kprimarycolor,
+                                            fontSize: ResponsiveUtils.wp(3.8),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
                             },
-                            child: Padding(
-                              padding: EdgeInsets.all(ResponsiveUtils.wp(2)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Hero(
-                                        tag: state.products[index].productId,
-                                        child: ImageWithFallback(
-                                          imageUrl: state
-                                              .products[index].productPicture,
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: ResponsiveUtils.hp(1)),
-                                  // Product name with flexible height
-                                  Expanded(
-                                    child: Text(
-                                      state.products[index].productName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Appcolors.kblackColor,
-                                        fontSize: ResponsiveUtils.wp(3),
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  // SizedBox(height: ResponsiveUtils.hp(0.5)),
-
-                                  Text(
-                                    '${state.products[index].redeemPoints} pts',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Appcolors.kprimarycolor,
-                                      fontSize: ResponsiveUtils.wp(3.8),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                          );
                   } else if (state is FetchProductErrorState) {
                     return Center(
                       child: Text(state.message),

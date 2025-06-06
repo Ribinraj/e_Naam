@@ -31,9 +31,14 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
+import 'package:e_naam/data/redumptionrequests_model.dart';
+
+import 'package:e_naam/presentation/blocs/redumption_requests/redumption_requests_bloc.dart';
 import 'package:e_naam/presentation/screens/screen_orderdetailspage/screen_orderdetailpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class OrdersListScreen extends StatefulWidget {
   const OrdersListScreen({super.key});
@@ -43,6 +48,15 @@ class OrdersListScreen extends StatefulWidget {
 }
 
 class _ScreenHistoryPageState extends State<OrdersListScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context
+        .read<RedumptionRequestsBloc>()
+        .add(RedumptionRequestsFetchingInitialEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,12 +122,51 @@ class _ScreenHistoryPageState extends State<OrdersListScreen> {
                 color: Appcolors.kwhiteColor,
               ),
               height: ResponsiveUtils.hp(80),
-              child: ListView.builder(
-                padding: const EdgeInsets.all(0),
-                itemCount: dummyOrders.length,
-                itemBuilder: (context, index) {
-                  final order = dummyOrders[index];
-                  return OrderCard(order: order);
+              child:
+                  BlocBuilder<RedumptionRequestsBloc, RedumptionRequestsState>(
+                builder: (context, state) {
+                  if (state is RedumptionRequestsLoadingState) {
+                    return const Center(
+                      child: SpinKitCircle(
+                        size: 50,
+                        color: Appcolors.ksecondrycolor,
+                      ),
+                    );
+                  }
+                  if (state is RedumptionRequestsSuccessState) {
+                    return state.redumptionrequests.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.category,
+                                  size: 80,
+                                  color: Appcolors.ksecondrycolor,
+                                ),
+                                const SizedBox(height: 16),
+                                TextStyles.subheadline(
+                                  text: 'No Redumptions yet',
+                                  color: Appcolors.kprimarycolor,
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(0),
+                            itemCount: state.redumptionrequests.length,
+                            itemBuilder: (context, index) {
+                              final order = state.redumptionrequests[index];
+                              return OrderCard(order: order);
+                            },
+                          );
+                  } else if (state is RedumptionsRequestsErrorState) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
               ),
             )
@@ -125,7 +178,7 @@ class _ScreenHistoryPageState extends State<OrdersListScreen> {
 }
 
 class OrderCard extends StatelessWidget {
-  final Order order;
+  final RedumptionrequestsModel order;
 
   const OrderCard({super.key, required this.order});
 
@@ -143,7 +196,8 @@ class OrderCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              CustomNavigation.pushWithTransition(context,ScreenOerdeDetailPage());
+              CustomNavigation.pushWithTransition(
+                  context,  ScreenOerdeDetailPage(product:order ,));
             },
             child: Padding(
               padding: const EdgeInsets.all(12),
@@ -160,7 +214,7 @@ class OrderCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        order.imageUrl,
+                        order.productPicture,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
@@ -206,7 +260,7 @@ class OrderCard extends StatelessWidget {
                         ),
                         ResponsiveSizedBox.height10,
                         Text(
-                          'Rs. ${order.price.toStringAsFixed(2)}',
+                          ' ${order.redemptionPoints} pts',
                           style: TextStyle(
                             color: Colors.deepPurple[700],
                             fontWeight: FontWeight.w600,
@@ -222,17 +276,17 @@ class OrderCard extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: order.isDelivered
-                          ? Colors.green[50]
-                          : Colors.amber[50],
+                      color: order.status == "PENDING"
+                          ? Colors.amber[50]
+                          : Colors.green[50],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      order.isDelivered ? 'Delivered' : 'Processing',
+                      order.status,
                       style: TextStyle(
-                        color: order.isDelivered
-                            ? Colors.green[700]
-                            : Colors.amber[700],
+                        color: order.status == "PENDING"
+                            ? Colors.amber[700]
+                            : Colors.green[700],
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
                       ),
@@ -249,66 +303,4 @@ class OrderCard extends StatelessWidget {
 }
 
 // Data Model
-class Order {
-  final String id;
-  final String productName;
-  final double price;
-  final String imageUrl;
-  final bool isDelivered;
 
-  Order({
-    required this.id,
-    required this.productName,
-    required this.price,
-    required this.imageUrl,
-    this.isDelivered = false,
-  });
-}
-
-// Dummy Data
-final List<Order> dummyOrders = [
-  Order(
-    id: '1',
-    productName: 'Mobile Phone',
-    price: 1999.00,
-    imageUrl:
-        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-    isDelivered: true,
-  ),
-  Order(
-    id: '2',
-    productName: 'Mobile Phone',
-    price: 3499.99,
-    imageUrl:
-        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-  ),
-  Order(
-    id: '3',
-    productName: 'Smart Watch',
-    price: 12500.00,
-    imageUrl: 'https://m.media-amazon.com/images/I/71Swqqe7XAL._AC_UY500_.jpg',
-    isDelivered: true,
-  ),
-  Order(
-    id: '4',
-    productName: 'Bluetooth Speaker',
-    price: 2499.50,
-    imageUrl:
-        'https://m.media-amazon.com/images/I/61N2a48p9xL._AC_UF894,1000_QL80_.jpg',
-  ),
-  Order(
-    id: '5',
-    productName: 'Mobile Phone',
-    price: 899.00,
-    imageUrl:
-        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-    isDelivered: true,
-  ),
-  Order(
-    id: '6',
-    productName: 'Mobile phone',
-    price: 699.99,
-    imageUrl:
-        'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
-  ),
-];

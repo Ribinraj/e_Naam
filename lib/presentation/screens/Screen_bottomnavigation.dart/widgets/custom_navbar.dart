@@ -260,6 +260,7 @@ class CustomBottomNavBar extends StatelessWidget {
     return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
       builder: (context, state) {
         return Container(
+          padding: EdgeInsets.only(bottom: 5),
           height: 80,
           color: Colors.transparent,
           child: Stack(
@@ -369,7 +370,7 @@ class CustomBottomNavBar extends StatelessWidget {
           Icon(
             icon,
             color: isSelected ? activeColor : inactiveColor,
-            size: 19,
+            size: 20,
           ),
           const SizedBox(height: 3),
           Text(

@@ -23,15 +23,16 @@ class UserTransactionModel {
 
   factory UserTransactionModel.fromJson(Map<String, dynamic> json) {
     return UserTransactionModel(
-      userTransactionId: json['userTransactionId'],
-      userId: json['userId'],
-      transactionType: json['transactionType'],
-      codeId: json['codeId'],
-      transactionDateTime: json['transactionDateTime'],
-      points: json['points'],
-      status: json['status'],
-      createdAt: DateTime.parse(json['created_at']['date']),
-      modifiedAt: json['modified_at'],
+      userTransactionId: json['userTransactionId']??"",
+      userId: json['userId']??"",
+      transactionType: json['transactionType']??"",
+      codeId: json['codeId']??"",
+      transactionDateTime: json['transactionDateTime']??"",
+      points: json['points']??"",
+      status: json['status']??"",
+      createdAt: DateTime.tryParse(json['created_at']?['date'] ?? '') ?? DateTime.now(),
+
+      modifiedAt: json['modified_at']??"",
     );
   }
 

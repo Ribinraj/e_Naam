@@ -23,7 +23,7 @@ import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
 import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
-import 'package:e_naam/presentation/screens/screen_registerpage/screen_registerpage.dart';
+
 
 import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -122,7 +122,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
             scaffoldBackgroundColor: Appcolors.kwhiteColor),
-        // home: ScreenRegisterPage(customerId: '4343', mobileNumber: '223525252'),
+        // home: ThankYouPage(),
         home: const SplashScreen(),
       ),
     );

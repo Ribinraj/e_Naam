@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/data/productmodel.dart';
+import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/screens/Redeem_confirmation/redeem_confirmationpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailpage extends StatefulWidget {
   final ProductModel product;
@@ -18,6 +22,16 @@ class ProductDetailpage extends StatefulWidget {
 
 class _ScreenHistoryPageState extends State<ProductDetailpage> {
   //final TextEditingController pointController = TextEditingController();
+  String? userpoints;
+  @override
+  void initState() {
+    super.initState();
+    final state = context.read<FetchProfileBloc>().state;
+    if (state is FetchProfileSuccessState) {
+      userpoints = state.profile.userPoints;
+      log(userpoints ?? "'uuuuuuuu");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,17 +150,26 @@ class _ScreenHistoryPageState extends State<ProductDetailpage> {
           ),
           // Fixed bottom button
           Padding(
-            padding:
-                const EdgeInsets.only(bottom: 40, top: 20, left: 15, right: 15),
-            child: CustomSqureButton(
-              ontap: () {
-                CustomNavigation.pushWithTransition(
-                    context, OrderConfirmationPage(product: widget.product,));
-              },
-              text: 'Redeem',
-              color: Appcolors.kgreenColor,
-            ),
-          ),
+              padding: const EdgeInsets.only(
+                  bottom: 40, top: 20, left: 15, right: 15),
+              child: userpoints != null
+                  ? int.parse(userpoints!) >=
+                          int.parse(widget.product.redeemPoints)
+                      ? CustomSqureButton(
+                          ontap: () {
+                            CustomNavigation.pushWithTransition(
+                                context,
+                                OrderConfirmationPage(
+                                  product: widget.product,
+                                ));
+                          },
+                          text: 'Redeem',
+                          color: Appcolors.kgreenColor,
+                        )
+                      : CustomSqureButton(
+                          text: "You don't have enough points to redeem",
+                          color: const Color.fromARGB(255, 155, 158, 165))
+                  : SizedBox.shrink()),
         ],
       ),
     );

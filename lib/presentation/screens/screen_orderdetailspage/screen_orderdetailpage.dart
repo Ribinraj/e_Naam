@@ -1,21 +1,26 @@
+
+
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
-import 'package:e_naam/presentation/screens/screen_orderdetailspage/widgets/orderstatus_tracker.dart';
+import 'package:e_naam/data/redumptionrequests_model.dart';
+
 
 import 'package:e_naam/widgets/custom_networkimage.dart';
 import 'package:e_naam/widgets/custom_squrebutton.dart';
 import 'package:flutter/material.dart';
 
+
 class ScreenOerdeDetailPage extends StatefulWidget {
-  const ScreenOerdeDetailPage({super.key});
+  final RedumptionrequestsModel product;
+  const ScreenOerdeDetailPage({super.key, required this.product});
 
   @override
   State<ScreenOerdeDetailPage> createState() => _ScreenOerdeDetailPageState();
 }
 
 class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
-  String _orderStatus = "confirmed";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,8 +73,7 @@ class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
                     border:
                         Border.all(width: 1, color: Appcolors.kprimarycolor)),
                 child: ImageWithFallback(
-                  imageUrl:
-                      'https://5.imimg.com/data5/SELLER/Default/2022/4/OV/XU/MN/148217327/oppo-a76-mobile-phone.jpg',
+                  imageUrl: widget.product.productPicture,
                   width: double.infinity,
                   height: double.infinity,
                   fit: BoxFit.contain,
@@ -84,7 +88,7 @@ class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Vivo 14 pro',
+              widget.product.productName,
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Appcolors.kblackColor,
@@ -95,28 +99,48 @@ class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
             ),
             ResponsiveSizedBox.height10,
             TextStyles.body(
-                text: '4500 pts',
+                text: '${widget.product.redemptionPoints} pts',
                 weight: FontWeight.bold,
                 color: Appcolors.kprimarycolor),
             ResponsiveSizedBox.height20,
-            OrderStatusTracker(currentStatus: _orderStatus),
-            ResponsiveSizedBox.height20,
+
+            // Status Indicator Section
             TextStyles.caption(
-              text: 'Shipping details',
+              text: 'Order Status',
             ),
-            // ResponsiveSizedBox.height5,
             Divider(
               thickness: .5,
               color: Appcolors.kgreyColor,
             ),
-            TextStyles.body(text: 'Ribinraj op'),
-            TextStyles.medium(
-              text:
-                  'Oottupurath house,\n Amarambalam South PO ,\n Malappuram dt, Kerala',
-              color: Appcolors.kblackColor,
-            ),
+            ResponsiveSizedBox.height10,
+            _buildStatusIndicator(widget.product.status),
+            ResponsiveSizedBox.height20,
 
-            ResponsiveSizedBox.height50,
+            TextStyles.caption(
+              text: 'Shipping details',
+            ),
+            Divider(
+              thickness: .5,
+              color: Appcolors.kgreyColor,
+            ),
+            ResponsiveSizedBox.height10,
+            Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(255, 248, 239, 226)),
+                child: Column(
+                  children: [
+                    _buildAddressRow('Name', widget.product.recipientName),
+                    _buildAddressRow('Adress', widget.product.deliveryAddress),
+                    _buildAddressRow('City', widget.product.deliveryCity),
+                    _buildAddressRow('State', widget.product.deliveryState),
+                    _buildAddressRow('Country', widget.product.deliveryCountry),
+                    _buildAddressRow('Pincode', widget.product.deliveryPinCode),
+                  ],
+                )),
+
+            ResponsiveSizedBox.height20,
             CustomSqureButton(
                 ontap: () {
                   Navigator.pop(context);
@@ -127,5 +151,79 @@ class _ScreenOerdeDetailPageState extends State<ScreenOerdeDetailPage> {
         ),
       ),
     ])));
+  }
+
+  Widget _buildStatusIndicator(String status) {
+    Color statusColor;
+    IconData statusIcon;
+
+    switch (status.toLowerCase()) {
+      case 'pending':
+        statusColor = Colors.orange;
+        statusIcon = Icons.schedule;
+        break;
+      case 'delivered':
+        statusColor = Colors.green;
+        statusIcon = Icons.check_circle;
+        break;
+      case 'cancelled':
+      case 'cancel':
+        statusColor = Colors.red;
+        statusIcon = Icons.cancel;
+        break;
+      default:
+        statusColor = Colors.grey;
+        statusIcon = Icons.info;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: statusColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: statusColor.withOpacity(0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            statusIcon,
+            color: statusColor,
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          TextStyles.body(
+            text: status.toUpperCase(),
+            weight: FontWeight.w600,
+            color: statusColor,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddressRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: ResponsiveUtils.hp(0.5)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: ResponsiveUtils.wp(25),
+            child: TextStyles.body(
+              text: label,
+              color: Appcolors.kblackColor.withOpacity(0.7),
+            ),
+          ),
+          SizedBox(width: ResponsiveUtils.wp(3)),
+          Expanded(
+            child: TextStyles.body(
+              text: value,
+              weight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

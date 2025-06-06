@@ -12,6 +12,7 @@ import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart'
 import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
 import 'package:e_naam/presentation/screens/productlists/productslists.dart';
 import 'package:e_naam/presentation/screens/screen_categorypage/screen_categorypage.dart';
+import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
 import 'package:e_naam/presentation/screens/screen_notificationpage/notificationpage.dart';
 import 'package:e_naam/presentation/screens/screen_productdetailpage/product_detailpage.dart';
 import 'package:e_naam/presentation/screens/screen_redeem/widgets/grid_shimmer%20widget.dart';
@@ -21,6 +22,7 @@ import 'package:e_naam/widgets/customdrawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:shimmer/shimmer.dart';
 
@@ -238,7 +240,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                           Row(
                             children: [
                               BlocConsumer<FetchProfileBloc, FetchProfileState>(
-                                listener: (context, state) {
+                                listener: (context, state)async {
                                   if (state is FetchProfileSuccessState) {
                                     if (state.profile.profileStatus ==
                                         "Incomplete") {
@@ -247,6 +249,17 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                                         _showProfileIncompleteAlert(
                                             profile: state.profile);
                                       });
+                                    }
+                                  }else if(state is FetchProfileErrorState){
+                                    if(state.message=="Expired token"){
+                                       SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                              await preferences.remove('USER_TOKEN');
+                                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const ScreenLoginpage()),
+                        (Route<dynamic> route) => false,
+                      );
                                     }
                                   }
                                 },
@@ -519,119 +532,156 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                                   return const GridloadingShimmerWidget();
                                 }
                                 if (state is FetchLatestProductSuccessState) {
-                                  return GridView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    padding: const EdgeInsets.all(8),
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 6,
-                                      mainAxisSpacing: 6,
-                                      childAspectRatio:
-                                          0.7, // Control aspect ratio instead of fixed height
-                                    ),
-                                    itemCount: state.latestproducts.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            border: Border.all(
-                                                width: .3,
-                                                color: Appcolors.kprimarycolor),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              PageRouteBuilder(
-                                                transitionDuration:
-                                                    const Duration(
-                                                        milliseconds: 600),
-                                                pageBuilder: (context,
-                                                        animation,
-                                                        secondaryAnimation) =>
-                                                    ProductDetailpage(
-                                                  product: state
-                                                      .latestproducts[index],
+                                  return state.latestproducts.isEmpty
+                                      ? Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.category_rounded,
+                                                size: 80,
+                                                color: Appcolors.ksecondrycolor,
+                                              ),
+                                              const SizedBox(height: 16),
+                                              TextStyles.subheadline(
+                                                text: 'Products not available',
+                                                color: Appcolors.kprimarycolor,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : GridView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: const EdgeInsets.all(8),
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 6,
+                                            mainAxisSpacing: 6,
+                                            childAspectRatio:
+                                                0.7, // Control aspect ratio instead of fixed height
+                                          ),
+                                          itemCount:
+                                              state.latestproducts.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.transparent,
+                                                  border: Border.all(
+                                                      width: .3,
+                                                      color: Appcolors
+                                                          .kprimarycolor),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    PageRouteBuilder(
+                                                      transitionDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  600),
+                                                      pageBuilder: (context,
+                                                              animation,
+                                                              secondaryAnimation) =>
+                                                          ProductDetailpage(
+                                                        product: state
+                                                                .latestproducts[
+                                                            index],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(
+                                                      ResponsiveUtils.wp(2)),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 1,
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4),
+                                                          ),
+                                                          child: Hero(
+                                                            tag: state
+                                                                .latestproducts[
+                                                                    index]
+                                                                .productId,
+                                                            child:
+                                                                ImageWithFallback(
+                                                              imageUrl: state
+                                                                  .latestproducts[
+                                                                      index]
+                                                                  .productPicture,
+                                                              width: double
+                                                                  .infinity,
+                                                              height: double
+                                                                  .infinity,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                          height:
+                                                              ResponsiveUtils
+                                                                  .hp(1)),
+                                                      // Product name with flexible height
+                                                      Expanded(
+                                                        child: Text(
+                                                          state
+                                                              .latestproducts[
+                                                                  index]
+                                                              .productName,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Appcolors
+                                                                .kblackColor,
+                                                            fontSize:
+                                                                ResponsiveUtils
+                                                                    .wp(3),
+                                                          ),
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      ),
+                                                      // SizedBox(height: ResponsiveUtils.hp(0.5)),
+
+                                                      Text(
+                                                        '${state.latestproducts[index].redeemPoints} pts',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Appcolors
+                                                              .kprimarycolor,
+                                                          fontSize:
+                                                              ResponsiveUtils
+                                                                  .wp(3.8),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             );
                                           },
-                                          child: Padding(
-                                            padding: EdgeInsets.all(
-                                                ResponsiveUtils.wp(2)),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 1,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                    ),
-                                                    child: Hero(
-                                                      tag: state
-                                                          .latestproducts[index]
-                                                          .productId,
-                                                      child: ImageWithFallback(
-                                                        imageUrl: state
-                                                            .latestproducts[
-                                                                index]
-                                                            .productPicture,
-                                                        width: double.infinity,
-                                                        height: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                    height:
-                                                        ResponsiveUtils.hp(1)),
-                                                // Product name with flexible height
-                                                Expanded(
-                                                  child: Text(
-                                                    state.latestproducts[index]
-                                                        .productName,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          Appcolors.kblackColor,
-                                                      fontSize:
-                                                          ResponsiveUtils.wp(3),
-                                                    ),
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                // SizedBox(height: ResponsiveUtils.hp(0.5)),
-
-                                                Text(
-                                                  '${state.latestproducts[index].redeemPoints} pts',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
-                                                        Appcolors.kprimarycolor,
-                                                    fontSize:
-                                                        ResponsiveUtils.wp(3.8),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
+                                        );
                                 } else if (state
                                     is FetchLatestProductsErrorState) {
                                   return Center(

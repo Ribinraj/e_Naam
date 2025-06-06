@@ -113,134 +113,91 @@ class ThankYouPageState extends State<ThankYouPage>
             ),
 
             // Main Content
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Checkmark Animation
-                  AnimatedBuilder(
-                    animation: _checkmarkAnimation,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: _checkmarkAnimation.value,
-                        child: Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Checkmark Animation
+                    AnimatedBuilder(
+                      animation: _checkmarkAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _checkmarkAnimation.value,
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              color: Colors.green,
+                              size: 60,
+                            ),
                           ),
-                          child: const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 60,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
-                  // Thank You Content
-                  AnimatedBuilder(
-                    animation: _contentAnimation,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(0, 50 * (1 - _contentAnimation.value)),
-                        child: Opacity(
-                          opacity: _contentAnimation.value.clamp(0.0, 1.0),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'Thank You!',
-                                style: TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-
-                              ResponsiveSizedBox.height10,
-
-                              const Text(
-                                'Your Redeem was successful',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                              ResponsiveSizedBox.height20,
-                              TextStyles.medium(
-                                  text:
-                                      'your 2999 points holded upto devliver the product',
-                                  color: Appcolors.ksecondrycolor),
-                              ResponsiveSizedBox.height30,
-
-                              // Purchase Details Card
-                              Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.9),
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 15,
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    if (widget.productName != null) ...[
-                                      _buildDetailRow(
-                                        'Product',
-                                        widget.productName!,
-                                        Icons.shopping_bag,
-                                      ),
-                                      const SizedBox(height: 15),
-                                    ],
-                                    if (widget.amount != null) ...[
-                                      _buildDetailRow(
-                                        'Points',
-                                        widget.amount!,
-                                        Icons.pin_outlined,
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-
-                              ResponsiveSizedBox.height30,
-                              ElevatedButton(
-                                  onPressed: () {
-                                    navigateToMainPage(context, 0);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 30, vertical: 12),
+                    // Thank You Content
+                    AnimatedBuilder(
+                      animation: _contentAnimation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 50 * (1 - _contentAnimation.value)),
+                          child: Opacity(
+                            opacity: _contentAnimation.value.clamp(0.0, 1.0),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'Thank You!',
+                                  style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                   ),
-                                  child: TextStyles.medium(
-                                      text: 'Back', weight: FontWeight.bold))
-                            ],
+                                ),
+                                ResponsiveSizedBox.height10,
+                                const Text(
+                                  'Your Redeem was successful',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                ResponsiveSizedBox.height(17),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      navigateToMainPage(context, 0);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40, vertical: 12),
+                                    ),
+                                    child: TextStyles.body(
+                                        text: 'Back', weight: FontWeight.bold))
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

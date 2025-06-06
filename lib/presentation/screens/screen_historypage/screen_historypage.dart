@@ -6,6 +6,7 @@ import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class ScreenHistoryPage extends StatefulWidget {
   const ScreenHistoryPage({super.key});
@@ -80,43 +81,67 @@ class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
                     );
                   }
                   if (state is FetchTransactionsSuccessState) {
-                    return ListView.builder(
-                        itemCount: state.transactions.length,
-                        itemBuilder: (context, index) {
-                          final transaction = state.transactions[index];
-                          return Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        width: .5,
-                                        color: Appcolors.ksecondrycolor))),
-                            child: Row(
+                    return state.transactions.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextStyles.body(
-                                      color:transaction.transactionType=="REDEEMED"?Appcolors.kredColor: Appcolors.kblackColor,
-                                      text: transaction.transactionType,
-                                    ),
-                                    ResponsiveSizedBox.height5,
-                                    TextStyles.caption(
-                                        text: transaction.transactionDateTime)
-                                  ],
+                                const Icon(
+                                  SolarIconsOutline.transferHorizontal,
+                                  size: 60,
+                                  color: Appcolors.ksecondrycolor,
                                 ),
-                                const Spacer(),
-                                TextStyles.body(
-                                  text:
-                                      '${transaction.transactionType == "EARNED" ? '+' : '-'}${transaction.points}',
-                                  color: transaction.transactionType == "EARNED"
-                                      ? Appcolors.kgreenColor
-                                      : Appcolors.kredColor,
-                                )
+                                const SizedBox(height: 16),
+                                TextStyles.subheadline(
+                                  text: 'No transactions yet',
+                                  color: Appcolors.kprimarycolor,
+                                ),
                               ],
                             ),
-                          );
-                        });
+                          )
+                        : ListView.builder(
+                            itemCount: state.transactions.length,
+                            itemBuilder: (context, index) {
+                              final transaction = state.transactions[index];
+                              return Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            width: .5,
+                                            color: Appcolors.ksecondrycolor))),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextStyles.body(
+                                          color: transaction.transactionType ==
+                                                  "REDEEMED"
+                                              ? Appcolors.kredColor
+                                              : Appcolors.kblackColor,
+                                          text: transaction.transactionType,
+                                        ),
+                                        ResponsiveSizedBox.height5,
+                                        TextStyles.caption(
+                                            text:
+                                                transaction.transactionDateTime)
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    TextStyles.body(
+                                      text:
+                                          '${transaction.transactionType == "EARNED" ? '+' : '-'}${transaction.points}',
+                                      color: transaction.transactionType ==
+                                              "EARNED"
+                                          ? Appcolors.kgreenColor
+                                          : Appcolors.kredColor,
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
                   } else if (state is FetchtransactionsErrorState) {
                     return Center(
                       child: Text(state.message),
