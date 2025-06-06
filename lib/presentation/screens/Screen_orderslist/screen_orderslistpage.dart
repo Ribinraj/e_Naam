@@ -32,8 +32,11 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/data/redumptionrequests_model.dart';
+import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 
 import 'package:e_naam/presentation/blocs/redumption_requests/redumption_requests_bloc.dart';
+import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
+import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/widgets/custom_navbar.dart';
 import 'package:e_naam/presentation/screens/screen_orderdetailspage/screen_orderdetailpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
@@ -172,6 +175,19 @@ class _ScreenHistoryPageState extends State<OrdersListScreen> {
             )
           ],
         ),
+      ),
+            bottomNavigationBar: CustomBottomNavBar(
+        onTap: (index) {
+          context.read<BottomNavigationBloc>().add(
+                NavigateToPageEvent(pageIndex: index),
+              );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const ScreenMainPage(),
+            ),
+            (route) => false,
+          );
+        },
       ),
     );
   }

@@ -1,37 +1,37 @@
 class TransactionsModel {
-  final String userTransactionId;
-  final String userId;
-  final String transactionType;
-  final String codeId;
-  final String transactionDateTime;
-  final String points;
-  final String status;
-  final DateTime createdAt;
-  final String modifiedAt;
+  final String? userTransactionId;
+  final String? userId;
+  final String? transactionType;
+  final String? codeId;
+  final String? transactionDateTime;
+  final String? points;
+  final String? status;
+  final DateTime? createdAt;
+  final String? modifiedAt;
 
   TransactionsModel({
-    required this.userTransactionId,
-    required this.userId,
-    required this.transactionType,
-    required this.codeId,
-    required this.transactionDateTime,
-    required this.points,
-    required this.status,
-    required this.createdAt,
-    required this.modifiedAt,
+    this.userTransactionId,
+    this.userId,
+    this.transactionType,
+    this.codeId,
+    this.transactionDateTime,
+    this.points,
+    this.status,
+    this.createdAt,
+    this.modifiedAt,
   });
 
   factory TransactionsModel.fromJson(Map<String, dynamic> json) {
     return TransactionsModel(
-      userTransactionId: json['userTransactionId'],
-      userId: json['userId'],
-      transactionType: json['transactionType'],
-      codeId: json['codeId'],
-      transactionDateTime: json['transactionDateTime'],
-      points: json['points'],
-      status: json['status'],
-      createdAt: DateTime.parse(json['created_at']['date']),
-      modifiedAt: json['modified_at'],
+      userTransactionId: json['userTransactionId']?.toString(),
+      userId: json['userId']?.toString(),
+      transactionType: json['transactionType']?.toString(),
+      codeId: json['codeId']?.toString(),
+      transactionDateTime: json['transactionDateTime']?.toString(),
+      points: json['points']?.toString(),
+      status: json['status']?.toString(),
+      createdAt: DateTime.tryParse(json['created_at']?['date'] ?? ""),
+      modifiedAt: json['modified_at']?.toString(),
     );
   }
 
@@ -45,7 +45,7 @@ class TransactionsModel {
       'points': points,
       'status': status,
       'created_at': {
-        'date': createdAt.toIso8601String(),
+        'date': createdAt?.toIso8601String(),
         'timezone_type': 3,
         'timezone': 'UTC'
       },

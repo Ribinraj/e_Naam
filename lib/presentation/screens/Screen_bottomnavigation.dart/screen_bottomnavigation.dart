@@ -122,7 +122,11 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
           child: Scaffold(
             body: _pages[state.currentPageIndex], // ✅ No IndexedStack
             extendBody: true,
-            bottomNavigationBar: const CustomBottomNavBar(),
+            bottomNavigationBar: CustomBottomNavBar(onTap:(index){
+                     context.read<BottomNavigationBloc>().add(
+              NavigateToPageEvent(pageIndex: index),
+            );
+            } ,),
           ),
         );
       },
