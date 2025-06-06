@@ -6,6 +6,7 @@ import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class ScreenHistoryPage extends StatefulWidget {
@@ -118,15 +119,15 @@ class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
                                       children: [
                                         TextStyles.body(
                                           color: transaction.transactionType ==
-                                                  "REDEEMED"
-                                              ? Appcolors.kredColor
-                                              : Appcolors.kblackColor,
+                                                  "EARNED"
+                                              ? Appcolors.kgreenColor
+                                              : Appcolors.kredColor,
                                           text: transaction.transactionType,
                                         ),
                                         ResponsiveSizedBox.height5,
                                         TextStyles.caption(
                                             text:
-                                                transaction.transactionDateTime)
+                                                formatDateTime(transaction.transactionDateTime!))
                                       ],
                                     ),
                                     const Spacer(),
@@ -157,4 +158,14 @@ class _ScreenHistoryPageState extends State<ScreenHistoryPage> {
       ),
     );
   }
+  String formatDateTime(String input) {
+  // Parse the API string into DateTime
+  DateTime dateTime = DateTime.parse(input);
+
+  // Format date and time in 12-hour format
+  String formatted = DateFormat('dd MMM yyyy, hh:mm a').format(dateTime);
+
+  return formatted;
+}
+
 }

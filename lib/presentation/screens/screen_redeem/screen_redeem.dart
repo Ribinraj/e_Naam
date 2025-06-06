@@ -135,11 +135,11 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                               ),
                             ],
                           ),
-                          ResponsiveSizedBox.height5,
-                          TextStyles.caption(
-                            text: 'Your holding points 3000',
-                            color: const Color.fromARGB(255, 255, 226, 137),
-                          )
+                          // ResponsiveSizedBox.height5,
+                          // TextStyles.caption(
+                          //   text: 'Your holding points 3000',
+                          //   color: const Color.fromARGB(255, 255, 226, 137),
+                          // )
                         ],
                       ),
                       ResponsiveSizedBox.height5,
@@ -154,8 +154,8 @@ class _ScreenHistoryPageState extends State<ScreenRedeemPage> {
                           decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                  width: .5, color: Appcolors.ksecondrycolor)),
+                              border:
+                                  Border.all(width: .7, color: Colors.amber)),
                           child: TextStyles.caption(
                               text: 'Redemptions',
                               weight: FontWeight.bold,
