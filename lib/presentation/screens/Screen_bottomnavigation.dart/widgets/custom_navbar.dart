@@ -246,6 +246,8 @@
 //   }
 // }
 
+import 'dart:io';
+
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:flutter/material.dart';
@@ -260,8 +262,8 @@ class CustomBottomNavBar extends StatelessWidget {
     return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
       builder: (context, state) {
         return Container(
-          padding: EdgeInsets.only(bottom: 5),
-          height: 80,
+          
+          height: Platform.isIOS?85:80,
           color: Colors.transparent,
           child: Stack(
             children: [
@@ -271,7 +273,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 53,
+                  padding: EdgeInsets.only(bottom: 10),
+                  height:Platform.isIOS? 70:53,
                   color: Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -315,7 +318,7 @@ class CustomBottomNavBar extends StatelessWidget {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 17,
+                bottom: Platform.isIOS?27:17,
                 child: Center(
                   child: FloatingActionButton(
                     shape: CircleBorder(),
