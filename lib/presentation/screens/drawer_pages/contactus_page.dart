@@ -266,21 +266,18 @@ class _ContactUsPageState extends State<ContactUsPage> {
                         onTap: () => _launchURL('https://facebook.com'),
                       ),
                       ResponsiveSizedBox.width20,
-                      // _buildSocialButton(
-                      //   icon: Icons.alternate_email,
-                      //   color: const Color(0xFF1DA1F2),
-                      //   onTap: () => _launchURL('https://twitter.com'),
-                      // ),
                       _buildSocialButtonWithImage(
                         imagePath: 'assets/images/instagram_2111463.png',
                         color: const Color(0xFFE4405F),
                         onTap: () => _launchURL('https://instagram.com'),
                       ),
-                      // _buildSocialButton(
-                      //   icon: Icons.business,
-                      //   color: const Color(0xFF0A66C2),
-                      //   onTap: () => _launchURL('https://linkedin.com'),
-                      // ),
+                      ResponsiveSizedBox.width20,
+                      _buildSocialButtonWithImage(
+                        imagePath: 'assets/images/whatsapp_3536445.png',
+                        color: const Color(0xFF25D366),
+                        onTap: () => _launchWhatsApp('9946802969',
+                            'Hello! I would like to get in touch.'),
+                      ),
                     ],
                   ),
                 ],
@@ -432,5 +429,37 @@ class _ContactUsPageState extends State<ContactUsPage> {
         ),
       ),
     );
+  }
+
+  /////////////////
+  Future<void> _launchWhatsApp(String phoneNumber, [String? message]) async {
+    try {
+      // Remove any spaces, dashes, or special characters from phone number
+      String cleanNumber = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
+
+      // Ensure the number starts with country code
+      if (!cleanNumber.startsWith('+')) {
+        cleanNumber =
+            '+91$cleanNumber'; // Add India country code if not present
+      }
+
+      // Create WhatsApp URL
+      String whatsappUrl;
+      if (message != null && message.isNotEmpty) {
+        String encodedMessage = Uri.encodeComponent(message);
+        whatsappUrl = 'https://wa.me/$cleanNumber?text=$encodedMessage';
+      } else {
+        whatsappUrl = 'https://wa.me/$cleanNumber';
+      }
+
+      final Uri uri = Uri.parse(whatsappUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        _showErrorSnackBar('Could not launch WhatsApp');
+      }
+    } catch (e) {
+      _showErrorSnackBar('Error launching WhatsApp: $e');
+    }
   }
 }

@@ -83,7 +83,7 @@ class CustomDrawer extends StatelessWidget {
         // Menu items
         _buildMenuTile(
           icon: Icons.star_border_outlined,
-          title: 'About e_Naam',
+          title: 'About eNaam',
           onTap: () {
             CustomNavigation.pushWithTransition(context, AboutAppPage());
           },
