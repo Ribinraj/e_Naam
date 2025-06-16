@@ -2,6 +2,8 @@ import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
 import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/domain/controllers/push_notificationcontroller.dart';
+import 'package:e_naam/presentation/screens/drawer_pages/about_app_page.dart';
+import 'package:e_naam/presentation/screens/drawer_pages/contactus_page.dart';
 import 'package:e_naam/presentation/screens/screen_homepage/widgets/logout_dialog.dart';
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
@@ -68,7 +70,7 @@ class CustomDrawer extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'e_Naam',
+              'Menu',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -81,8 +83,10 @@ class CustomDrawer extends StatelessWidget {
         // Menu items
         _buildMenuTile(
           icon: Icons.star_border_outlined,
-          title: 'About e_Naam',
-          onTap: () {},
+          title: 'About eNaam',
+          onTap: () {
+            CustomNavigation.pushWithTransition(context, AboutAppPage());
+          },
         ),
         const Divider(height: 1),
 
@@ -109,26 +113,28 @@ class CustomDrawer extends StatelessWidget {
           ),
         ),
 
-        _buildMenuTile(
-          icon: Icons.question_answer_outlined,
-          title: 'FAQs',
-          onTap: () {},
-        ),
-        const Divider(height: 1),
+        // _buildMenuTile(
+        //   icon: Icons.question_answer_outlined,
+        //   title: 'FAQs',
+        //   onTap: () {},
+        // ),
+        // const Divider(height: 1),
 
         _buildMenuTile(
           icon: Icons.mail_outline,
           title: 'Contact Us',
-          onTap: () {},
+          onTap: () {
+            CustomNavigation.pushWithTransition(context, ContactUsPage());
+          },
         ),
         const Divider(height: 1),
 
-        _buildMenuTile(
-          icon: Icons.rate_review_outlined,
-          title: 'App Feedback',
-          onTap: () {},
-        ),
-        const Divider(),
+        // _buildMenuTile(
+        //   icon: Icons.rate_review_outlined,
+        //   title: 'App Feedback',
+        //   onTap: () {},
+        // ),
+        // const Divider(),
         _buildMenuTile(
           icon: Icons.logout,
           iconcolor: Appcolors.kredColor,

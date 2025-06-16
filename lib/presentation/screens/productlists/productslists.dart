@@ -56,13 +56,17 @@ class _CategoryPageState extends State<ProductslistsPage> {
                           Icons.arrow_back,
                           color: Appcolors.kwhiteColor,
                         )),
-                    ResponsiveSizedBox.width50,
-                    Text(
-                      widget.categoryName,
-                      style: TextStyle(
-                        fontSize: ResponsiveUtils.wp(6),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    ResponsiveSizedBox.width(10),
+                    Flexible(
+                      child: Text(
+                        widget.categoryName,
+                        style: TextStyle(
+                          fontSize: ResponsiveUtils.wp(5),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

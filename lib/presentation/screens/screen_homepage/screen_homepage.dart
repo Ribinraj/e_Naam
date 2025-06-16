@@ -7,7 +7,7 @@ import 'package:e_naam/data/update_profilemodel.dart';
 import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_latest_products/fetch_latest_product_bloc.dart';
-import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
+
 import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/screens/edit_profile/edit_profilepage.dart';
 import 'package:e_naam/presentation/screens/productlists/productslists.dart';
@@ -240,7 +240,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                           Row(
                             children: [
                               BlocConsumer<FetchProfileBloc, FetchProfileState>(
-                                listener: (context, state)async {
+                                listener: (context, state) async {
                                   if (state is FetchProfileSuccessState) {
                                     if (state.profile.profileStatus ==
                                         "Incomplete") {
@@ -250,16 +250,17 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                                             profile: state.profile);
                                       });
                                     }
-                                  }else if(state is FetchProfileErrorState){
-                                    if(state.message=="Expired token"){
-                                       SharedPreferences preferences =
-                            await SharedPreferences.getInstance();
-                              await preferences.remove('USER_TOKEN');
-                                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const ScreenLoginpage()),
-                        (Route<dynamic> route) => false,
-                      );
+                                  } else if (state is FetchProfileErrorState) {
+                                    if (state.message == "Expired token") {
+                                      SharedPreferences preferences =
+                                          await SharedPreferences.getInstance();
+                                      await preferences.remove('USER_TOKEN');
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScreenLoginpage()),
+                                        (Route<dynamic> route) => false,
+                                      );
                                     }
                                   }
                                 },
@@ -908,7 +909,6 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
       },
     );
   }
-
 }
 
 class PointsBackgroundPainter extends CustomPainter {

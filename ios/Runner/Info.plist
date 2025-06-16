@@ -58,6 +58,18 @@
 
    <key>FirebaseAppDelegateProxyEnabled</key>
   <false/>
+<!-- URL Schemes that can be launched -->
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>https</string>
+    <string>http</string>
+    <string>mailto</string>
+    <string>tel</string>
+    <string>sms</string>
+</array>
 
+<!-- Phone call permission description -->
+<key>NSUserTrackingUsageDescription</key>
+<string>This app needs to access phone to make calls from contact page</string>
 </dict>
 </plist>
