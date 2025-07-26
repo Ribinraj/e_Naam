@@ -372,7 +372,7 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
                 TextStyles.caption(text: 'User Occupation'),
                 ResponsiveSizedBox.height10,
                 CustomDropdownField(
-                  items: const ['Distributer', 'Dealer', 'Plumber'],
+                  items: const ['Distributor', 'Dealer', 'Plumber'],
                   value: selectedUserType,
                   hintText: 'Select user type',
                   onChanged: (value) {

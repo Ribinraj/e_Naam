@@ -113,7 +113,7 @@ class _CategoryPageState extends State<ProductslistsPage> {
                           )
                         : GridView.builder(
                             shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
+                            // physics: const NeverScrollableScrollPhysics(),
                             padding: const EdgeInsets.all(8),
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(

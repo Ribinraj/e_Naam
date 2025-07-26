@@ -145,13 +145,14 @@ class Loginrepo {
       log("Response received: ${response.statusCode}");
       final responseData = response.data;
       log("Response data: $responseData");
+        //    if (responseData['message'] == "Expired token") {
+        //   SharedPreferences preferences = await SharedPreferences.getInstance();
+        //   await preferences.remove('USER_TOKEN');
+        //   // await preferences.clear();
+        // }
       if (!responseData["error"] && responseData["status"] == 200) {
         final user = ProfileModel.fromJson(responseData["data"]);
-        if (responseData['message'] == "Expired token") {
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          await preferences.remove('USER_TOKEN');
-          // await preferences.clear();
-        }
+   
 
         //SharedPreferences preferences = await SharedPreferences.getInstance();
 

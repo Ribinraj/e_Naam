@@ -1,7 +1,10 @@
 import 'package:e_naam/core/colors.dart';
 import 'package:e_naam/core/constants.dart';
+import 'package:e_naam/presentation/blocs/fetch_contact_bloc/fetch_contact_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsPage extends StatefulWidget {
@@ -79,6 +82,13 @@ class _ContactUsPageState extends State<ContactUsPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<FetchContactBloc>().add(FetchcontactInitailEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -110,7 +120,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
               ),
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.contact_support,
                     size: 48,
                     color: Appcolors.korangeColor,
@@ -136,177 +146,140 @@ class _ContactUsPageState extends State<ContactUsPage> {
               ),
             ),
 
-            const SizedBox(height: 24),
-
-            // Contact Methods
-            _buildContactItem(
-              icon: Icons.phone,
-              title: 'Phone',
-              subtitle: '+91 9946802969',
-              description: 'Tap to call',
-              color: Colors.green,
-              onTap: () => _launchPhone('+919946802969'),
-              onLongPress: () =>
-                  _copyToClipboard('+91 9946802969', 'Phone number'),
-            ),
-
-            const SizedBox(height: 16),
-
-            _buildContactItem(
-              icon: Icons.email,
-              title: 'Email',
-              subtitle: 'ribinrajop@gmail.com',
-              description: 'Tap to send email',
-              color: Colors.orange,
-              onTap: () => _launchEmail('ribinrajop@gmail.com'),
-              onLongPress: () =>
-                  _copyToClipboard('ribinrajop@gmail.com', 'Email address'),
-            ),
-
-            const SizedBox(height: 16),
-
-            _buildContactItem(
-              icon: Icons.location_on,
-              title: 'Location',
-              subtitle: 'Mysore, Karnataka',
-              description: 'Tap to view on map',
-              color: Colors.red,
-              onTap: () => _launchURL(
-                  'https://maps.google.com/?q=Mysore,Karnataka,India'),
-              onLongPress: () =>
-                  _copyToClipboard('Mysore, Karnataka, India', 'Address'),
-            ),
-
-            const SizedBox(height: 16),
-
-            _buildContactItem(
-              icon: Icons.language,
-              title: 'Website',
-              subtitle: 'www.yourcompany.com',
-              description: 'Tap to visit website',
-              color: Colors.blue,
-              onTap: () => _launchURL('https://www.google.com'),
-              onLongPress: () =>
-                  _copyToClipboard('www.yourcompany.com', 'Website URL'),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Business Hours
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            ResponsiveSizedBox.height20,
+            BlocBuilder<FetchContactBloc, FetchContactState>(
+              builder: (context, state) {
+                if (state is FetchContactLoadingState) {
+                  return const Center(
+                    child: SpinKitCircle(
+                      size: 45,
+                      color: Appcolors.ksecondrycolor,
+                    ),
+                  );
+                } else if (state is FetchContactErrorState) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                } else if (state is FetchcontactSuccessState) {
+                  final contact = state.contact;
+                  return Column(
                     children: [
-                      Icon(Icons.access_time, color: Colors.blue[600]),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Business Hours',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      // Contact Methods
+                      _buildContactItem(
+                        icon: Icons.phone,
+                        title: 'Phone',
+                        subtitle:contact.mobileNumber,
+                        description: 'Tap to call',
+                        color: Colors.green,
+                        onTap: () => _launchPhone(contact.mobileNumber),
+                        onLongPress: () =>
+                            _copyToClipboard(contact.mobileNumber, 'Phone number'),
+                      ),
+            
+                      ResponsiveSizedBox.height10,
+            
+                      _buildContactItem(
+                        icon: Icons.email,
+                        title: 'Email',
+                        subtitle:contact.emailAddress,
+                        description:contact.emailAddress,
+                        color: Colors.orange,
+                        onTap: () => _launchEmail(contact.emailAddress),
+                        onLongPress: () => _copyToClipboard(
+                            contact.emailAddress, 'Email address'),
+                      ),
+            
+                      ResponsiveSizedBox.height10,
+            
+                      _buildContactItem(
+                        icon: Icons.location_on,
+                        title: 'Location',
+                        subtitle: contact.address,
+                        description: 'Tap to view on map',
+                        color: Colors.red,
+                        onTap: () {},
+                        onLongPress: () {},
+                      ),
+            
+                      ResponsiveSizedBox.height10,
+            
+                      _buildContactItem(
+                        icon: Icons.language,
+                        title: 'Website',
+                        subtitle:contact.website,
+                        description: 'Tap to visit website',
+                        color: Colors.blue,
+                        onTap: () => _launchURL(contact.website),
+                        onLongPress: () => _copyToClipboard(
+                            contact.website, 'Website URL'),
+                      ),
+            
+                      ResponsiveSizedBox.height20,
+            
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Follow Us',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            ResponsiveSizedBox.height10,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                _buildSocialButtonWithImage(
+                                  imagePath:
+                                      'assets/images/facebook_2504903.png',
+                                  color: const Color(0xFF1877F2),
+                                  onTap: () =>
+                                      _launchURL(contact.fbLink),
+                                ),
+                                ResponsiveSizedBox.width20,
+                                _buildSocialButtonWithImage(
+                                  imagePath:
+                                      'assets/images/instagram_2111463.png',
+                                  color: const Color(0xFFE4405F),
+                                  onTap: () =>
+                                      _launchURL(contact.instaLink),
+                                ),
+                                ResponsiveSizedBox.width20,
+                                _buildSocialButtonWithImage(
+                                  imagePath:
+                                      'assets/images/whatsapp_3536445.png',
+                                  color: const Color(0xFF25D366),
+                                  onTap: () => _launchWhatsApp(contact.whatsappNumber,
+                                      'Hello! I would like to get in touch.'),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 16),
-                  _buildHourRow('Monday - Friday', '9:00 AM - 6:00 PM'),
-                  _buildHourRow('Saturday', '10:00 AM - 4:00 PM'),
-                  _buildHourRow('Sunday', 'Closed'),
-                ],
-              ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
 
-            const SizedBox(height: 24),
-
-            // Social Media
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Follow Us',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildSocialButtonWithImage(
-                        imagePath: 'assets/images/facebook_2504903.png',
-                        color: const Color(0xFF1877F2),
-                        onTap: () => _launchURL('https://facebook.com'),
-                      ),
-                      ResponsiveSizedBox.width20,
-                      _buildSocialButtonWithImage(
-                        imagePath: 'assets/images/instagram_2111463.png',
-                        color: const Color(0xFFE4405F),
-                        onTap: () => _launchURL('https://instagram.com'),
-                      ),
-                      ResponsiveSizedBox.width20,
-                      _buildSocialButtonWithImage(
-                        imagePath: 'assets/images/whatsapp_3536445.png',
-                        color: const Color(0xFF25D366),
-                        onTap: () => _launchWhatsApp('9946802969',
-                            'Hello! I would like to get in touch.'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Help Text
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue[200]!),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: Colors.blue[600]),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Text(
-                      'Long press on any contact item to copy it to clipboard',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            ResponsiveSizedBox.height50
           ],
         ),
       ),

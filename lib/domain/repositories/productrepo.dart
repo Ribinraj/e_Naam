@@ -4,7 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:e_naam/core/urls.dart';
 import 'package:e_naam/data/banner_model.dart';
 import 'package:e_naam/data/category_model.dart';
+import 'package:e_naam/data/contact_model.dart';
+import 'package:e_naam/data/fetch_happyclient.dart';
 import 'package:e_naam/data/notification_model.dart';
+import 'package:e_naam/data/offers_model.dart';
 import 'package:e_naam/data/productmodel.dart';
 import 'package:e_naam/data/redeem_requestmodel.dart';
 import 'package:e_naam/data/redumptionrequests_model.dart';
@@ -166,15 +169,15 @@ class Productrepo {
       );
     }
   }
+
   //////////-------------fetchlatestproduct-----------------------//////////////////////
-  Future<ApiResponse<List<ProductModel>>> fetchlatestproducts(
-      ) async {
+  Future<ApiResponse<List<ProductModel>>> fetchlatestproducts() async {
     try {
       final token = await getUserToken();
       log(Endpoints.latestproducts);
       Response response = await dio.get(
         Endpoints.latestproducts,
-       
+
         //queryParameters: {'categoryId': categoryId},
         options: Options(headers: {'Authorization': token}),
       );
@@ -183,7 +186,6 @@ class Productrepo {
       log(responseData["status"].toString());
       // log(responseData);
       if (!responseData["error"] && responseData["status"] == 200) {
-    
         final List<dynamic> productlist = responseData['data'];
         //log(productlist.toString());
         List<ProductModel> products = productlist
@@ -216,6 +218,7 @@ class Productrepo {
       );
     }
   }
+
   //////////-------------RedeemRequest-----------------///////////////////
   Future<ApiResponse> redeemrequest(
       {required RedeemRequestModel redeemdata}) async {
@@ -263,15 +266,14 @@ class Productrepo {
       );
     }
   }
+
 ////////////-----------fetchnotification-----------////////////////////
-  Future<ApiResponse<List<NotificationModel>>> fetchnotifications(
-      ) async {
+  Future<ApiResponse<List<NotificationModel>>> fetchnotifications() async {
     try {
       final token = await getUserToken();
-   
+
       Response response = await dio.get(
         Endpoints.notifications,
-       
         options: Options(headers: {'Authorization': token}),
       );
       log("Response received: ${response.statusCode}");
@@ -279,13 +281,12 @@ class Productrepo {
       log(responseData["status"].toString());
       // log(responseData);
       if (!responseData["error"] && responseData["status"] == 200) {
-   
         final List<dynamic> notificationlist = responseData['data'];
         //log(productlist.toString());
         List<NotificationModel> notifications = notificationlist
             .map((notification) => NotificationModel.fromJson(notification))
             .toList();
-      log(notifications.length.toString());
+        log(notifications.length.toString());
         return ApiResponse(
           data: notifications,
           message: responseData['message'] ?? 'Success',
@@ -312,15 +313,14 @@ class Productrepo {
       );
     }
   }
+
 ////////////-----------fetchtransactions-----------////////////////////
-  Future<ApiResponse<List<TransactionsModel>>> fetchtransactions(
-      ) async {
+  Future<ApiResponse<List<TransactionsModel>>> fetchtransactions() async {
     try {
       final token = await getUserToken();
-   
+
       Response response = await dio.get(
         Endpoints.transactions,
-       
         options: Options(headers: {'Authorization': token}),
       );
       log("Response received: ${response.statusCode}");
@@ -328,13 +328,12 @@ class Productrepo {
       log(responseData["status"].toString());
       // log(responseData);
       if (!responseData["error"] && responseData["status"] == 200) {
-   
         final List<dynamic> transactionlist = responseData['data'];
         //log(productlist.toString());
         List<TransactionsModel> transactions = transactionlist
             .map((notification) => TransactionsModel.fromJson(notification))
             .toList();
-  
+
         return ApiResponse(
           data: transactions,
           message: responseData['message'] ?? 'Success',
@@ -361,31 +360,167 @@ class Productrepo {
       );
     }
   }
+
   ////////////-----------fetchredeemrequests-----------////////////////////
-  Future<ApiResponse<List<RedumptionrequestsModel>>> fetchredeemrequests(
-      ) async {
+  Future<ApiResponse<List<RedumptionrequestsModel>>>
+      fetchredeemrequests() async {
     try {
       final token = await getUserToken();
-   
+
       Response response = await dio.get(
         Endpoints.redumptionRequests,
-       
         options: Options(headers: {'Authorization': token}),
       );
-   
+
       final responseData = response.data;
       log(responseData["status"].toString());
-  
+
       if (!responseData["error"] && responseData["status"] == 200) {
-   
         final List<dynamic> redeemrequestlists = responseData['data'];
-     
+
         List<RedumptionrequestsModel> redeemrequest = redeemrequestlists
-            .map((redeemrequest) => RedumptionrequestsModel.fromJson(redeemrequest))
+            .map((redeemrequest) =>
+                RedumptionrequestsModel.fromJson(redeemrequest))
             .toList();
- 
+
         return ApiResponse(
           data: redeemrequest,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        log('erorrrrrrrrrrrrrrror');
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
+
+  ////////////-----------fetchcontact-----------////////////////////
+  Future<ApiResponse<ContactInfoModel>> fetchcontact() async {
+    try {
+      Response response = await dio.get(
+        Endpoints.fetchcontact,
+      );
+
+      final responseData = response.data;
+      log('contatct----------details ${responseData["status"].toString()}');
+
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final contact = ContactInfoModel.fromJson(responseData['data']);
+        
+        return ApiResponse(
+          data: contact,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        log('erorrrrrrrrrrrrrrror');
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
+  ////////////-----------fetchhappiclients-----------////////////////////
+  Future<ApiResponse<List<HappyClientModel>>>
+      fetchhappiclients() async {
+    try {
+    
+
+      Response response = await dio.get(
+        Endpoints.fetchhappyclients,
+    
+      );
+
+      final responseData = response.data;
+      log(responseData["status"].toString());
+
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final List<dynamic> happyclientslists = responseData['data'];
+
+        List<HappyClientModel> happyclients = happyclientslists
+            .map((happyclient) =>
+                HappyClientModel.fromJson(happyclient))
+            .toList();
+
+        return ApiResponse(
+          data:happyclients,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        log('erorrrrrrrrrrrrrrror');
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
+  ////////////-----------fetchoffers-----------////////////////////
+  Future<ApiResponse<List<OfferModel>>>
+      fetchoffers() async {
+    try {
+      final token = await getUserToken();
+
+      Response response = await dio.get(
+        Endpoints.fetchoffers,
+        options: Options(headers: {'Authorization': token}),
+      );
+
+      final responseData = response.data;
+      log(responseData["status"].toString());
+
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final List<dynamic> offerlists = responseData['data'];
+
+        List<OfferModel> offerslists =offerlists
+            .map((offer) =>
+                OfferModel.fromJson(offer))
+            .toList();
+
+        return ApiResponse(
+          data: offerslists,
           message: responseData['message'] ?? 'Success',
           error: false,
           status: responseData["status"],

@@ -4,16 +4,24 @@ import 'package:e_naam/core/responsive_utils.dart';
 import 'package:e_naam/domain/controllers/push_notificationcontroller.dart';
 import 'package:e_naam/presentation/screens/drawer_pages/about_app_page.dart';
 import 'package:e_naam/presentation/screens/drawer_pages/contactus_page.dart';
+import 'package:e_naam/presentation/screens/screen_happycustomers/screen_happycustomers.dart';
 import 'package:e_naam/presentation/screens/screen_homepage/widgets/logout_dialog.dart';
 import 'package:e_naam/presentation/screens/screen_loginpage/screen_loginpage.dart';
+import 'package:e_naam/presentation/screens/screen_offerspage/screen_offerspage.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
 
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -82,18 +90,28 @@ class CustomDrawer extends StatelessWidget {
 
         // Menu items
         _buildMenuTile(
-          icon: Icons.star_border_outlined,
-          title: 'About eNaam',
+          icon: Icons.local_offer_outlined,
+          title: 'Offers',
           onTap: () {
-            CustomNavigation.pushWithTransition(context, AboutAppPage());
+            CustomNavigation.pushWithTransition(context, ScreenOffersPage());
           },
         ),
         const Divider(height: 1),
-
+        _buildMenuTile(
+          icon: Icons.people_alt_outlined,
+          title: 'Happy Clients',
+          onTap: () {
+            CustomNavigation.pushWithTransition(
+                context, ScreenHappycustomersPage());
+          },
+        ),
+        const Divider(height: 1),
         _buildMenuTile(
           icon: Icons.shopping_bag_outlined,
           title: 'Privacy Policy',
-          onTap: () {},
+          onTap: () {
+            _launchURL('https://enaam.app/home/privacy');
+          },
         ),
         const Divider(height: 1),
 
@@ -211,6 +229,30 @@ class CustomDrawer extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _launchURL(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        _showErrorSnackBar('Could not launch $url');
+      }
+    } catch (e) {
+      _showErrorSnackBar('Error launching URL: $e');
+    }
+  }
+
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
       ),
     );
   }

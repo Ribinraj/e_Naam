@@ -139,7 +139,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                 userLoginOTP: _currentOtp,
                 userFullName: nameController.text,
                 userOccupation: selectedUserType,
-                pushToken:pushtoken,
+                pushToken: pushtoken,
               ),
             ),
           );
@@ -207,7 +207,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextStyles.subheadline(text: 'Get Register with e_Naam ...'),
+                  TextStyles.subheadline(text: 'Get Register with eNaam'),
                   ResponsiveSizedBox.height10,
 
                   // Full Name Field
@@ -228,7 +228,7 @@ class _ScreenRegisterPageState extends State<ScreenRegisterPage> {
                   ),
                   ResponsiveSizedBox.height10,
                   CustomDropdownField(
-                    items: const ['Distributer', 'Dealer', 'Plumber'],
+                    items: const ['Distributor', 'Dealer', 'Plumber'],
                     value: selectedUserType,
                     hintText: 'Select user type',
                     onChanged: (value) {
