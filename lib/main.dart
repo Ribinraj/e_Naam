@@ -8,8 +8,11 @@ import 'package:e_naam/domain/repositories/productrepo.dart';
 import 'package:e_naam/firebase_options.dart';
 import 'package:e_naam/presentation/blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_contact_bloc/fetch_contact_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_happyclients_bloc/fetch_happyclients_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_latest_products/fetch_latest_product_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_notification/fetch_notification_bloc.dart';
+import 'package:e_naam/presentation/blocs/fetch_offerslists_bloc/fetch_offerslists_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
 import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
@@ -23,7 +26,9 @@ import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
 import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
-
+import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
+import 'package:e_naam/presentation/screens/screen_happycustomers/screen_happycustomers.dart';
+import 'package:e_naam/presentation/screens/screen_offerspage/screen_offerspage.dart';
 
 import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +52,13 @@ void main() async {
       provisional: false,
     );
   }
+  //   SystemChrome.setSystemUIOverlayStyle(
+  //   const SystemUiOverlayStyle(
+  //     statusBarColor: Colors.transparent,
+  //     statusBarIconBrightness: Brightness.light,
+  //     statusBarBrightness: Brightness.light,
+  //   ),
+  // );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -114,16 +126,29 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => FetchLatestProductBloc(repository: productrepo),
         ),
+           BlocProvider(
+          create: (context) => FetchContactBloc(repository: productrepo),
+        ),
+             BlocProvider(
+          create: (context) => FetchHappyclientsBloc(repository: productrepo),
+        ),
+                BlocProvider(
+          create: (context) => FetchOfferslistsBloc(repository: productrepo),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'e_Naam',
         theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+
+            colorScheme: ColorScheme.fromSeed(
+            brightness: Brightness.dark,
+              seedColor: Colors.deepPurple),
             useMaterial3: true,
             scaffoldBackgroundColor: Appcolors.kwhiteColor),
-        // home: ThankYouPage(),
+
         home: const SplashScreen(),
+       //home: const ScreenMainPage(),
       ),
     );
   }

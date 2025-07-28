@@ -227,8 +227,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ScreenEditProfilepage extends StatefulWidget {
+  final bool isfromProfile;
   final UpdateProfilemodel profile;
-  const ScreenEditProfilepage({super.key, required this.profile});
+  const ScreenEditProfilepage({super.key, this.isfromProfile=true, required this.profile});
 
   @override
   State<ScreenEditProfilepage> createState() => _ScreenEditProfilepageState();
@@ -253,7 +254,7 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
     super.initState();
     fullnameController.text = widget.profile.userFullName ?? '';
     selectedUserType =
-        _normalizeOccupation(widget.profile.userOccupation) ?? 'Distributer';
+      widget.profile.userOccupation ?? 'Distributor';
     upiAdressController.text = widget.profile.userUPIAddress ?? '';
     pancardnumberController.text = widget.profile.panCardID ?? '';
     adharcardnumberController.text = widget.profile.adharCardID ?? '';
@@ -261,19 +262,19 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
     gstController.text = widget.profile.gst ?? '';
   }
 
-  String? _normalizeOccupation(String? role) {
-    switch (role?.toLowerCase()) {
-      case 'distributer':
-      case 'distributor':
-        return 'Distributer';
-      case 'dealer':
-        return 'Dealer';
-      case 'plumber':
-        return 'Plumber';
-      default:
-        return null;
-    }
-  }
+  // String? _normalizeOccupation(String? role) {
+  //   switch (role?.toLowerCase()) {
+  //     case 'distributer':
+  //     case 'distributor':
+  //       return 'Distributer';
+  //     case 'dealer':
+  //       return 'Dealer';
+  //     case 'plumber':
+  //       return 'Plumber';
+  //     default:
+  //       return null;
+  //   }
+  // }
 
   // Validation function for PAN card
   String? _validatePanCard(String? value) {
@@ -349,6 +350,10 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
           automaticallyImplyLeading: false,
           backgroundColor: Appcolors.kprimarycolor,
           surfaceTintColor: Appcolors.kwhiteColor,
+          leading: widget.isfromProfile?IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Appcolors.kwhiteColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ):null,
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(15),
@@ -359,7 +364,7 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
               children: [
                 TextStyles.subheadline(text: 'Edit Profile'),
                 ResponsiveSizedBox.height20,
-                TextStyles.caption(text: 'Your fullname'),
+                TextStyles.medium(text: 'Your fullname'),
                 ResponsiveSizedBox.height10,
                 CustomEditingTextfield(
                   controller: fullnameController,
@@ -369,10 +374,10 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
                       : null,
                 ),
                 ResponsiveSizedBox.height20,
-                TextStyles.caption(text: 'User Occupation'),
+                TextStyles.medium(text: 'User Occupation'),
                 ResponsiveSizedBox.height10,
                 CustomDropdownField(
-                  items: const ['Distributer', 'Dealer', 'Plumber'],
+                  items: const ['Distributor', 'Dealer', 'Plumber'],
                   value: selectedUserType,
                   hintText: 'Select user type',
                   onChanged: (value) {
@@ -384,14 +389,14 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
                       value == null ? 'Please select a user type' : null,
                 ),
                 ResponsiveSizedBox.height50,
-                TextStyles.caption(text: 'UPI address'),
+                TextStyles.medium(text: 'UPI address'),
                 ResponsiveSizedBox.height10,
                 CustomEditingTextfield(
                   controller: upiAdressController,
                   hinttext: 'UPI address',
                 ),
                 ResponsiveSizedBox.height20,
-                TextStyles.caption(text: 'PAN card number'),
+                TextStyles.medium(text: 'PAN card number'),
                 ResponsiveSizedBox.height10,
                 CustomEditingTextfield(
                   controller: pancardnumberController,
@@ -401,7 +406,7 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
                       TextCapitalization.characters, // Auto uppercase
                 ),
                 ResponsiveSizedBox.height50,
-                TextStyles.caption(text: 'Aadhaar card number'),
+                TextStyles.medium(text: 'Aadhaar card number'),
                 ResponsiveSizedBox.height10,
                 CustomEditingTextfield(
                   controller: adharcardnumberController,
@@ -410,14 +415,14 @@ class _ScreenEditProfilepageState extends State<ScreenEditProfilepage> {
                   validator: _validateAadhaarCard,
                 ),
                 ResponsiveSizedBox.height20,
-                TextStyles.caption(text: 'Your Address'),
+                TextStyles.medium(text: 'Your Address'),
                 ResponsiveSizedBox.height10,
                 CustomEditingTextfield(
                   controller: adressController,
                   hinttext: 'Address',
                 ),
                 ResponsiveSizedBox.height20,
-                TextStyles.caption(text: 'GST number'),
+                TextStyles.medium(text: 'GST number'),
                 ResponsiveSizedBox.height10,
                 CustomEditingTextfield(
                   controller: gstController,

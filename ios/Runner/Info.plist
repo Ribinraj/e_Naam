@@ -53,8 +53,7 @@
     <string>remote-notification</string>
     </array>
 
-   <key>NSUserTrackingUsageDescription</key>
-   <string>This identifier will be used to deliver personalized ads to you.</string>
+
 
    <key>FirebaseAppDelegateProxyEnabled</key>
   <false/>
@@ -68,8 +67,6 @@
     <string>sms</string>
 </array>
 
-<!-- Phone call permission description -->
-<key>NSUserTrackingUsageDescription</key>
-<string>This app needs to access phone to make calls from contact page</string>
+
 </dict>
 </plist>

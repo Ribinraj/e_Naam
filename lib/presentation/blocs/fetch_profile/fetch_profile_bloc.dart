@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:e_naam/data/profile_model.dart';
@@ -14,13 +15,13 @@ class FetchProfileBloc extends Bloc<FetchProfileEvent, FetchProfileState> {
     on<FetchProfileEvent>((event, emit) {
       // TODO: implement event handler
     });
-     on<FetchProfileInitialEvent>(profilefetching);
+    on<FetchProfileInitialEvent>(profilefetching);
   }
 
-  FutureOr<void> profilefetching(FetchProfileInitialEvent event, Emitter<FetchProfileState> emit)async {
-        emit(FetchProfileLoadingState());
+  FutureOr<void> profilefetching(
+      FetchProfileInitialEvent event, Emitter<FetchProfileState> emit) async {
+    emit(FetchProfileLoadingState());
     try {
-      print("Before API call");
       final response = await repository.fetchprofile();
       print(
           "After API call - Response received: status=${response.status}, error=${response.error}");
@@ -28,6 +29,7 @@ class FetchProfileBloc extends Bloc<FetchProfileEvent, FetchProfileState> {
         print('Data received: ${response.status}');
         emit(FetchProfileSuccessState(profile: response.data!));
       } else {
+        log(response.message);
         emit(FetchProfileErrorState(message: response.message));
       }
     } catch (e) {

@@ -27,7 +27,7 @@ class CustomDropdownField extends StatelessWidget {
                 value: item,
                 child: Text(
                   item,
-                  style: const TextStyle(fontSize: 12,),
+                  style: const TextStyle(fontSize: 13,),
                 ),
               ))
           .toList(),
@@ -43,7 +43,7 @@ class CustomDropdownField extends StatelessWidget {
         hintText: hintText,
         hintStyle: const TextStyle(
             color: Appcolors.kgreyColor,
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w300),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadiusStyles.kradius5(),

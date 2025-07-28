@@ -49,7 +49,7 @@ class CustomEditingTextfield extends StatelessWidget {
           hintText: hinttext,
           hintStyle: const TextStyle(
               color: Appcolors.kgreyColor,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w300),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadiusStyles.kradius5(),

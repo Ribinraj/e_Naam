@@ -163,6 +163,7 @@ class _ScreenHomepageState extends State<ScreenHomepage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ScreenEditProfilepage(
+                                  isfromProfile: false,
                                   profile: UpdateProfilemodel(
                                     userFullName: profile.userFullName,
                                     userOccupation: profile.userOccupation,

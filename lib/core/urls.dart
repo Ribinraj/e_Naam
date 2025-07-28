@@ -1,5 +1,6 @@
 class Endpoints {
-  static const baseUrl = 'https://thefairy.in/enaam/api/';
+  // static const baseUrl = 'https://thefairy.in/enaam/api/';
+  static const baseUrl = 'https://enaam.app/api/';
   static const sendOtp = 'login/login';
   static const verifyotp = 'login/verify';
   static const resendotp = 'login/resend';
@@ -14,4 +15,7 @@ class Endpoints {
   static const transactions = 'login/transactions';
   static const redumptionRequests = 'login/myrequests';
   static const latestproducts = 'masters/latestproducts';
+  static const fetchcontact = 'masters/contact';
+  static const fetchhappyclients = 'masters/happyclients';
+  static const fetchoffers = 'login/offers';
 }
