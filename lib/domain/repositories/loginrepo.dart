@@ -68,9 +68,11 @@ class Loginrepo {
     try {
       Response response = await dio.post(Endpoints.verifyotp, data: user);
       final responseData = response.data;
+      log('responsestatus${responseData}');
       log('responsestatus${responseData['status']}');
-      log('usertoken${responseData["data"]["token"]}');
+    
       if (!responseData["error"] && responseData["status"] == 200) {
+        
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences..setString('USER_TOKEN', responseData["data"]["token"]);
         return ApiResponse(
@@ -80,6 +82,7 @@ class Loginrepo {
           status: responseData["status"],
         );
       } else {
+     
         return ApiResponse(
           data: null,
           message: responseData['messages'] ?? 'Something went wrong',
@@ -89,6 +92,7 @@ class Loginrepo {
       }
     } on DioException catch (e) {
       debugPrint(e.message);
+
       log(e.toString());
       return ApiResponse(
         data: null,
@@ -145,14 +149,13 @@ class Loginrepo {
       log("Response received: ${response.statusCode}");
       final responseData = response.data;
       log("Response data: $responseData");
-        //    if (responseData['message'] == "Expired token") {
-        //   SharedPreferences preferences = await SharedPreferences.getInstance();
-        //   await preferences.remove('USER_TOKEN');
-        //   // await preferences.clear();
-        // }
+      //    if (responseData['message'] == "Expired token") {
+      //   SharedPreferences preferences = await SharedPreferences.getInstance();
+      //   await preferences.remove('USER_TOKEN');
+      //   // await preferences.clear();
+      // }
       if (!responseData["error"] && responseData["status"] == 200) {
         final user = ProfileModel.fromJson(responseData["data"]);
-   
 
         //SharedPreferences preferences = await SharedPreferences.getInstance();
 

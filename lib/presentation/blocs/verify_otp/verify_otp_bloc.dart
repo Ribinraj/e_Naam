@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:e_naam/data/verify_otpmodel.dart';
@@ -14,22 +15,29 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     on<VerifyOtpEvent>((event, emit) {
       // TODO: implement event handler
     });
-       on<VerifyOtpButtonclickEvent>(verifyOtp);
+    on<VerifyOtpButtonclickEvent>(verifyOtp);
   }
-    FutureOr<void> verifyOtp(VerifyOtpButtonclickEvent event, Emitter<VerifyOtpState> emit) async{
+  FutureOr<void> verifyOtp(
+      VerifyOtpButtonclickEvent event, Emitter<VerifyOtpState> emit) async {
     emit(VerifyOtpLoadingState());
     try {
-      final response=await repository.verifyotp(
-       user: event.user
-      );
+     
+
+      final response = await repository.verifyotp(user: event.user);
+   
+
+      log(response.message);
       if (!response.error && response.status == 200) {
         emit(VerifyOtpSuccessState());
       } else {
-        emit(VerifyOtpErrorState(message: response.message));
-        
-      }
 
+        log(response.message);
+        emit(VerifyOtpErrorState(message: response.message));
+      }
     } catch (e) {
+
+
+      log(e.toString());
       emit(VerifyOtpErrorState(message: e.toString()));
     }
   }

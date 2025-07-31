@@ -26,9 +26,7 @@ import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
 import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
-import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
-import 'package:e_naam/presentation/screens/screen_happycustomers/screen_happycustomers.dart';
-import 'package:e_naam/presentation/screens/screen_offerspage/screen_offerspage.dart';
+
 
 import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -142,7 +140,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
 
             colorScheme: ColorScheme.fromSeed(
-            brightness: Brightness.dark,
+            //brightness: Brightness.dark,
               seedColor: Colors.deepPurple),
             useMaterial3: true,
             scaffoldBackgroundColor: Appcolors.kwhiteColor),
