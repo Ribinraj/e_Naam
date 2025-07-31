@@ -1,3 +1,159 @@
+// import 'dart:io';
+
+// import 'package:e_naam/core/colors.dart';
+// import 'package:e_naam/core/responsive_utils.dart';
+// import 'package:e_naam/domain/controllers/push_notificationcontroller.dart';
+// import 'package:e_naam/domain/repositories/loginrepo.dart';
+// import 'package:e_naam/domain/repositories/productrepo.dart';
+// import 'package:e_naam/firebase_options.dart';
+// import 'package:e_naam/presentation/blocs/connectivity_bloc/connectivity_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_categories_bloc/fetch_categories_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_contact_bloc/fetch_contact_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_happyclients_bloc/fetch_happyclients_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_latest_products/fetch_latest_product_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_notification/fetch_notification_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_offerslists_bloc/fetch_offerslists_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_product_blac/fetch_product_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_profile/fetch_profile_bloc.dart';
+// import 'package:e_naam/presentation/blocs/bottom_navigation/bottom_navigation_bloc.dart';
+// import 'package:e_naam/presentation/blocs/fetch_banners/fetch_banners_bloc.dart';
+// import 'package:e_naam/presentation/blocs/qr_code_bloc/qr_code_bloc.dart';
+// import 'package:e_naam/presentation/blocs/redeem_request_bloc/redeem_request_bloc.dart';
+// import 'package:e_naam/presentation/blocs/redumption_requests/redumption_requests_bloc.dart';
+
+// import 'package:e_naam/presentation/blocs/resend_otp/resend_otp_bloc.dart';
+// import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
+// import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
+// import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
+// import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
+// import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
+// import 'package:e_naam/presentation/screens/screen_happycustomers/screen_happycustomers.dart';
+// import 'package:e_naam/presentation/screens/screen_offerspage/screen_offerspage.dart';
+
+// import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   final pushNotifications = PushNotifications();
+//   await pushNotifications.init();
+//   if (Platform.isIOS) {
+//     await FirebaseMessaging.instance.requestPermission(
+//       alert: true,
+//       badge: true,
+//       sound: true,
+//       provisional: false,
+//     );
+//   }
+//     SystemChrome.setSystemUIOverlayStyle(
+//     const SystemUiOverlayStyle(
+//       // statusBarColor: Colors.transparent,
+//       statusBarIconBrightness: Brightness.dark,
+//       statusBarBrightness: Brightness.dark,
+//     ),
+//   );
+//   SystemChrome.setPreferredOrientations([
+//     DeviceOrientation.portraitUp,
+//     DeviceOrientation.portraitDown,
+//   ]).then((value) {
+//     runApp(const MyApp());
+//   });
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     ResponsiveUtils().init(context);
+//     final loginrepo = Loginrepo();
+//     final productrepo = Productrepo();
+//     return MultiBlocProvider(
+//       providers: [
+//         BlocProvider(
+//           create: (context) => BottomNavigationBloc(),
+//         ),
+//         BlocProvider(
+//           create: (context) => SendOtpBloc(repository: loginrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => VerifyOtpBloc(repository: loginrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => ResendOtpBloc(repository: loginrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => FetchBannersBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => FetchProfileBloc(repository: loginrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => UpdateProfileBloc(repository: loginrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => QrCodeBloc(repository: loginrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => FetchCategoriesBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => FetchProductBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => RedeemRequestBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => FetchNotificationBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => TransactionsBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => RedumptionRequestsBloc(repository: productrepo),
+//         ),
+//         BlocProvider(
+//           create: (context) => ConnectivityBloc(),
+//         ),
+//         BlocProvider(
+//           create: (context) => FetchLatestProductBloc(repository: productrepo),
+//         ),
+//            BlocProvider(
+//           create: (context) => FetchContactBloc(repository: productrepo),
+//         ),
+//              BlocProvider(
+//           create: (context) => FetchHappyclientsBloc(repository: productrepo),
+//         ),
+//                 BlocProvider(
+//           create: (context) => FetchOfferslistsBloc(repository: productrepo),
+//         ),
+//       ],
+//       child: MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         title: 'e_Naam',
+//         theme: ThemeData(
+
+//             colorScheme: ColorScheme.fromSeed(
+//             //brightness: Brightness.dark,
+
+//               seedColor: Colors.deepPurple),
+//             useMaterial3: true,
+//             scaffoldBackgroundColor: Appcolors.kwhiteColor),
+
+//         home: const SplashScreen(),
+//        //home: const ScreenMainPage(),
+//       ),
+//     );
+//   }
+// }
 import 'dart:io';
 
 import 'package:e_naam/core/colors.dart';
@@ -26,9 +182,6 @@ import 'package:e_naam/presentation/blocs/send_otp/send_otp_bloc.dart';
 import 'package:e_naam/presentation/blocs/transactions_bloc/transactions_bloc.dart';
 import 'package:e_naam/presentation/blocs/update_profile/update_profile_bloc.dart';
 import 'package:e_naam/presentation/blocs/verify_otp/verify_otp_bloc.dart';
-import 'package:e_naam/presentation/screens/Screen_bottomnavigation.dart/screen_bottomnavigation.dart';
-import 'package:e_naam/presentation/screens/screen_happycustomers/screen_happycustomers.dart';
-import 'package:e_naam/presentation/screens/screen_offerspage/screen_offerspage.dart';
 
 import 'package:e_naam/presentation/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,6 +192,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemStatusBarContrastEnforced: false,
+      statusBarIconBrightness: Brightness.light, // White icons on Android
+      statusBarBrightness: Brightness.dark, // White icons on iOS
+    ),
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -52,19 +212,14 @@ void main() async {
       provisional: false,
     );
   }
-  //   SystemChrome.setSystemUIOverlayStyle(
-  //   const SystemUiOverlayStyle(
-  //     statusBarColor: Colors.transparent,
-  //     statusBarIconBrightness: Brightness.light,
-  //     statusBarBrightness: Brightness.light,
-  //   ),
-  // );
-  SystemChrome.setPreferredOrientations([
+
+  // Updated SystemUIOverlayStyle for white status bar icons
+
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) {
-    runApp(const MyApp());
-  });
+  ]);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -126,13 +281,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => FetchLatestProductBloc(repository: productrepo),
         ),
-           BlocProvider(
+        BlocProvider(
           create: (context) => FetchContactBloc(repository: productrepo),
         ),
-             BlocProvider(
+        BlocProvider(
           create: (context) => FetchHappyclientsBloc(repository: productrepo),
         ),
-                BlocProvider(
+        BlocProvider(
           create: (context) => FetchOfferslistsBloc(repository: productrepo),
         ),
       ],
@@ -140,15 +295,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'e_Naam',
         theme: ThemeData(
-
-            colorScheme: ColorScheme.fromSeed(
-            brightness: Brightness.dark,
-              seedColor: Colors.deepPurple),
-            useMaterial3: true,
-            scaffoldBackgroundColor: Appcolors.kwhiteColor),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          scaffoldBackgroundColor: Appcolors.kwhiteColor,
+     
+        ),
 
         home: const SplashScreen(),
-       //home: const ScreenMainPage(),
+        //home: const ScreenMainPage(),
       ),
     );
   }

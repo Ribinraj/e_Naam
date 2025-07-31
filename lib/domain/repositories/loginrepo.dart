@@ -69,7 +69,7 @@ class Loginrepo {
       Response response = await dio.post(Endpoints.verifyotp, data: user);
       final responseData = response.data;
       log('responsestatus${responseData['status']}');
-      log('usertoken${responseData["data"]["token"]}');
+      
       if (!responseData["error"] && responseData["status"] == 200) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences..setString('USER_TOKEN', responseData["data"]["token"]);
