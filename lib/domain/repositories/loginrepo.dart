@@ -70,9 +70,8 @@ class Loginrepo {
       final responseData = response.data;
       log('responsestatus${responseData}');
       log('responsestatus${responseData['status']}');
-    
+
       if (!responseData["error"] && responseData["status"] == 200) {
-        
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences..setString('USER_TOKEN', responseData["data"]["token"]);
         return ApiResponse(
@@ -82,7 +81,6 @@ class Loginrepo {
           status: responseData["status"],
         );
       } else {
-     
         return ApiResponse(
           data: null,
           message: responseData['messages'] ?? 'Something went wrong',
