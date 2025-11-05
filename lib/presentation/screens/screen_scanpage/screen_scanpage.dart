@@ -5,7 +5,7 @@ import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'dart:async';
+
 
 // class AdvancedQRScanner extends StatefulWidget {
 //   /// Constructor for advanced QR scanner
@@ -569,56 +569,74 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
     );
   }
 
-  void _showErrorDialog(String message) {
-    isDialogOpen = true;
+void _showErrorDialog(String message) {
+  isDialogOpen = true;
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Row(
-          children: [
-            Icon(Icons.error, color: Colors.red),
-            SizedBox(width: 8),
-            Text('Error'),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Failed to process QR code:'),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(8),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.red.shade200),
-              ),
-              child: Text(
-                message,
-                style: TextStyle(fontSize: 14, color: Colors.red.shade700),
-              ),
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      title: const Row(
+        children: [
+          Icon(Icons.error, color: Colors.red),
+          SizedBox(width: 8),
+          Text('Error'),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Failed to process QR code:'),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(8),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.red.shade50,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.red.shade200),
             ),
-          ],
-        ),
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(context);
-              _resetScanner();
-              isDialogOpen = false;
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Try Again'),
+            child: Text(
+              message,
+              style: TextStyle(fontSize: 14, color: Colors.red.shade700),
+            ),
           ),
         ],
       ),
-    );
-  }
+      actions: [
+        // Try Again -> closes & resets
+        TextButton.icon(
+          onPressed: () {
+            Navigator.pop(context);
+            _resetScanner();
+            isDialogOpen = false;
+          },
+          icon: const Icon(Icons.refresh),
+          label: const Text('Try Again'),
+        ),
+        // Close -> closes & resets (so the green tick disappears)
+        TextButton.icon(
+          onPressed: () {
+            Navigator.pop(context);
+            _resetScanner();
+            isDialogOpen = false;
+          },
+          icon: const Icon(Icons.close),
+          label: const Text('Close'),
+        ),
+      ],
+    ),
+  ).then((_) {
+    // Safety net: if user dismisses via system back, still reset.
+    if (mounted) {
+      _resetScanner();
+      isDialogOpen = false;
+    }
+  });
+}
+
 
   @override
   void dispose() {

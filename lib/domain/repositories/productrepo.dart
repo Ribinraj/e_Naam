@@ -122,18 +122,19 @@ class Productrepo {
   //////////-------------fetchproduct-----------------------//////////////////////
   Future<ApiResponse<List<ProductModel>>> fetchproducts(
       {required String categoryId}) async {
+        log('productsidddddd$categoryId');
     try {
-      final token = await getUserToken();
+      //final token = await getUserToken();
       log(Endpoints.products);
-      Response response = await dio.get(
+      Response response = await dio.post(
         Endpoints.products,
         data: {'categoryId': categoryId},
         //queryParameters: {'categoryId': categoryId},
-        options: Options(headers: {'Authorization': token}),
+        // options: Options(headers: {'Authorization': token}),
       );
       log("Response received: ${response.statusCode}");
       final responseData = response.data;
-      log(responseData["status"].toString());
+     
       // log(responseData);
       if (!responseData["error"] && responseData["status"] == 200) {
         log('in');
