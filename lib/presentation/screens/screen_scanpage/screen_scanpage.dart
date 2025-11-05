@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_naam/presentation/blocs/qr_code_bloc/qr_code_bloc.dart';
 import 'package:e_naam/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
@@ -339,6 +341,7 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
 
                   // Upload QR code using BLoC
                   if (scannedBarcode.displayValue != null) {
+                    log('scanner value${scannedBarcode.displayValue!}');
                     context.read<QrCodeBloc>().add(
                           QrCodeuploadingEvent(
                               code: scannedBarcode.displayValue!),
@@ -475,12 +478,12 @@ class _AdvancedQRScannerState extends State<AdvancedQRScanner>
           child: Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
-                top: const BorderSide(color: Colors.white, width: 3),
-                left: const BorderSide(color: Colors.white, width: 3),
-                right: const BorderSide(color: Colors.transparent),
-                bottom: const BorderSide(color: Colors.transparent),
+                top: BorderSide(color: Colors.white, width: 3),
+                left: BorderSide(color: Colors.white, width: 3),
+                right: BorderSide(color: Colors.transparent),
+                bottom: BorderSide(color: Colors.transparent),
               ),
             ),
           ),
